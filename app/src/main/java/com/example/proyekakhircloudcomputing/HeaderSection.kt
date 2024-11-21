@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -26,11 +27,12 @@ import androidx.compose.ui.unit.sp
 
 //semua yang di dalam background kuning
 @Composable
-fun HeaderSection(showTexts: Boolean = true) {
+fun HeaderSection() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(32.dp),
+            .padding(horizontal = 32.dp)
+            .padding(top =32.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
@@ -41,6 +43,11 @@ fun HeaderSection(showTexts: Boolean = true) {
                 modifier = Modifier
                     .wrapContentWidth()
                     .height(80.dp)
+                    .shadow(
+                        elevation = 8.dp, // Tinggi bayangan
+                        shape = RoundedCornerShape(50.dp), // Bentuk bayangan mengikuti RoundedCorner
+                        clip = false // Tidak memotong bayangan ke dalam batas shape
+                    )
                     .clip(shape = RoundedCornerShape(16.dp))  // Membuat sudut membulat
                     .background(colorResource(R.color.yellow_background))
                     .padding(16.dp) // Tambahkan padding dalam Box
@@ -69,21 +76,6 @@ fun HeaderSection(showTexts: Boolean = true) {
                         modifier = Modifier.size(30.dp) // Ukuran gambar kecil
                     )
                 }
-            }
-            //pada saat pemanggilan buat parameter showTexts = false, jika ingin
-            if (showTexts) {
-                Spacer(modifier = Modifier.height(32.dp))
-                Text(
-                    text = "Halo, Arkan!",
-                    fontSize = 25.sp,
-                    color = Color.White
-                )
-                Spacer(modifier = Modifier.height(5.dp))
-                Text(
-                    text = "Abadikan momen berharga mu!",
-                    fontSize = 15.sp,
-                    color = Color.White
-                )
             }
         }
     }

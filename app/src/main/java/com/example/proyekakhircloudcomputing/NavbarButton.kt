@@ -10,7 +10,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -25,8 +27,13 @@ fun Navbar(
     Box(
         modifier = modifier
             .wrapContentWidth()
+            .shadow(
+                elevation = 8.dp, // Tinggi bayangan
+                shape = RoundedCornerShape(50.dp), // Bentuk bayangan mengikuti RoundedCorner
+                clip = false // Tidak memotong bayangan ke dalam batas shape
+            )
             .clip(RoundedCornerShape(50.dp))
-            .background(Color(0xFF4A9BB4))
+            .background(colorResource(R.color.blue_main))
             .padding(vertical = 8.dp),
         contentAlignment = Alignment.Center
     ) {
