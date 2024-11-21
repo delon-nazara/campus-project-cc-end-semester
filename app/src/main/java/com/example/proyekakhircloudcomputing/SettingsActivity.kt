@@ -69,15 +69,23 @@ fun SettingsScreen(navigateToHome: () -> Unit) {
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Gambar profil
-            Image(
-                painter = painterResource(id = R.drawable.contoh), // Ganti dengan resource gambar Anda
-                contentDescription = "Profile Picture",
+            // Frame di sekitar gambar profil
+            Box(
                 modifier = Modifier
-                    .size(120.dp)
-                    .clip(CircleShape) // Bentuk lingkaran
-                    .background(Color.Red) // Placeholder jika gambar belum di-load
-            )
+                    .size(140.dp) // Ukuran frame sedikit lebih besar dari gambar
+                    .clip(RoundedCornerShape(16.dp)) // Membuat sudut frame membulat
+                    .background(Color(0xFFF2A73B)), // Warna frame (orange dari colors.xml)
+                contentAlignment = Alignment.Center
+            ) {
+                // Gambar profil
+                Image(
+                    painter = painterResource(id = R.drawable.arkan), // Ganti dengan resource gambar Anda
+                    contentDescription = "Profile Picture",
+                    modifier = Modifier
+                        .size(120.dp) // Ukuran gambar
+                        .clip(RoundedCornerShape(16.dp))
+                )
+            }
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -99,6 +107,7 @@ fun SettingsScreen(navigateToHome: () -> Unit) {
         )
     }
 }
+
 
 
 
