@@ -3,7 +3,6 @@ package com.example.proyekakhircloudcomputing
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,10 +17,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
@@ -31,11 +28,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.proyekakhircloudcomputing.NavbarButton
 
 
 class MainActivity : ComponentActivity() {
@@ -59,10 +54,10 @@ fun MainScreen() {
                 .fillMaxSize()
         ) {
             // Header di bagian atas
-            HeaderSection()
+            HeaderSection(showTexts = true)
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Konten utama (CapsulesSection)
+//             Konten utama (CapsulesSection)
             CapsulesSection(
                 modifier = Modifier
                     .weight(1f) // Mengisi ruang di antara Header dan Navbar
@@ -86,72 +81,6 @@ fun MainScreen() {
         )
     }
 }
-
-
-
-//semua yang di dalam background kuning
-@Composable
-fun HeaderSection() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(32.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Box(
-                modifier = Modifier
-                    .wrapContentWidth()
-                    .height(80.dp)
-                    .clip(shape = RoundedCornerShape(16.dp))  // Membuat sudut membulat
-                    .background(colorResource(R.color.yellow_background))
-                    .padding(16.dp) // Tambahkan padding dalam Box
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(64.dp), // Jarak antar elemen
-                ) {
-                    // Gambar pertama
-                    Image(
-                        painter = painterResource(id = R.drawable.pp), // Gambar kiri
-                        contentDescription = "Profile picture",
-                        modifier = Modifier.size(40.dp) // Ukuran gambar kecil
-                    )
-                    // Gambar kedua (Memoria logo)
-                    Image(
-                        painter = painterResource(id = R.drawable.memoria), // Gambar tengah
-                        contentDescription = "Memoria logo",
-                        modifier = Modifier.size(100.dp) // Ukuran gambar utama
-                    )
-
-                    // Gambar ketiga (Notifikasi)
-                    Image(
-                        painter = painterResource(id = R.drawable.notifications), // Gambar kanan
-                        contentDescription = "Notification icon",
-                        modifier = Modifier.size(30.dp) // Ukuran gambar kecil
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(32.dp))
-            Text(
-                text = "Halo,Arkan!",
-                fontSize = 25.sp,
-                color = Color.White
-            )
-            Spacer(modifier = Modifier.height(5.dp))
-            Text(
-                text = "Abadikan momen berharga mu!",
-                fontSize = 15.sp,
-                color = Color.White
-            )
-        }
-    }
-}
-
 
 @Composable
 fun CapsulesSection(modifier: Modifier = Modifier) {
