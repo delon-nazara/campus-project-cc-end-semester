@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -40,7 +41,7 @@ class LoginActivity : ComponentActivity() {
 fun LoginScreen(onLoginClick: (String, String) -> Unit, onSignUpClick: () -> Unit, onBackClick: () -> Unit) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    val backgroundColor = Color(0xFFF4F2DE)
+
     Image(
         painter = painterResource(id = R.drawable.title),
         contentDescription = null,
@@ -49,7 +50,7 @@ fun LoginScreen(onLoginClick: (String, String) -> Unit, onSignUpClick: () -> Uni
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(backgroundColor)
+            .background(colorResource(R.color.yellow_background))
             .padding(16.dp)
 
     )
@@ -68,7 +69,7 @@ fun LoginScreen(onLoginClick: (String, String) -> Unit, onSignUpClick: () -> Uni
                 .clip(RoundedCornerShape(16.dp))
                 .wrapContentWidth()
                 .align(alignment = Alignment.Center)
-                .background(Color(0xFFFf2a73b))
+                .background(colorResource(R.color.orange))
                 .padding(16.dp),
         ) {
             Text(text = "Masuk", fontSize = 25.sp, color = Color.Black, modifier = Modifier.align(Alignment.CenterHorizontally).padding(all = 16.dp))
@@ -90,7 +91,7 @@ fun LoginScreen(onLoginClick: (String, String) -> Unit, onSignUpClick: () -> Uni
             Spacer(modifier = Modifier.height(16.dp))
             Button(
                 onClick = { onLoginClick(username, password) },
-                colors = ButtonDefaults.buttonColors(Color(0xFFF4A9BB4)),
+                colors = ButtonDefaults.buttonColors(colorResource(R.color.blue_main)),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(text = "Masuk")
@@ -100,11 +101,11 @@ fun LoginScreen(onLoginClick: (String, String) -> Unit, onSignUpClick: () -> Uni
 
             Text(text = "Belum punya akun? Daftar sekarang", fontSize = 15.sp, modifier = Modifier.align(Alignment.CenterHorizontally))
 
-            Button(onClick = onSignUpClick, colors = ButtonDefaults.buttonColors(Color(0xFFF4A9BB4)), modifier = Modifier.fillMaxWidth()) {
+            Button(onClick = onSignUpClick, colors = ButtonDefaults.buttonColors(colorResource(R.color.blue_main)), modifier = Modifier.fillMaxWidth()) {
                 Text(text = "Daftar")
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Button(onClick = onBackClick, colors = ButtonDefaults.buttonColors(Color(0xFFF4A9BB4)), modifier = Modifier.fillMaxWidth()) {
+            Button(onClick = onBackClick, colors = ButtonDefaults.buttonColors(colorResource(R.color.blue_main)), modifier = Modifier.fillMaxWidth()) {
                 Text(text = "Kembali")
             }
         }

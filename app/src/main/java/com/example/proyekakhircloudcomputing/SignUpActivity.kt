@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -54,7 +55,6 @@ fun SignUpScreen(onSignUpClick: (String, String) -> Unit, onLoginClick: () -> Un
     var fullName = remember { mutableStateOf("") }
     var email = remember { mutableStateOf("") }
     var password = remember { mutableStateOf("") }
-    val backgroundColor = Color(0xFFF4F2DE)
 
     Image(
         painter = painterResource(id = R.drawable.title),
@@ -64,7 +64,7 @@ fun SignUpScreen(onSignUpClick: (String, String) -> Unit, onLoginClick: () -> Un
     Box(
         modifier = Modifier
         .fillMaxSize()
-        .background(backgroundColor)
+        .background(colorResource(R.color.yellow_background))
         .padding(16.dp)
 
     )
@@ -82,7 +82,7 @@ fun SignUpScreen(onSignUpClick: (String, String) -> Unit, onLoginClick: () -> Un
                     .clip(RoundedCornerShape(16.dp))
                     .wrapContentWidth()
                     .align(alignment = Alignment.Center)
-                    .background(Color(0xFFFf2a73b))
+                    .background(colorResource(R.color.orange))
                     .padding(16.dp),
             )
             {
@@ -113,7 +113,7 @@ fun SignUpScreen(onSignUpClick: (String, String) -> Unit, onLoginClick: () -> Un
                 Button(
 
                     onClick = { onSignUpClick(email.value, password.value) },
-                    colors = ButtonDefaults.buttonColors(Color(0xFFF4A9BB4)),
+                    colors = ButtonDefaults.buttonColors(colorResource(R.color.blue_main)),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(text = "Daftar")
@@ -124,12 +124,12 @@ fun SignUpScreen(onSignUpClick: (String, String) -> Unit, onLoginClick: () -> Un
 
                 Text(text = "Sudah punya akun? Masuk sekarang", color = Color.Black, fontSize = 15.sp, modifier = Modifier.align(Alignment.CenterHorizontally))
 
-                Button(onClick = onLoginClick, modifier = Modifier.fillMaxWidth(),colors = ButtonDefaults.buttonColors(Color(0xFFF4A9BB4))) {
+                Button(onClick = onLoginClick, modifier = Modifier.fillMaxWidth(),colors = ButtonDefaults.buttonColors(colorResource(R.color.blue_main))) {
                     Text(text = "Masuk")
                 }
                 Spacer(modifier = Modifier.height(8.dp)
                  )
-                Button(onClick = onBackClick, modifier = Modifier.fillMaxWidth(),colors = ButtonDefaults.buttonColors(Color(0xFFF4A9BB4))) {
+                Button(onClick = onBackClick, modifier = Modifier.fillMaxWidth(),colors = ButtonDefaults.buttonColors(colorResource(R.color.blue_main))) {
                     Text(text = "Kembali")
                 }
             }

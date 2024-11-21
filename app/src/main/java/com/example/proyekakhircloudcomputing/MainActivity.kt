@@ -30,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -95,7 +96,7 @@ fun HeaderSection() {
                     .wrapContentWidth()
                     .height(80.dp)
                     .clip(shape = RoundedCornerShape(16.dp))  // Membuat sudut membulat
-                    .background(Color(0xFFF4F2DE))
+                    .background(colorResource(R.color.yellow_background))
                     .padding(16.dp) // Tambahkan padding dalam Box
             ) {
                 Row(
@@ -146,7 +147,7 @@ fun CapsulesSection(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(0xFFF4F2DE))
+            .background(colorResource(R.color.yellow_background))
     ) {
         Spacer(modifier = Modifier.height(32.dp))
         Box(
@@ -154,7 +155,7 @@ fun CapsulesSection(modifier: Modifier = Modifier) {
                 .padding(start = 16.dp)
                 .wrapContentSize()
                 .clip(RoundedCornerShape(50.dp))
-                .background(Color(0xFFF2A73B))
+                .background(colorResource(R.color.orange))
                 .padding(horizontal = 24.dp, vertical = 16.dp)
         ) {
             Text(
@@ -170,13 +171,13 @@ fun CapsulesSection(modifier: Modifier = Modifier) {
                 .padding(start = 16.dp)
                 .wrapContentSize()
                 .clip(RoundedCornerShape(50.dp))
-                .background(Color(0xFFF2A73B))
+                .background(colorResource(R.color.orange))
                 .padding(horizontal = 24.dp, vertical = 16.dp)
         ) {
             Text(
                 text = "Kapsul Pribadi",
                 fontSize = 20.sp,
-                color = Color(0xFFF4F2DE)
+                color = colorResource(R.color.yellow_background)
             )
         }
         DynamicLazyRowWithButton()
@@ -202,7 +203,7 @@ fun DynamicLazyRowWithButton() {
             modifier = Modifier
                 .size(120.dp)
                 .clip(RoundedCornerShape(16.dp))
-                .background(Color(0xFF7C9D96))
+                .background(colorResource(R.color.green_kahf))
                 .clickable {
                     // Tambahkan kapsul baru ke dalam LazyRow
                     capsules.add("Capsule ${capsules.size + 1}")
@@ -238,7 +239,7 @@ fun CapsuleItem(title: String) {
             modifier = Modifier
                 .size(120.dp)
                 .clip(RoundedCornerShape(16.dp))
-                .background(Color(0xFF7C9D96))
+                .background(colorResource(R.color.green_kahf))
                 .padding(16.dp),
             contentAlignment = Alignment.Center
         ) {
@@ -258,7 +259,7 @@ fun Navbar(modifier: Modifier = Modifier) {
         modifier = modifier
             .wrapContentWidth()  // Membuat navbar hanya selebar konten
             .clip(RoundedCornerShape(50.dp)) // Bentuk kapsul lonjong
-            .background(Color(0xFF4A9BB4))
+            .background(colorResource(R.color.blue_main))
             .padding(vertical = 8.dp), // Padding atas-bawah
         contentAlignment = Alignment.Center
     ) {

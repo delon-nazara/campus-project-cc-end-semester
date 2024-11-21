@@ -24,8 +24,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -43,10 +45,9 @@ class WelcomeActivity : ComponentActivity() {
 
 @Composable
 fun WelcomeScreen(onLoginClick: () -> Unit, onSignUpClick: () -> Unit) {
-    val backgroundColor = Color(0xFFF4F2DE)
     Column(
         modifier = Modifier
-            .background(backgroundColor)
+            .background(colorResource(R.color.yellow_background))
             .fillMaxHeight()
             .padding(1.dp),
         verticalArrangement = Arrangement.Center,
@@ -68,11 +69,11 @@ fun WelcomeScreen(onLoginClick: () -> Unit, onSignUpClick: () -> Unit) {
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(vertical = 16.dp),
-            color = Color(0xFFF2A73B)
+            color = colorResource(R.color.orange)
 
         )
         Button(
-            colors = ButtonDefaults.buttonColors(Color(0xFFF4A9BB4)),
+            colors = ButtonDefaults.buttonColors(colorResource(R.color.blue_main)),
             onClick = onLoginClick,
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(25.dp)
@@ -82,12 +83,17 @@ fun WelcomeScreen(onLoginClick: () -> Unit, onSignUpClick: () -> Unit) {
         Spacer(modifier = Modifier.height(8.dp))
         Button(
             onClick = onSignUpClick,
-            border = BorderStroke(2.dp, Color(0xFFF4A9BB4)),
+            border = BorderStroke(2.dp, colorResource(R.color.blue_main)),
             colors = ButtonDefaults.buttonColors(Color.Transparent),
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(25.dp),
         ) {
-            Text(text = "Daftar", fontSize = 16.sp, color = Color(0xFFF4A9BB4))
+            Text(text = "Daftar", fontSize = 16.sp, color = colorResource(R.color.blue_main))
         }
     }
+}
+@Preview
+@Composable
+fun WelcomeActivityPreview(){
+
 }
