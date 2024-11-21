@@ -35,6 +35,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.proyekakhircloudcomputing.NavbarButton
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,11 +73,20 @@ fun MainScreen() {
         // Navbar di bagian bawah layar
         Navbar(
             modifier = Modifier
-                .align(Alignment.BottomCenter) // Menempatkan Navbar di bagian bawah
-                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth(),
+            onHomeClick = {
+                // Logika saat tombol Home ditekan
+                println("Home button clicked")
+            },
+            onSettingsClick = {
+                // Logika saat tombol Settings ditekan
+                println("Settings button clicked")
+            }
         )
     }
 }
+
 
 
 //semua yang di dalam background kuning
@@ -252,87 +263,6 @@ fun CapsuleItem(title: String) {
         }
     }
 }
-
-@Composable
-fun Navbar(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .wrapContentWidth()  // Membuat navbar hanya selebar konten
-            .clip(RoundedCornerShape(50.dp)) // Bentuk kapsul lonjong
-            .background(colorResource(R.color.blue_main))
-            .padding(vertical = 8.dp), // Padding atas-bawah
-        contentAlignment = Alignment.Center
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly, // Meratakan tombol
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // Tombol pertama
-            NavbarButton(
-                label = "Home",
-                iconId = R.drawable.iconhome,
-                onClick = { /* TODO: Navigate to Home */ }
-            )
-
-            // Tombol kedua
-            NavbarButton(
-                label = "capsule",
-                iconId = R.drawable.iconcapsule,
-                onClick = { /* TODO: Navigate to Search */ }
-            )
-
-            // Tombol ketiga
-            NavbarButton(
-                label = "search",
-                iconId = R.drawable.iconsearch,
-                onClick = { /* TODO: Navigate to Add */ }
-            )
-
-            // Tombol keempat
-            NavbarButton(
-                label = "notiv",
-                iconId = R.drawable.iconnotip,
-                onClick = { /* TODO: Navigate to Notifications */ }
-            )
-
-            // Tombol kelima
-            NavbarButton(
-                label = "rigged",
-                iconId = R.drawable.icongear,
-                onClick = { /* TODO: Navigate to Profile */ }
-            )
-        }
-    }
-}
-
-
-
-@Composable
-fun NavbarButton(label: String, iconId: Int, onClick: () -> Unit) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.clickable(onClick = onClick)
-    ) {
-        Icon(
-            painter = painterResource(id = iconId),
-            contentDescription = label,
-            modifier = Modifier.size(36.dp),
-            tint = Color.White // Warna ikon
-        )
-        Spacer(modifier = Modifier.height(4.dp)) // Jarak antara ikon dan teks
-        Text(
-            text = label,
-            fontSize = 12.sp,
-            color = Color.White
-        )
-    }
-}
-
-
-
-
-
 
 
 @Preview(showBackground = true)
