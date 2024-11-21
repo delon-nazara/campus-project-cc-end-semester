@@ -54,7 +54,7 @@ fun MainScreen() {
                 .fillMaxSize()
         ) {
             // Header di bagian atas
-            HeaderSection(showTexts = true)
+            HeaderSection()
             Spacer(modifier = Modifier.height(16.dp))
 
 //             Konten utama (CapsulesSection)
