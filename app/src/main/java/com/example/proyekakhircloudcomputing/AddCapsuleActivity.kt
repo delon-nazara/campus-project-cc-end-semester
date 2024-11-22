@@ -1,5 +1,6 @@
 package com.example.proyekakhircloudcomputing
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,11 +13,16 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -37,6 +43,8 @@ class AddCapsuleActivity : ComponentActivity() {
 
 @Composable
 fun AddCapsuleScreen() {
+    var showDialog by remember { mutableStateOf(false) }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -327,7 +335,7 @@ fun AddCapsuleScreen() {
 
             // Tombol Buat
             Button(
-                onClick = { /* Aksi buat */ },
+                onClick = { showDialog = true }, // Tampilkan dialog saat tombol ditekan
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFFAB900),
                     contentColor = Color.White
@@ -340,10 +348,124 @@ fun AddCapsuleScreen() {
             }
         }
     }
+    // Dialog pop-up
+    // Dialog pop-up
+    if (showDialog) {
+        AlertDialog(
+            modifier = Modifier.background(color = colorResource(R.color.orange)),
+            onDismissRequest = { showDialog = false }, // Dialog akan hilang jika di luar area ditekan
+            title = null,
+            text = {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.padding(16.dp)
+                ) {
+                    // Tulisan "Kapsul Berhasil Dibuat!" di atas ikon
+                    Text(
+                        text = "Kapsul Berhasil\nDibuat!",
+                        style = TextStyle(
+                            fontSize = 20.sp,
+                            color = Color.Black,
+                            textAlign = TextAlign.Center
+                        ),
+                        modifier = Modifier.padding(bottom = 16.dp)
+                    )
+
+                    // Ikon kapsul
+                    Icon(
+                        painter = painterResource(R.drawable.iconcapsule),
+                        contentDescription = "Capsule Icon",
+                        modifier = Modifier.size(80.dp)
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Tombol Tambahkan Media
+                    Button(
+                        onClick = { /* Tambahkan aksi Tambahkan Media */ },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(text = "Tambahkan Media")
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    // Tombol Kembali
+                    Button(
+                        onClick = {
+//                            val context = LocalContext.current
+//                            val intent = Intent(context, MainActivity::class.java)
+//                            context.startActivity(intent) // Navigasi ke MainActivity
+//                            showDialog = false // Tutup dialog
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(text = "Kembali")
+                    }
+                }
+            },
+            confirmButton = {},
+            dismissButton = {}
+        )
+    }
 }
 
 @Preview(showBackground = true,showSystemUi = true)
 @Composable
 fun AddCapsulePreview() {
     AddCapsuleScreen()
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun DialogPopupPreview() {
+    AlertDialog(
+        modifier = Modifier.background(color = colorResource(R.color.orange)),
+        onDismissRequest = { /* Preview dismiss */ }, // Tidak ada aksi di preview
+        title = null,
+        text = {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(16.dp)
+            ) {
+                // Tulisan di atas ikon
+                Text(
+                    text = "Kapsul Berhasil\nDibuat!",
+                    style = TextStyle(
+                        fontSize = 20.sp,
+                        color = Color.Black,
+                        textAlign = TextAlign.Center
+                    ),
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+
+                // Ikon kapsul
+                Icon(
+                    painter = painterResource(R.drawable.iconcapsule), // Ganti dengan icon Anda
+                    contentDescription = "Capsule Icon",
+                    modifier = Modifier.size(80.dp)
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Tombol Tambahkan Media
+                Button(
+                    onClick = { /* Preview action Tambahkan Media */ },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(text = "Tambahkan Media")
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Tombol Kembali
+                Button(
+                    onClick = { /* Preview action Kembali */ },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(text = "Kembali")
+                }
+            }
+        },
+        confirmButton = {},
+        dismissButton = {}
+    )
 }
