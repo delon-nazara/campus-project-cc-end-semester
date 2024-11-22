@@ -92,7 +92,7 @@ fun SettingsScreen(navigateToHome: () -> Unit) {
                         .align(Alignment.BottomEnd)
                         .offset(x = (-8).dp, y = (-8).dp)
                         .clickable { /* Tambahkan aksi edit di sini */ }
-                        .background(color = colorResource(R.color.orange), shape = CircleShape)
+                        .background(color = colorResource(R.color.green_kahf), shape = CircleShape)
                         .padding(4.dp)
                 )
             }
@@ -113,7 +113,7 @@ fun SettingsScreen(navigateToHome: () -> Unit) {
                 Icon(
                     painter = painterResource(id = R.drawable.edit),
                     contentDescription = "Edit Username",
-                    tint = colorResource(R.color.orange),
+                    tint = colorResource(R.color.black),
                     modifier = Modifier
                         .size(20.dp)
                         .clickable { /* Tambahkan aksi edit di sini */ }
