@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Memoria</string>
+    <string name="publik_kapsul">KAPSUL DISEKITARMU</string>
+
     <string name="title_activity_detail_capsule">DetailCapsuleActivity</string>
     <string name="TextDummyDetailCapsule">Ini merupakan sebuah kapsul yang sebenarnya cuma gabut aja, tapi ya gimana lah ya, perlu dibuat contoh untuk tim front-end, mangattt</string>
 </resources>
