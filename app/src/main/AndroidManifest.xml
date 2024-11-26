@@ -13,6 +13,11 @@
         android:theme="@style/Theme.ProyekAkhirCloudComputing"
         tools:targetApi="31">
         <activity
+            android:name=".DetailCapsuleActivity"
+            android:exported="false"
+            android:label="@string/title_activity_detail_capsule"
+            android:theme="@style/Theme.ProyekAkhirCloudComputing" />
+        <activity
             android:name=".WelcomeActivity"
             android:exported="true"
             android:label="@string/app_name"
@@ -26,7 +31,6 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".HomeActivity" />
-
     </application>
 
 </manifest>
