@@ -1,5 +1,9 @@
 package com.example.proyekakhircloudcomputing
 
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -36,6 +40,18 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 
 
+class CapsuleActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            HomePage(
+                images = sampleImages
+            )
+
+        }
+    }
+}
 @Composable
 fun HomePage(images: List<ImageItem>) {
     Column(
