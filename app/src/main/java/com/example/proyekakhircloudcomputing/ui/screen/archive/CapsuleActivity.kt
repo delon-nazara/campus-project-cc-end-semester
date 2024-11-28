@@ -1,4 +1,4 @@
-package com.example.proyekakhircloudcomputing
+package com.example.proyekakhircloudcomputing.ui.screen.archive
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -37,7 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
+import com.example.proyekakhircloudcomputing.R
 
 
 class CapsuleActivity : ComponentActivity() {

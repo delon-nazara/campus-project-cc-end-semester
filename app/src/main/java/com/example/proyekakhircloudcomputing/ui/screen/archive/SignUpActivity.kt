@@ -1,4 +1,4 @@
-package com.example.proyekakhircloudcomputing
+package com.example.proyekakhircloudcomputing.ui.screen.archive
 
 import android.content.Intent
 import android.os.Bundle
@@ -33,6 +33,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.proyekakhircloudcomputing.R
 
 class SignUpActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -124,12 +125,16 @@ fun SignUpScreen(onSignUpClick: (String, String) -> Unit, onLoginClick: () -> Un
 
                 Text(text = "Sudah punya akun? Masuk sekarang", color = Color.Black, fontSize = 15.sp, modifier = Modifier.align(Alignment.CenterHorizontally))
 
-                Button(onClick = onLoginClick, modifier = Modifier.fillMaxWidth(),colors = ButtonDefaults.buttonColors(colorResource(R.color.blue_main))) {
+                Button(onClick = onLoginClick, modifier = Modifier.fillMaxWidth(),colors = ButtonDefaults.buttonColors(colorResource(
+                    R.color.blue_main
+                ))) {
                     Text(text = "Masuk")
                 }
                 Spacer(modifier = Modifier.height(8.dp)
                  )
-                Button(onClick = onBackClick, modifier = Modifier.fillMaxWidth(),colors = ButtonDefaults.buttonColors(colorResource(R.color.blue_main))) {
+                Button(onClick = onBackClick, modifier = Modifier.fillMaxWidth(),colors = ButtonDefaults.buttonColors(colorResource(
+                    R.color.blue_main
+                ))) {
                     Text(text = "Kembali")
                 }
             }

@@ -3,45 +3,28 @@ package com.example.proyekakhircloudcomputing
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.proyekakhircloudcomputing.ui.theme.ProyekAkhirCloudComputingTheme
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.proyekakhircloudcomputing.data.source.Route
+import com.example.proyekakhircloudcomputing.utils.NavigationComponent
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
-            ProyekAkhirCloudComputingTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+            MainApp()
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+fun MainApp() {
+    val navController: NavHostController = rememberNavController()
+    val startDestination = Route.WELCOME_SCREEN.name
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    ProyekAkhirCloudComputingTheme {
-        Greeting("Android")
-    }
+    NavigationComponent(
+        navController = navController,
+        startDestination = startDestination
+    )
 }

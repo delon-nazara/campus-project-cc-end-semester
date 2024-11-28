@@ -1,4 +1,4 @@
-package com.example.proyekakhircloudcomputing
+package com.example.proyekakhircloudcomputing.ui.screen.archive
 
 import android.os.Bundle
 import android.util.Log
@@ -58,6 +58,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.proyekakhircloudcomputing.R
 
 class DiscoverActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

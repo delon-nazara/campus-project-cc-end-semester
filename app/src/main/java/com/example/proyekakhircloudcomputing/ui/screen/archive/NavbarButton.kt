@@ -1,4 +1,4 @@
-package com.example.proyekakhircloudcomputing
+package com.example.proyekakhircloudcomputing.ui.screen.archive
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.proyekakhircloudcomputing.R
 
 
 @Composable
@@ -46,21 +47,21 @@ fun Navbar(
             NavbarButton(
                 label = "Capsule",
                 iconId = R.drawable.iconcapsule,
-                onClick = { /* TODO: Implement Capsule Navigation */ }
+                onClick = { /* TODO: Implement Capsule NavigationComponent */ }
             )
 
             // Tombol Search
             NavbarButton(
                 label = "Search",
                 iconId = R.drawable.iconsearch,
-                onClick = { /* TODO: Implement Search Navigation */ }
+                onClick = { /* TODO: Implement Search NavigationComponent */ }
             )
 
             // Tombol Notifications
             NavbarButton(
                 label = "Notiv",
                 iconId = R.drawable.iconnotip,
-                onClick = { /* TODO: Implement Notifications Navigation */ }
+                onClick = { /* TODO: Implement Notifications NavigationComponent */ }
             )
 
             // Tombol Settings

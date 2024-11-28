@@ -1,4 +1,4 @@
-package com.example.proyekakhircloudcomputing
+package com.example.proyekakhircloudcomputing.ui.screen.archive
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.proyekakhircloudcomputing.R
 
 //semua yang di dalam background kuning
 @Composable

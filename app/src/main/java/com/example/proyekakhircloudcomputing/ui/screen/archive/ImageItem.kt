@@ -1,4 +1,4 @@
-package com.example.proyekakhircloudcomputing
+package com.example.proyekakhircloudcomputing.ui.screen.archive
 
 data class ImageItem(
 //    val imageUrl: String, // Jika gambar menggunakan URL dari Cloud

@@ -75,9 +75,12 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    // Firebase Library
+    // Navigation component library
+    implementation(libs.androidx.navigation.compose)
+
+    // Firebase library
     implementation(platform(libs.firebase.bom))
 
-    // Coil Library
+    // Coil library
     implementation(libs.coil.compose)
 }
