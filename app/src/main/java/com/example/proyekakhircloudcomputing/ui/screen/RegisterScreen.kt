@@ -18,8 +18,11 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,11 +39,14 @@ import com.example.proyekakhircloudcomputing.R
 @Composable
 fun RegisterScreen(
     onRegisterButtonClicked: (String, String, String) -> Unit = { _, _, _ -> },
-    onLoginButtonClicked: () -> Unit = {}
+    onLoginButtonClicked: () -> Unit = {},
+    errorNameState: String? = null,
+    errorEmailState: String? = null,
+    errorPasswordState: String? = null
 ) {
-    val fullName = remember { mutableStateOf("") }
-    val email = remember { mutableStateOf("") }
-    val password = remember { mutableStateOf("") }
+    var name by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
 
     Image(
         painter = painterResource(id = R.drawable.title),
@@ -77,28 +83,46 @@ fun RegisterScreen(
                 Alignment.CenterHorizontally).padding(all = 16.dp))
             Spacer(modifier = Modifier.height(16.dp))
             TextField(
-                value = fullName.value,
-                onValueChange = { fullName.value = it },
+                value = name,
+                onValueChange = { name = it },
                 label = { Text("Nama") },
+                isError = errorNameState != null,
                 modifier = Modifier.fillMaxWidth()
             )
+            if (errorNameState != null) {
+                Text(
+                    text = errorNameState
+                )
+            }
             Spacer(modifier = Modifier.height(8.dp))
             TextField(
-                value = email.value,
-                onValueChange = { email.value = it },
+                value = email,
+                onValueChange = { email = it },
                 label = { Text("Email") },
+                isError = errorEmailState != null,
                 modifier = Modifier.fillMaxWidth()
             )
+            if (errorEmailState != null) {
+                Text(
+                    text = errorEmailState
+                )
+            }
             Spacer(modifier = Modifier.height(8.dp))
             TextField(
-                value = password.value,
-                onValueChange = { password.value = it },
+                value = password,
+                onValueChange = { password = it },
                 label = { Text("Password") },
+                isError = errorPasswordState != null,
                 modifier = Modifier.fillMaxWidth()
             )
+            if (errorPasswordState != null) {
+                Text(
+                    text = errorPasswordState
+                )
+            }
             Spacer(modifier = Modifier.height(16.dp))
             Button(
-                onClick = { onRegisterButtonClicked(fullName.value, email.value, password.value) },
+                onClick = { onRegisterButtonClicked(name, email, password) },
                 colors = ButtonDefaults.buttonColors(colorResource(R.color.blue_main)),
                 modifier = Modifier.fillMaxWidth()
             ) {

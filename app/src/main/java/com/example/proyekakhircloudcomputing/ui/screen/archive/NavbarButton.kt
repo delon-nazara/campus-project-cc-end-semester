@@ -47,21 +47,21 @@ fun Navbar(
             NavbarButton(
                 label = "Capsule",
                 iconId = R.drawable.iconcapsule,
-                onClick = { /* TODO: Implement Capsule NavigationComponent */ }
+                onClick = { /* TODO: Implement Capsule MainApp */ }
             )
 
             // Tombol Search
             NavbarButton(
                 label = "Search",
                 iconId = R.drawable.iconsearch,
-                onClick = { /* TODO: Implement Search NavigationComponent */ }
+                onClick = { /* TODO: Implement Search MainApp */ }
             )
 
             // Tombol Notifications
             NavbarButton(
                 label = "Notiv",
                 iconId = R.drawable.iconnotip,
-                onClick = { /* TODO: Implement Notifications NavigationComponent */ }
+                onClick = { /* TODO: Implement Notifications MainApp */ }
             )
 
             // Tombol Settings
