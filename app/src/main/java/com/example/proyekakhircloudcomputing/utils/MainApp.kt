@@ -1,5 +1,6 @@
 package com.example.proyekakhircloudcomputing.utils
 
+import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -13,14 +14,18 @@ import com.example.proyekakhircloudcomputing.ui.screen.LoginScreen
 import com.example.proyekakhircloudcomputing.ui.screen.RegisterScreen
 import com.example.proyekakhircloudcomputing.ui.screen.WelcomeScreen
 import com.example.proyekakhircloudcomputing.viewmodel.AuthViewModel
+import com.example.proyekakhircloudcomputing.viewmodel.DatabaseViewModel
 
 @Composable
-fun MainApp() {
+fun MainApp(context: Context) {
     val authViewModel: AuthViewModel = viewModel()
     val userState by authViewModel.userState.collectAsState()
     val errorNameState by authViewModel.errorNameState.collectAsState()
     val errorEmailState by authViewModel.errorEmailState.collectAsState()
     val errorPasswordState by authViewModel.errorPasswordState.collectAsState()
+
+    val databaseViewModel: DatabaseViewModel = viewModel()
+    databaseViewModel.cloudinaryInitialization(context)
 
     val navController: NavHostController = rememberNavController()
     val startDestination = Route.WELCOME_SCREEN.name
@@ -54,7 +59,11 @@ fun MainApp() {
             LoginScreen(
                 onLoginButtonClicked = { email, password ->
                     if (authViewModel.login(email, password)) {
-                        // direct to home screen
+                        navController.navigate(Route.HOME_SCREEN.name) {
+                            popUpTo(0) {
+                                inclusive = true
+                            }
+                        }
                     }
                 },
                 onRegisterButtonClicked = {
@@ -74,7 +83,15 @@ fun MainApp() {
             RegisterScreen(
                 onRegisterButtonClicked = { name, email, password ->
                     if (authViewModel.register(name, email, password)) {
-                        // direct to home screen
+                        if (databaseViewModel.addUserToDatabase(userState!!.uid, name, email)) {
+                            navController.navigate(Route.HOME_SCREEN.name) {
+                                popUpTo(0) {
+                                    inclusive = true
+                                }
+                            }
+                        } else {
+                            showToast(context, "Failed to register, try again")
+                        }
                     }
                 },
                 onLoginButtonClicked = {
@@ -88,6 +105,11 @@ fun MainApp() {
                 errorEmailState = errorEmailState,
                 errorPasswordState = errorPasswordState
             )
+        }
+
+        // Route register screen
+        composable(Route.HOME_SCREEN.name) {
+
         }
     }
 }
