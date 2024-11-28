@@ -35,22 +35,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhircloudcomputing.R
 
-class SignUpActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        setContent {
-            SignUpScreen(
-                onSignUpClick = {  _, _->/* Tambahkan aksi tombol Daftar di sini */ },
-                onLoginClick = {
-                    startActivity(Intent(this, LoginActivity::class.java))
-                },
-                onBackClick = { finish() }
-            )
-        }
-    }
-}
-
 @Composable
 fun SignUpScreen(onSignUpClick: (String, String) -> Unit, onLoginClick: () -> Unit, onBackClick: () -> Unit) {
     var fullName = remember { mutableStateOf("") }

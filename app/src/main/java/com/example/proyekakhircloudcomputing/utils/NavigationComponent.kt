@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.proyekakhircloudcomputing.data.source.Route
+import com.example.proyekakhircloudcomputing.ui.screen.LoginScreen
 import com.example.proyekakhircloudcomputing.ui.screen.WelcomeScreen
 
 @Composable
@@ -30,7 +31,11 @@ fun NavigationComponent(
 
         // Route login screen
         composable(Route.LOGIN_SCREEN.name) {
-
+            LoginScreen(
+                onRegisterButtonClicked = {
+                    navController.navigate(Route.REGISTER_SCREEN.name)
+                }
+            )
         }
 
         // Route register screen
