@@ -52,13 +52,20 @@ fun MainApp() {
         // Route login screen
         composable(Route.LOGIN_SCREEN.name) {
             LoginScreen(
+                onLoginButtonClicked = { email, password ->
+                    if (authViewModel.login(email, password)) {
+                        // direct to home screen
+                    }
+                },
                 onRegisterButtonClicked = {
                     navController.navigate(Route.REGISTER_SCREEN.name) {
                         popUpTo(Route.REGISTER_SCREEN.name) {
                             inclusive = true
                         }
                     }
-                }
+                },
+                errorEmailState = errorEmailState,
+                errorPasswordState = errorPasswordState
             )
         }
 

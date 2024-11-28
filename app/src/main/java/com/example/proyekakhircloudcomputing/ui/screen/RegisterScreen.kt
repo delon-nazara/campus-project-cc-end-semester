@@ -85,7 +85,7 @@ fun RegisterScreen(
             TextField(
                 value = name,
                 onValueChange = { name = it },
-                label = { Text("Nama") },
+                label = { Text("Name") },
                 isError = errorNameState != null,
                 modifier = Modifier.fillMaxWidth()
             )

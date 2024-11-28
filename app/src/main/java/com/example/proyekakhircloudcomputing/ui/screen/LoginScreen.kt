@@ -38,9 +38,11 @@ import com.example.proyekakhircloudcomputing.R
 @Composable
 fun LoginScreen(
     onLoginButtonClicked: (String, String) -> Unit = { _, _ -> },
-    onRegisterButtonClicked: () -> Unit = {}
+    onRegisterButtonClicked: () -> Unit = {},
+    errorEmailState: String? = null,
+    errorPasswordState: String? = null
 ) {
-    var username by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
     Image(
@@ -77,21 +79,33 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             TextField(
-                value = username,
-                onValueChange = { username = it },
-                label = { Text("Username") },
+                value = email,
+                onValueChange = { email = it },
+                label = { Text("Email") },
+                isError = errorEmailState != null,
                 modifier = Modifier.fillMaxWidth()
             )
+            if (errorEmailState != null) {
+                Text(
+                    text = errorEmailState
+                )
+            }
             Spacer(modifier = Modifier.height(8.dp))
             TextField(
                 value = password,
                 onValueChange = { password = it },
                 label = { Text("Password") },
+                isError = errorPasswordState != null,
                 modifier = Modifier.fillMaxWidth()
             )
+            if (errorPasswordState != null) {
+                Text(
+                    text = errorPasswordState
+                )
+            }
             Spacer(modifier = Modifier.height(16.dp))
             Button(
-                onClick = { onLoginButtonClicked(username, password) },
+                onClick = { onLoginButtonClicked(email, password) },
                 colors = ButtonDefaults.buttonColors(colorResource(R.color.blue_main)),
                 modifier = Modifier.fillMaxWidth()
             ) {
