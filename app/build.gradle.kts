@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+
+    // Google services for firebase
     id("com.google.gms.google-services")
 }
 
@@ -14,7 +16,6 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
@@ -30,19 +31,24 @@ android {
             )
         }
     }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
+
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
+
     buildFeatures {
         compose = true
     }
+
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
     }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -51,9 +57,7 @@ android {
 }
 
 dependencies {
-    implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
-    implementation("com.google.firebase:firebase-analytics")
-    implementation("io.coil-kt:coil-compose:2.3.0")
+    // Default library
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -71,16 +75,9 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation ("androidx.compose.ui:ui:1.7.5")
-    implementation ("androidx.compose.material:material:1.7.5")
-    implementation ("androidx.compose.ui:ui-tooling-preview:1.7.5")
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
-    implementation ("androidx.activity:activity-compose:1.9.3")
-    implementation ("androidx.compose.ui:ui-tooling:1.7.5")
-    implementation ("androidx.compose.ui:ui-test-manifest:1.7.5")
-    implementation ("androidx.compose.foundation:foundation:1.5.1")
-    implementation ("androidx.compose.ui:ui:1.5.1")
-    implementation ("androidx.compose.runtime:runtime:1.5.1")
+    // Firebase Library
+    implementation(platform(libs.firebase.bom))
 
-
+    // Coil Library
+    implementation(libs.coil.compose)
 }
