@@ -1,9 +1,5 @@
 package com.example.proyekakhircloudcomputing.ui.screen.archive
 
-import android.content.Intent
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -32,20 +28,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhircloudcomputing.R
 
-class WelcomeActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            WelcomeScreen(
-                onLoginClick = { startActivity(Intent(this, LoginActivity::class.java)) },
-                onSignUpClick = { startActivity(Intent(this, SignUpActivity::class.java)) },
-            )
-        }
-    }
-}
-
+@Preview
 @Composable
-fun WelcomeScreen(onLoginClick: () -> Unit, onSignUpClick: () -> Unit) {
+fun WelcomeScreenOld(
+    onLoginClick: () -> Unit = {},
+    onSignUpClick: () -> Unit = {}
+) {
     Column(
         modifier = Modifier
             .background(colorResource(R.color.yellow_background))
@@ -92,9 +80,4 @@ fun WelcomeScreen(onLoginClick: () -> Unit, onSignUpClick: () -> Unit) {
             Text(text = "Daftar", fontSize = 16.sp, color = colorResource(R.color.blue_main))
         }
     }
-}
-@Preview
-@Composable
-fun WelcomeActivityPreview(){
-
 }
