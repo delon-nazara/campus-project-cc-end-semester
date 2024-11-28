@@ -80,6 +80,7 @@ dependencies {
 
     // Firebase library
     implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
 
     // Coil library
     implementation(libs.coil.compose)

@@ -8,15 +8,17 @@ import com.example.proyekakhircloudcomputing.data.source.Route
 import com.example.proyekakhircloudcomputing.ui.screen.LoginScreen
 import com.example.proyekakhircloudcomputing.ui.screen.RegisterScreen
 import com.example.proyekakhircloudcomputing.ui.screen.WelcomeScreen
+import com.example.proyekakhircloudcomputing.viewmodel.AuthViewModel
 
 @Composable
 fun NavigationComponent(
     navController: NavHostController,
-    startDestination: String
+    startDestination: String,
+    authViewModel: AuthViewModel
 ) {
     NavHost(
         navController = navController,
-        startDestination = startDestination
+        startDestination = startDestination,
     ) {
         // Route welcome screen
         composable(Route.WELCOME_SCREEN.name) {
@@ -54,6 +56,9 @@ fun NavigationComponent(
         // Route register screen
         composable(Route.REGISTER_SCREEN.name) {
             RegisterScreen(
+                onRegisterButtonClicked = { fullName, email, password ->
+                    authViewModel.register(email, password)
+                },
                 onLoginButtonClicked = {
                     navController.navigate(Route.LOGIN_SCREEN.name) {
                         popUpTo(Route.LOGIN_SCREEN.name) {

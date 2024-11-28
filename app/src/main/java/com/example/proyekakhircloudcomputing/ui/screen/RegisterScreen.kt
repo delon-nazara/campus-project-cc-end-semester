@@ -35,7 +35,7 @@ import com.example.proyekakhircloudcomputing.R
 @Preview
 @Composable
 fun RegisterScreen(
-    onRegisterButtonClicked: (String, String) -> Unit = { _, _ -> },
+    onRegisterButtonClicked: (String, String, String) -> Unit = { _, _, _ -> },
     onLoginButtonClicked: () -> Unit = {}
 ) {
     val fullName = remember { mutableStateOf("") }
@@ -98,8 +98,7 @@ fun RegisterScreen(
             )
             Spacer(modifier = Modifier.height(16.dp))
             Button(
-
-                onClick = { onRegisterButtonClicked(email.value, password.value) },
+                onClick = { onRegisterButtonClicked(fullName.value, email.value, password.value) },
                 colors = ButtonDefaults.buttonColors(colorResource(R.color.blue_main)),
                 modifier = Modifier.fillMaxWidth()
             ) {
