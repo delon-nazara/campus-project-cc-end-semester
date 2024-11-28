@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.proyekakhircloudcomputing.data.source.Route
+import com.example.proyekakhircloudcomputing.ui.screen.HomeScreen
 import com.example.proyekakhircloudcomputing.ui.screen.LoginScreen
 import com.example.proyekakhircloudcomputing.ui.screen.RegisterScreen
 import com.example.proyekakhircloudcomputing.ui.screen.WelcomeScreen
@@ -109,7 +110,7 @@ fun MainApp(context: Context) {
 
         // Route register screen
         composable(Route.HOME_SCREEN.name) {
-
+            HomeScreen()
         }
     }
 }

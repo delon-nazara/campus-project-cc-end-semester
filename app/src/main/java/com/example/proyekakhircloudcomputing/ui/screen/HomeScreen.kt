@@ -1,8 +1,5 @@
-package com.example.proyekakhircloudcomputing.ui.screen.archive
+package com.example.proyekakhircloudcomputing.ui.screen
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -38,19 +35,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhircloudcomputing.R
+import com.example.proyekakhircloudcomputing.ui.screen.archive.HeaderSection
+import com.example.proyekakhircloudcomputing.ui.screen.archive.Navbar
 
-
-class MainOldActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            MainScreen()
-        }
-    }
-}
-
+@Preview
 @Composable
-fun MainScreen() {
+fun HomeScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -270,10 +260,4 @@ fun CapsuleItem(title: String) {
             color = Color.Black
         )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    MainScreen()
 }

@@ -1,12 +1,16 @@
 package com.example.proyekakhircloudcomputing.ui.screen.archive
 
-import android.content.Intent
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,23 +24,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhircloudcomputing.R
 
-
-class SettingsActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            SettingsScreen(
-                navigateToHome = { // Navigasi ke MainActivity
-                    val intent = Intent(this, MainOldActivity::class.java)
-                    startActivity(intent)
-                }
-            )
-        }
-    }
-}
-
+@Preview
 @Composable
-fun SettingsScreen(navigateToHome: () -> Unit) {
+fun SettingsScreen(navigateToHome: () -> Unit = {}) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -103,13 +93,4 @@ fun SettingsScreen(navigateToHome: () -> Unit) {
             onSettingsClick = { /* Stay on the current page */ }
         )
     }
-}
-
-
-
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewSettingsScreen() {
-    SettingsScreen(navigateToHome = {})
 }
