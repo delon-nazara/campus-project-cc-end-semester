@@ -25,6 +25,8 @@ fun MainApp(context: Context) {
     val errorEmailState by authenticationViewModel.errorEmailState.collectAsState()
     val errorPasswordState by authenticationViewModel.errorPasswordState.collectAsState()
 
+    authenticationViewModel.logout() // todo: temp
+
     val databaseViewModel: DatabaseViewModel = viewModel()
     databaseViewModel.cloudinaryInitialization(context)
     val userDataState by databaseViewModel.userDataState.collectAsState()
@@ -60,14 +62,17 @@ fun MainApp(context: Context) {
         composable(Route.LOGIN_SCREEN.name) {
             LoginScreen(
                 onLoginButtonClicked = { email, password ->
-//                    authenticationViewModel.login(email, password)
-//                    if (authenticationState == true) {
-//                        navController.navigate(Route.HOME_SCREEN.name) {
-//                            popUpTo(0) {
-//                                inclusive = true
-//                            }
-//                        }
-//                    }
+                    authenticationViewModel.login(
+                        email = email,
+                        password = password,
+                        onSuccess = {
+                            navController.navigate(Route.HOME_SCREEN.name) {
+                                popUpTo(0) {
+                                    inclusive = true
+                                }
+                            }
+                        }
+                    )
                 },
                 onRegisterButtonClicked = {
                     navController.navigate(Route.REGISTER_SCREEN.name) {
@@ -100,11 +105,13 @@ fun MainApp(context: Context) {
                                             inclusive = true
                                         }
                                     }
+                                },
+                                onFailure = {
+                                    showToast(context, "Failed to register, try again")
                                 }
                             )
                         }
                     )
-//                    showToast(context, "Failed to register, try again")
                 },
                 onLoginButtonClicked = {
                     navController.navigate(Route.LOGIN_SCREEN.name) {

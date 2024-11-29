@@ -16,7 +16,7 @@ class AuthenticationViewModel : ViewModel() {
 
     private var authentication: FirebaseAuth = Firebase.auth
 
-    private var _userAuthState = MutableStateFlow<FirebaseUser?>(null) // todo
+    private var _userAuthState = MutableStateFlow(authentication.currentUser)
     val userAuthState: StateFlow<FirebaseUser?> = _userAuthState.asStateFlow()
 
     private var _errorNameState = MutableStateFlow<String?>(null)
@@ -32,14 +32,14 @@ class AuthenticationViewModel : ViewModel() {
         name: String,
         email: String,
         password: String,
-        onSuccess: (FirebaseUser) -> Unit
+        onSuccess: (FirebaseUser) -> Unit,
     ) {
         if (isNameInputValid(name) && isEmailInputValid(email) && isPasswordInputValid(password)) {
             authentication.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener { result ->
                     _userAuthState.value = result.user
-                    clearErrorState()
                     onSuccess(result.user!!)
+                    clearErrorState()
                 }
                 .addOnFailureListener { exception ->
                     _userAuthState.value = null
@@ -61,12 +61,17 @@ class AuthenticationViewModel : ViewModel() {
         }
     }
 
-    fun login(email: String, password: String) {
+    fun login(
+        email: String,
+        password: String,
+        onSuccess: () -> Unit
+    ) {
         if (isEmailInputValid(email) && isPasswordInputValid(password)) {
             authentication.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener { result ->
                     _userAuthState.value = result.user
                     clearErrorState()
+                    onSuccess()
                 }
                 .addOnFailureListener { exception ->
                     _userAuthState.value = null
@@ -80,6 +85,12 @@ class AuthenticationViewModel : ViewModel() {
                     }
                 }
         }
+    }
+
+    fun logout() {
+        authentication.signOut()
+        _userAuthState.value = null
+        clearErrorState()
     }
 
     private fun isNameInputValid(name: String): Boolean {

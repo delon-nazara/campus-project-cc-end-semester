@@ -1,11 +1,11 @@
 package com.example.proyekakhircloudcomputing.viewmodel
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.cloudinary.android.MediaManager
 import com.example.proyekakhircloudcomputing.data.model.UserModel
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -45,12 +45,14 @@ class DatabaseViewModel : ViewModel() {
         userAuth: FirebaseUser,
         name: String,
         email: String,
-        onSuccess: () -> Unit
+        onSuccess: () -> Unit,
+        onFailure: () -> Unit
     ) {
         val newUser = UserModel(
             name = name,
             email = email,
-            profileUrl = "https://res.cloudinary.com/${cloudinaryName}/image/upload/alphabet_profile_picture_${name[0]}"
+            profileUrl = "https://res.cloudinary.com/${cloudinaryName}/image/upload/alphabet_profile_picture_${name[0]}",
+            createdAt = FieldValue.serverTimestamp()
         )
         userReference.document(userAuth.uid)
             .set(newUser)
@@ -60,6 +62,7 @@ class DatabaseViewModel : ViewModel() {
             }
             .addOnFailureListener {
                 _userDataState.value = null
+                onFailure()
                 userAuth.delete()
             }
     }
