@@ -51,7 +51,7 @@ fun HomeScreenOld() {
             // ===================================
             // Pemanggil Function Header
             // ===================================
-            HeaderSection()
+            TopBarOld()
 
             Spacer(modifier = Modifier.height(35.dp))
 
@@ -86,7 +86,7 @@ fun HomeScreenOld() {
         // ===================================
         // Bottom Navigasi Bar
         // ===================================
-        Navbar(
+        BottomBarOld(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth(),

@@ -102,7 +102,7 @@ fun DiscoverScreen() {
                     ) {
                         Column {
                             // Fungsi Top App Bar
-                            HeaderSection()
+                            TopBarOld()
 
                             Spacer(modifier = Modifier.height(16.dp)) // Spasi antar komponen
 
@@ -140,8 +140,8 @@ fun DiscoverScreen() {
             }
 
 
-        // Navbar di bawah
-        Navbar(
+        // BottomBarOld di bawah
+        BottomBarOld(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(16.dp)

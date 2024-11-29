@@ -35,12 +35,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhircloudcomputing.R
-import com.example.proyekakhircloudcomputing.ui.screen.archive.HeaderSection
-import com.example.proyekakhircloudcomputing.ui.screen.archive.Navbar
 
 @Preview
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    userName: String = "Arkan",
+    userProfileUrl: String = "",
+    onHomeButtonClicked: () -> Unit = {},
+    onCapsuleButtonClicked: () -> Unit = {},
+    onSearchButtonClicked: () -> Unit = {},
+    onNotifButtonClicked: () -> Unit = {},
+    onSettingButtonClicked: () -> Unit = {}
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -53,12 +59,12 @@ fun HomeScreen() {
             // ===================================
             // Pemanggil Function Header
             // ===================================
-            HeaderSection()
+            TopBar(userProfileUrl = userProfileUrl)
 
             Spacer(modifier = Modifier.height(35.dp))
 
             Text(
-                text = "Halo, Arkan!",
+                text = "Halo, $userName",
                 fontSize = 25.sp,
                 color = Color.White,
                 textAlign = TextAlign.Center,
@@ -88,18 +94,15 @@ fun HomeScreen() {
         // ===================================
         // Bottom Navigasi Bar
         // ===================================
-        Navbar(
+        BottomBar(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth(),
-            onHomeClick = {
-                // Logika saat tombol Home ditekan
-                println("Home button clicked")
-            },
-            onSettingsClick = {
-                // Logika saat tombol Settings ditekan
-                println("Settings button clicked")
-            }
+            onHomeButtonClicked = onHomeButtonClicked,
+            onCapsuleButtonClicked = onCapsuleButtonClicked,
+            onSearchButtonClicked = onSearchButtonClicked,
+            onNotifButtonClicked = onNotifButtonClicked,
+            onSettingButtonClicked = onSettingButtonClicked
         )
     }
 }

@@ -35,7 +35,7 @@ fun SettingsScreen(navigateToHome: () -> Unit = {}) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 32.dp, bottom = 80.dp), // Ruang untuk Navbar
+                .padding(top = 32.dp, bottom = 80.dp), // Ruang untuk BottomBarOld
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Header "Pengaturan"
@@ -84,8 +84,8 @@ fun SettingsScreen(navigateToHome: () -> Unit = {}) {
             )
         }
 
-        // Navbar di bagian bawah
-        Navbar(
+        // BottomBarOld di bagian bawah
+        BottomBarOld(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth(),

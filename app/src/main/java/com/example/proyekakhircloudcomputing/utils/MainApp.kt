@@ -111,7 +111,10 @@ fun MainApp(context: Context) {
 
         // Route register screen
         composable(Route.HOME_SCREEN.name) {
-            HomeScreen()
+            HomeScreen(
+                userName = userDataState!!.name,
+                userProfileUrl = userDataState!!.profileUrl
+            )
         }
     }
 }

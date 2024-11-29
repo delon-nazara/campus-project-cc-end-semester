@@ -19,12 +19,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.proyekakhircloudcomputing.R
 
-//semua yang di dalam background kuning
+@Preview
 @Composable
-fun HeaderSection() {
+fun TopBarOld() {
     Row(
         modifier = Modifier
             .fillMaxWidth()

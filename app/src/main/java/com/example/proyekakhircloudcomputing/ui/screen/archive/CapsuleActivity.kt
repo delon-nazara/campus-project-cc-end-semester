@@ -60,7 +60,7 @@ fun HomePage(images: List<ImageItem>) {
             .background(Color(0xFFF7F3E6)) // Background sesuai dengan gambar
     ) {
         // Header Section
-        HeaderSection()
+        TopBarOld()
 
         // Judul
         Text(
@@ -99,7 +99,7 @@ fun HomePage(images: List<ImageItem>) {
                 }
             }
         }
-        Navbar(
+        BottomBarOld(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),

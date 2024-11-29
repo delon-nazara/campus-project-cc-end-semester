@@ -58,7 +58,7 @@ fun NotificationScreen() {
             .fillMaxSize()
             .background(Color(0xFFF2A73B))
     ){
-        Navbar(
+        BottomBarOld(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(16.dp)
@@ -76,7 +76,7 @@ fun NotificationScreen() {
     Column(
     ){
         //Fungsi Top App Bar
-        HeaderSection()
+        TopBarOld()
         Column(
             modifier = Modifier
                 .padding(vertical = 16.dp, horizontal = 32.dp)
