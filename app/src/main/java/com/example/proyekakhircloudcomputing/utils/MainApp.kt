@@ -14,19 +14,20 @@ import com.example.proyekakhircloudcomputing.ui.screen.HomeScreen
 import com.example.proyekakhircloudcomputing.ui.screen.LoginScreen
 import com.example.proyekakhircloudcomputing.ui.screen.RegisterScreen
 import com.example.proyekakhircloudcomputing.ui.screen.WelcomeScreen
-import com.example.proyekakhircloudcomputing.viewmodel.AuthViewModel
+import com.example.proyekakhircloudcomputing.viewmodel.AuthenticationViewModel
 import com.example.proyekakhircloudcomputing.viewmodel.DatabaseViewModel
 
 @Composable
 fun MainApp(context: Context) {
-    val authViewModel: AuthViewModel = viewModel()
-    val userState by authViewModel.userState.collectAsState()
-    val errorNameState by authViewModel.errorNameState.collectAsState()
-    val errorEmailState by authViewModel.errorEmailState.collectAsState()
-    val errorPasswordState by authViewModel.errorPasswordState.collectAsState()
+    val authenticationViewModel: AuthenticationViewModel = viewModel()
+    val userAuthState by authenticationViewModel.userAuthState.collectAsState()
+    val errorNameState by authenticationViewModel.errorNameState.collectAsState()
+    val errorEmailState by authenticationViewModel.errorEmailState.collectAsState()
+    val errorPasswordState by authenticationViewModel.errorPasswordState.collectAsState()
 
     val databaseViewModel: DatabaseViewModel = viewModel()
     databaseViewModel.cloudinaryInitialization(context)
+    val userDataState by databaseViewModel.userDataState.collectAsState()
 
     val navController: NavHostController = rememberNavController()
     val startDestination = Route.WELCOME_SCREEN.name
@@ -59,7 +60,7 @@ fun MainApp(context: Context) {
         composable(Route.LOGIN_SCREEN.name) {
             LoginScreen(
                 onLoginButtonClicked = { email, password ->
-                    if (authViewModel.login(email, password)) {
+                    if (authenticationViewModel.login(email, password)) {
                         navController.navigate(Route.HOME_SCREEN.name) {
                             popUpTo(0) {
                                 inclusive = true
@@ -83,8 +84,8 @@ fun MainApp(context: Context) {
         composable(Route.REGISTER_SCREEN.name) {
             RegisterScreen(
                 onRegisterButtonClicked = { name, email, password ->
-                    if (authViewModel.register(name, email, password)) {
-                        if (databaseViewModel.addUserToDatabase(userState!!.uid, name, email)) {
+                    if (authenticationViewModel.register(name, email, password)) {
+                        if (databaseViewModel.addUserToDatabase(userAuthState!!.uid, name, email)) {
                             navController.navigate(Route.HOME_SCREEN.name) {
                                 popUpTo(0) {
                                     inclusive = true
