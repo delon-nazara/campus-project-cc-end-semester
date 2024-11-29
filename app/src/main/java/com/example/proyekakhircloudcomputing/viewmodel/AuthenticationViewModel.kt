@@ -16,7 +16,7 @@ class AuthenticationViewModel : ViewModel() {
 
     private var authentication: FirebaseAuth = Firebase.auth
 
-    private var _userAuthState = MutableStateFlow(authentication.currentUser)
+    private var _userAuthState = MutableStateFlow<FirebaseUser?>(null) // todo
     val userAuthState: StateFlow<FirebaseUser?> = _userAuthState.asStateFlow()
 
     private var _errorNameState = MutableStateFlow<String?>(null)
@@ -28,19 +28,21 @@ class AuthenticationViewModel : ViewModel() {
     private var _errorPasswordState = MutableStateFlow<String?>(null)
     val errorPasswordState: StateFlow<String?> = _errorPasswordState.asStateFlow()
 
-    fun register(name: String, email: String, password: String): Boolean {
-        var registerSuccess = false
-
+    fun register(
+        name: String,
+        email: String,
+        password: String,
+        onSuccess: (FirebaseUser) -> Unit
+    ) {
         if (isNameInputValid(name) && isEmailInputValid(email) && isPasswordInputValid(password)) {
             authentication.createUserWithEmailAndPassword(email, password)
-                .addOnSuccessListener {
-                    _userAuthState.value = authentication.currentUser
-                    registerSuccess = true
+                .addOnSuccessListener { result ->
+                    _userAuthState.value = result.user
                     clearErrorState()
+                    onSuccess(result.user!!)
                 }
                 .addOnFailureListener { exception ->
                     _userAuthState.value = null
-                    registerSuccess = false
                     when (exception) {
                         is FirebaseAuthWeakPasswordException -> {
                             _errorPasswordState.value = "Password you entered is too weak"
@@ -57,23 +59,17 @@ class AuthenticationViewModel : ViewModel() {
                     }
                 }
         }
-
-        return registerSuccess
     }
 
-    fun login(email: String, password: String): Boolean {
-        var loginSuccessful = false
-
+    fun login(email: String, password: String) {
         if (isEmailInputValid(email) && isPasswordInputValid(password)) {
             authentication.signInWithEmailAndPassword(email, password)
-                .addOnSuccessListener {
-                    _userAuthState.value = authentication.currentUser
-                    loginSuccessful = true
+                .addOnSuccessListener { result ->
+                    _userAuthState.value = result.user
                     clearErrorState()
                 }
                 .addOnFailureListener { exception ->
                     _userAuthState.value = null
-                    loginSuccessful = false
                     when (exception) {
                         is FirebaseAuthInvalidCredentialsException -> {
                             _errorPasswordState.value = "Wrong email or password"
@@ -84,8 +80,6 @@ class AuthenticationViewModel : ViewModel() {
                     }
                 }
         }
-
-        return loginSuccessful
     }
 
     private fun isNameInputValid(name: String): Boolean {

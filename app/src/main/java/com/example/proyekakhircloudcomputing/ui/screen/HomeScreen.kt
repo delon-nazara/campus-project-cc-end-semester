@@ -43,8 +43,8 @@ fun HomeScreen(
     userProfileUrl: String = "",
     onHomeButtonClicked: () -> Unit = {},
     onCapsuleButtonClicked: () -> Unit = {},
-    onSearchButtonClicked: () -> Unit = {},
-    onNotifButtonClicked: () -> Unit = {},
+    onDiscoverButtonClicked: () -> Unit = {},
+    onNotificationButtonClicked: () -> Unit = {},
     onSettingButtonClicked: () -> Unit = {}
 ) {
     Box(
@@ -100,8 +100,8 @@ fun HomeScreen(
                 .fillMaxWidth(),
             onHomeButtonClicked = onHomeButtonClicked,
             onCapsuleButtonClicked = onCapsuleButtonClicked,
-            onSearchButtonClicked = onSearchButtonClicked,
-            onNotifButtonClicked = onNotifButtonClicked,
+            onDiscoverButtonClicked = onDiscoverButtonClicked,
+            onNotificationButtonClicked = onNotificationButtonClicked,
             onSettingButtonClicked = onSettingButtonClicked
         )
     }

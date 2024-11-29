@@ -60,13 +60,14 @@ fun MainApp(context: Context) {
         composable(Route.LOGIN_SCREEN.name) {
             LoginScreen(
                 onLoginButtonClicked = { email, password ->
-                    if (authenticationViewModel.login(email, password)) {
-                        navController.navigate(Route.HOME_SCREEN.name) {
-                            popUpTo(0) {
-                                inclusive = true
-                            }
-                        }
-                    }
+//                    authenticationViewModel.login(email, password)
+//                    if (authenticationState == true) {
+//                        navController.navigate(Route.HOME_SCREEN.name) {
+//                            popUpTo(0) {
+//                                inclusive = true
+//                            }
+//                        }
+//                    }
                 },
                 onRegisterButtonClicked = {
                     navController.navigate(Route.REGISTER_SCREEN.name) {
@@ -84,17 +85,26 @@ fun MainApp(context: Context) {
         composable(Route.REGISTER_SCREEN.name) {
             RegisterScreen(
                 onRegisterButtonClicked = { name, email, password ->
-                    if (authenticationViewModel.register(name, email, password)) {
-                        if (databaseViewModel.addUserToDatabase(userAuthState!!.uid, name, email)) {
-                            navController.navigate(Route.HOME_SCREEN.name) {
-                                popUpTo(0) {
-                                    inclusive = true
+                    authenticationViewModel.register(
+                        name = name,
+                        email = email,
+                        password = password,
+                        onSuccess = { userAuth ->
+                            databaseViewModel.addUserToDatabase(
+                                userAuth = userAuth,
+                                name = name,
+                                email = email,
+                                onSuccess = {
+                                    navController.navigate(Route.HOME_SCREEN.name) {
+                                        popUpTo(0) {
+                                            inclusive = true
+                                        }
+                                    }
                                 }
-                            }
-                        } else {
-                            showToast(context, "Failed to register, try again")
+                            )
                         }
-                    }
+                    )
+//                    showToast(context, "Failed to register, try again")
                 },
                 onLoginButtonClicked = {
                     navController.navigate(Route.LOGIN_SCREEN.name) {
@@ -109,7 +119,7 @@ fun MainApp(context: Context) {
             )
         }
 
-        // Route register screen
+        // Route home screen
         composable(Route.HOME_SCREEN.name) {
             HomeScreen(
                 userName = userDataState!!.name,

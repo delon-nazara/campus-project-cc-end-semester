@@ -32,8 +32,8 @@ fun BottomBar(
     modifier: Modifier = Modifier,
     onHomeButtonClicked: () -> Unit = {},
     onCapsuleButtonClicked: () -> Unit = {},
-    onSearchButtonClicked: () -> Unit = {},
-    onNotifButtonClicked: () -> Unit = {},
+    onDiscoverButtonClicked: () -> Unit = {},
+    onNotificationButtonClicked: () -> Unit = {},
     onSettingButtonClicked: () -> Unit = {}
 ) {
     Box(
@@ -63,18 +63,18 @@ fun BottomBar(
                 onClick = onCapsuleButtonClicked
             )
 
-            // Tombol Search
+            // Tombol Discover
             BottomBarMenuOld(
-                label = "Search",
+                label = "Discover",
                 iconId = R.drawable.iconsearch,
-                onClick = onSearchButtonClicked
+                onClick = onDiscoverButtonClicked
             )
 
-            // Tombol Notifications
+            // Tombol Notification
             BottomBarMenuOld(
-                label = "Notif",
+                label = "Notification",
                 iconId = R.drawable.iconnotip,
-                onClick = onNotifButtonClicked
+                onClick = onNotificationButtonClicked
             )
 
             // Tombol Settings
