@@ -4,8 +4,10 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import com.cloudinary.android.MediaManager
 import com.example.proyekakhircloudcomputing.data.model.UserModel
+import com.example.proyekakhircloudcomputing.utils.formatName
+import com.example.proyekakhircloudcomputing.utils.getFirstChar
+import com.example.proyekakhircloudcomputing.utils.getFirstWord
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -48,12 +50,18 @@ class DatabaseViewModel : ViewModel() {
         onSuccess: () -> Unit,
         onFailure: () -> Unit
     ) {
+        val cleanName = formatName(name)
+        val cloudinaryProfileUrl = "https://res.cloudinary.com/${cloudinaryName}/image/upload/alphabet_profile_picture_${getFirstChar(cleanName)}"
+        val currentTime = System.currentTimeMillis() / 1000
+
         val newUser = UserModel(
-            name = name,
+            fullName = cleanName,
+            userName = getFirstWord(cleanName),
             email = email,
-            profileUrl = "https://res.cloudinary.com/${cloudinaryName}/image/upload/alphabet_profile_picture_${name[0]}",
-            createdAt = FieldValue.serverTimestamp()
+            profileUrl = cloudinaryProfileUrl,
+            createdAt = currentTime
         )
+
         userReference.document(userAuth.uid)
             .set(newUser)
             .addOnSuccessListener {
@@ -64,6 +72,30 @@ class DatabaseViewModel : ViewModel() {
                 _userDataState.value = null
                 onFailure()
                 userAuth.delete()
+            }
+    }
+
+    fun getUserFromDatabase(
+        userId: String,
+        onSuccess: () -> Unit,
+        onFailure: () -> Unit
+    ) {
+        userReference.document(userId)
+            .get()
+            .addOnSuccessListener { document ->
+                val data = document.data!!
+                val userData = UserModel(
+                    fullName = data["fullName"].toString(),
+                    userName = data["userName"].toString(),
+                    email = data["email"].toString(),
+                    profileUrl = data["profileUrl"].toString(),
+                    createdAt = data["createdAt"].toString().toLong()
+                )
+                _userDataState.value = userData
+                onSuccess()
+            }
+            .addOnFailureListener {
+                onFailure()
             }
     }
 

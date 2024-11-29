@@ -24,6 +24,8 @@ fun MainApp(context: Context) {
     val errorNameState by authenticationViewModel.errorNameState.collectAsState()
     val errorEmailState by authenticationViewModel.errorEmailState.collectAsState()
     val errorPasswordState by authenticationViewModel.errorPasswordState.collectAsState()
+    val errorAllState by authenticationViewModel.errorAllState.collectAsState()
+    val loadingState by authenticationViewModel.loadingState.collectAsState()
 
     authenticationViewModel.logout() // todo: temp
 
@@ -65,12 +67,23 @@ fun MainApp(context: Context) {
                     authenticationViewModel.login(
                         email = email,
                         password = password,
-                        onSuccess = {
-                            navController.navigate(Route.HOME_SCREEN.name) {
-                                popUpTo(0) {
-                                    inclusive = true
+                        onSuccess = { userId ->
+                            databaseViewModel.getUserFromDatabase(
+                                userId = userId,
+                                onSuccess = {
+                                    navController.navigate(Route.HOME_SCREEN.name) {
+                                        popUpTo(0) {
+                                            inclusive = true
+                                        }
+                                    }
+                                },
+                                onFailure = {
+                                    showToast(context, "Failed to login, try again")
                                 }
-                            }
+                            )
+                        },
+                        onFailure = {
+                            showToast(context, "Failed to login, try again")
                         }
                     )
                 },
@@ -82,7 +95,9 @@ fun MainApp(context: Context) {
                     }
                 },
                 errorEmailState = errorEmailState,
-                errorPasswordState = errorPasswordState
+                errorPasswordState = errorPasswordState,
+                errorAllState = errorAllState,
+                loadingState = loadingState
             )
         }
 
@@ -110,6 +125,9 @@ fun MainApp(context: Context) {
                                     showToast(context, "Failed to register, try again")
                                 }
                             )
+                        },
+                        onFailure = {
+                            showToast(context, "Failed to register, try again")
                         }
                     )
                 },
@@ -122,14 +140,15 @@ fun MainApp(context: Context) {
                 },
                 errorNameState = errorNameState,
                 errorEmailState = errorEmailState,
-                errorPasswordState = errorPasswordState
+                errorPasswordState = errorPasswordState,
+                loadingState = loadingState
             )
         }
 
         // Route home screen
         composable(Route.HOME_SCREEN.name) {
             HomeScreen(
-                userName = userDataState!!.name,
+                userName = userDataState!!.userName,
                 userProfileUrl = userDataState!!.profileUrl
             )
         }

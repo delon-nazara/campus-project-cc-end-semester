@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -28,33 +27,37 @@ class AuthenticationViewModel : ViewModel() {
     private var _errorPasswordState = MutableStateFlow<String?>(null)
     val errorPasswordState: StateFlow<String?> = _errorPasswordState.asStateFlow()
 
+    private var _errorAllState = MutableStateFlow<String?>(null)
+    val errorAllState: StateFlow<String?> = _errorAllState.asStateFlow()
+
+    private var _loadingState = MutableStateFlow(false)
+    val loadingState: StateFlow<Boolean> = _loadingState.asStateFlow()
+
     fun register(
         name: String,
         email: String,
         password: String,
         onSuccess: (FirebaseUser) -> Unit,
+        onFailure: () -> Unit
     ) {
         if (isNameInputValid(name) && isEmailInputValid(email) && isPasswordInputValid(password)) {
+            _loadingState.value = true
             authentication.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener { result ->
+                    _loadingState.value = false
                     _userAuthState.value = result.user
                     onSuccess(result.user!!)
                     clearErrorState()
                 }
                 .addOnFailureListener { exception ->
+                    _loadingState.value = false
                     _userAuthState.value = null
                     when (exception) {
-                        is FirebaseAuthWeakPasswordException -> {
-                            _errorPasswordState.value = "Password you entered is too weak"
-                        }
-                        is FirebaseAuthInvalidCredentialsException -> {
-                            _errorEmailState.value = "Invalid email or password"
-                        }
                         is FirebaseAuthUserCollisionException -> {
                             _errorEmailState.value = "Email has been used"
                         }
                         else -> {
-                            _errorPasswordState.value = "Register error, try again"
+                            onFailure()
                         }
                     }
                 }
@@ -64,23 +67,27 @@ class AuthenticationViewModel : ViewModel() {
     fun login(
         email: String,
         password: String,
-        onSuccess: () -> Unit
+        onSuccess: (String) -> Unit,
+        onFailure: () -> Unit
     ) {
         if (isEmailInputValid(email) && isPasswordInputValid(password)) {
+            _loadingState.value = true
             authentication.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener { result ->
+                    _loadingState.value = false
                     _userAuthState.value = result.user
                     clearErrorState()
-                    onSuccess()
+                    onSuccess(result.user!!.uid)
                 }
                 .addOnFailureListener { exception ->
+                    _loadingState.value = false
                     _userAuthState.value = null
                     when (exception) {
                         is FirebaseAuthInvalidCredentialsException -> {
-                            _errorPasswordState.value = "Wrong email or password"
+                            _errorAllState.value = "Wrong email or password"
                         }
                         else -> {
-                            _errorPasswordState.value = "Login error, try again"
+                            onFailure()
                         }
                     }
                 }
@@ -90,6 +97,7 @@ class AuthenticationViewModel : ViewModel() {
     fun logout() {
         authentication.signOut()
         _userAuthState.value = null
+        _loadingState.value = false
         clearErrorState()
     }
 

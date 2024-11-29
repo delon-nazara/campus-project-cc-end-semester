@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -63,7 +64,7 @@ fun TopBar(
                         contentDescription = "Profile picture",
                         placeholder = painterResource(R.drawable.profile_picture_temporary),
                         error = painterResource(R.drawable.profile_picture_temporary),
-                        modifier = Modifier.size(40.dp) // Ukuran gambar kecil
+                        modifier = Modifier.size(40.dp).clip(CircleShape) // Ukuran gambar kecil
                     )
                     // Gambar kedua (Memoria logo)
                     Image(
