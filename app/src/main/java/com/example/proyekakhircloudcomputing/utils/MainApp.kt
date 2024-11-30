@@ -32,14 +32,33 @@ fun MainApp(context: Context) {
     val errorAllState by authenticationViewModel.errorAllState.collectAsState()
     val loadingState by authenticationViewModel.loadingState.collectAsState()
 
-    authenticationViewModel.logout() // todo: temp
-
     val databaseViewModel: DatabaseViewModel = viewModel()
     databaseViewModel.cloudinaryInitialization(context)
     val userDataState by databaseViewModel.userDataState.collectAsState()
 
     val navController: NavHostController = rememberNavController()
-    val startDestination = Route.WELCOME_SCREEN.name
+
+    var startDestination = Route.WELCOME_SCREEN.name
+    if (userAuthState == null) {
+        startDestination = Route.WELCOME_SCREEN.name
+    } else {
+        databaseViewModel.getUserFromDatabase(
+            userId = userAuthState!!.uid,
+            onSuccess = {
+                navController.navigate(Route.HOME_SCREEN.name) {
+                    popUpTo(Route.HOME_SCREEN.name) {
+                        inclusive = true
+                    }
+                }
+            },
+            onFailure = {
+                showToast(context, "Failed to get data from database")
+            },
+            showLoading = { state ->
+                authenticationViewModel.showLoading(state)
+            }
+        )
+    }
 
     NavHost(
         navController = navController,
@@ -52,12 +71,13 @@ fun MainApp(context: Context) {
                 }
             }
         }
-        
+
         // Route welcome screen
         composable(Route.WELCOME_SCREEN.name) {
             WelcomeScreen(
                 onLoginButtonClicked = { navigateTo(Route.LOGIN_SCREEN.name) },
-                onRegisterButtonClicked = { navigateTo(Route.REGISTER_SCREEN.name) }
+                onRegisterButtonClicked = { navigateTo(Route.REGISTER_SCREEN.name) },
+                loadingState = loadingState
             )
         }
 
@@ -74,6 +94,9 @@ fun MainApp(context: Context) {
                                 onSuccess = { navigateTo(Route.HOME_SCREEN.name) },
                                 onFailure = {
                                     showToast(context, "Failed to login, try again")
+                                },
+                                showLoading = { state ->
+                                    authenticationViewModel.showLoading(state)
                                 }
                             )
                         },
@@ -106,6 +129,9 @@ fun MainApp(context: Context) {
                                 onSuccess = { navigateTo(Route.HOME_SCREEN.name) },
                                 onFailure = {
                                     showToast(context, "Failed to register, try again")
+                                },
+                                showLoading = { state ->
+                                    authenticationViewModel.showLoading(state)
                                 }
                             )
                         },

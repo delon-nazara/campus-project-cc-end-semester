@@ -48,7 +48,8 @@ class DatabaseViewModel : ViewModel() {
         name: String,
         email: String,
         onSuccess: () -> Unit,
-        onFailure: () -> Unit
+        onFailure: () -> Unit,
+        showLoading: (Boolean) -> Unit
     ) {
         val cleanName = formatName(name)
         val cloudinaryProfileUrl = "https://res.cloudinary.com/${cloudinaryName}/image/upload/alphabet_profile_picture_${getFirstChar(cleanName)}"
@@ -62,13 +63,16 @@ class DatabaseViewModel : ViewModel() {
             createdAt = currentTime
         )
 
+        showLoading(true)
         userReference.document(userAuth.uid)
             .set(newUser)
             .addOnSuccessListener {
+                showLoading(false)
                 _userDataState.value = newUser
                 onSuccess()
             }
             .addOnFailureListener {
+                showLoading(false)
                 _userDataState.value = null
                 onFailure()
                 userAuth.delete()
@@ -78,11 +82,14 @@ class DatabaseViewModel : ViewModel() {
     fun getUserFromDatabase(
         userId: String,
         onSuccess: () -> Unit,
-        onFailure: () -> Unit
+        onFailure: () -> Unit,
+        showLoading: (Boolean) -> Unit
     ) {
+        showLoading(true)
         userReference.document(userId)
             .get()
             .addOnSuccessListener { document ->
+                showLoading(false)
                 val data = document.data!!
                 val userData = UserModel(
                     fullName = data["fullName"].toString(),
@@ -95,6 +102,7 @@ class DatabaseViewModel : ViewModel() {
                 onSuccess()
             }
             .addOnFailureListener {
+                showLoading(false)
                 onFailure()
             }
     }

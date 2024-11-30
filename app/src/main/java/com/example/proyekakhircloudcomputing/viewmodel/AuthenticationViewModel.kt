@@ -41,16 +41,16 @@ class AuthenticationViewModel : ViewModel() {
         onFailure: () -> Unit
     ) {
         if (isNameInputValid(name) && isEmailInputValid(email) && isPasswordInputValid(password)) {
-            _loadingState.value = true
+           showLoading(true)
             authentication.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener { result ->
-                    _loadingState.value = false
+                    showLoading(false)
                     _userAuthState.value = result.user
                     onSuccess(result.user!!)
                     clearErrorState()
                 }
                 .addOnFailureListener { exception ->
-                    _loadingState.value = false
+                    showLoading(false)
                     _userAuthState.value = null
                     when (exception) {
                         is FirebaseAuthUserCollisionException -> {
@@ -71,16 +71,16 @@ class AuthenticationViewModel : ViewModel() {
         onFailure: () -> Unit
     ) {
         if (isEmailInputValid(email) && isPasswordInputValid(password)) {
-            _loadingState.value = true
+           showLoading(true)
             authentication.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener { result ->
-                    _loadingState.value = false
+                    showLoading(false)
                     _userAuthState.value = result.user
                     clearErrorState()
                     onSuccess(result.user!!.uid)
                 }
                 .addOnFailureListener { exception ->
-                    _loadingState.value = false
+                    showLoading(false)
                     _userAuthState.value = null
                     when (exception) {
                         is FirebaseAuthInvalidCredentialsException -> {
@@ -97,8 +97,12 @@ class AuthenticationViewModel : ViewModel() {
     fun logout() {
         authentication.signOut()
         _userAuthState.value = null
-        _loadingState.value = false
+        showLoading(false)
         clearErrorState()
+    }
+
+    fun showLoading(state: Boolean) {
+        _loadingState.value = state
     }
 
     private fun isNameInputValid(name: String): Boolean {
