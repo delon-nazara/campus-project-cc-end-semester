@@ -1,8 +1,10 @@
 package com.example.proyekakhircloudcomputing.viewmodel
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.cloudinary.android.MediaManager
+import com.example.proyekakhircloudcomputing.data.model.CapsuleModel
 import com.example.proyekakhircloudcomputing.data.model.UserModel
 import com.example.proyekakhircloudcomputing.utils.formatName
 import com.example.proyekakhircloudcomputing.utils.getFirstChar
@@ -20,28 +22,37 @@ class DatabaseViewModel : ViewModel() {
 
     private lateinit var cloudinaryName: String
     private lateinit var cloudinaryPreset: String
+    private var cloudinaryHasInitialize = false
 
     fun cloudinaryInitialization(context: Context) {
-        val dotenv = dotenv {
-            directory = "/assets"
-            filename = "env"
+        if (!cloudinaryHasInitialize) {
+            val dotenv = dotenv {
+                directory = "/assets"
+                filename = "env"
+            }
+
+            cloudinaryName = dotenv["CLOUD_NAME"]
+            cloudinaryPreset = dotenv["UPLOAD_PRESET_UNSIGNED"]
+
+            val config = hashMapOf(
+                "cloud_name" to cloudinaryName,
+                "secure" to true
+            )
+            MediaManager.init(context, config)
+
+            cloudinaryHasInitialize = true
         }
-
-        cloudinaryName = dotenv["CLOUD_NAME"]
-        cloudinaryPreset = dotenv["UPLOAD_PRESET_UNSIGNED"]
-
-        val config = hashMapOf(
-            "cloud_name" to cloudinaryName,
-            "secure" to true
-        )
-        MediaManager.init(context, config)
     }
 
     private val database: FirebaseFirestore = Firebase.firestore
     private val userReference = database.collection("user")
+    private val capsulesReference = database.collection("capsule")
 
     private var _userDataState = MutableStateFlow<UserModel?>(null)
     val userDataState: StateFlow<UserModel?> = _userDataState.asStateFlow()
+
+    private var _capsulesState = MutableStateFlow<List<CapsuleModel>?>(null)
+    val capsulesState: StateFlow<List<CapsuleModel>?> = _capsulesState.asStateFlow()
 
     fun addUserToDatabase(
         userAuth: FirebaseUser,
@@ -105,6 +116,30 @@ class DatabaseViewModel : ViewModel() {
                 showLoading(false)
                 onFailure()
             }
+    }
+
+    fun getCapsulesFromDatabase() {
+        capsulesReference.get()
+            .addOnSuccessListener { documents ->
+                val listCapsulesData = documents.map { document ->
+                    val data = document.data
+                    CapsuleModel(
+                        type = data["type"].toString(),
+                        name = data["name"].toString(),
+                        indexCover = data["indexCover"].toString().toInt(),
+                        status = data["status"].toString(),
+                        lockedAt = data["lockedAt"].toString(),
+                        unlockedAt = data["unlockedAt"].toString()
+                    )
+                }
+                _capsulesState.value = listCapsulesData
+            }
+            .addOnFailureListener {}
+    }
+
+    fun clearAllData() {
+        _userDataState.value = null
+        _capsulesState.value = null
     }
 
 }
