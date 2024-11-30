@@ -45,23 +45,19 @@ fun MainApp(context: Context) {
         navController = navController,
         startDestination = startDestination,
     ) {
+        val navigateTo: (String) -> Unit = { route ->
+            navController.navigate(route) {
+                popUpTo(route) {
+                    inclusive = true
+                }
+            }
+        }
+        
         // Route welcome screen
         composable(Route.WELCOME_SCREEN.name) {
             WelcomeScreen(
-                onLoginButtonClicked = {
-                    navController.navigate(Route.LOGIN_SCREEN.name) {
-                        popUpTo(Route.LOGIN_SCREEN.name) {
-                            inclusive = true
-                        }
-                    }
-                },
-                onRegisterButtonClicked = {
-                    navController.navigate(Route.REGISTER_SCREEN.name) {
-                        popUpTo(Route.REGISTER_SCREEN.name) {
-                            inclusive = true
-                        }
-                    }
-                }
+                onLoginButtonClicked = { navigateTo(Route.LOGIN_SCREEN.name) },
+                onRegisterButtonClicked = { navigateTo(Route.REGISTER_SCREEN.name) }
             )
         }
 
@@ -75,13 +71,7 @@ fun MainApp(context: Context) {
                         onSuccess = { userId ->
                             databaseViewModel.getUserFromDatabase(
                                 userId = userId,
-                                onSuccess = {
-                                    navController.navigate(Route.HOME_SCREEN.name) {
-                                        popUpTo(0) {
-                                            inclusive = true
-                                        }
-                                    }
-                                },
+                                onSuccess = { navigateTo(Route.HOME_SCREEN.name) },
                                 onFailure = {
                                     showToast(context, "Failed to login, try again")
                                 }
@@ -92,13 +82,7 @@ fun MainApp(context: Context) {
                         }
                     )
                 },
-                onRegisterButtonClicked = {
-                    navController.navigate(Route.REGISTER_SCREEN.name) {
-                        popUpTo(Route.REGISTER_SCREEN.name) {
-                            inclusive = true
-                        }
-                    }
-                },
+                onRegisterButtonClicked = { navigateTo(Route.REGISTER_SCREEN.name) },
                 errorEmailState = errorEmailState,
                 errorPasswordState = errorPasswordState,
                 errorAllState = errorAllState,
@@ -119,13 +103,7 @@ fun MainApp(context: Context) {
                                 userAuth = userAuth,
                                 name = name,
                                 email = email,
-                                onSuccess = {
-                                    navController.navigate(Route.HOME_SCREEN.name) {
-                                        popUpTo(0) {
-                                            inclusive = true
-                                        }
-                                    }
-                                },
+                                onSuccess = { navigateTo(Route.HOME_SCREEN.name) },
                                 onFailure = {
                                     showToast(context, "Failed to register, try again")
                                 }
@@ -136,26 +114,12 @@ fun MainApp(context: Context) {
                         }
                     )
                 },
-                onLoginButtonClicked = {
-                    navController.navigate(Route.LOGIN_SCREEN.name) {
-                        popUpTo(Route.LOGIN_SCREEN.name) {
-                            inclusive = true
-                        }
-                    }
-                },
+                onLoginButtonClicked = { navigateTo(Route.LOGIN_SCREEN.name) },
                 errorNameState = errorNameState,
                 errorEmailState = errorEmailState,
                 errorPasswordState = errorPasswordState,
                 loadingState = loadingState
             )
-        }
-
-        val navigateTo: (String) -> Unit = { route ->
-            navController.navigate(route) {
-                popUpTo(route) {
-                    inclusive = true
-                }
-            }
         }
 
         // Route home screen
