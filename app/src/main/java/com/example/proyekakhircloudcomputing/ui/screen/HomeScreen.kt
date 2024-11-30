@@ -35,12 +35,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhircloudcomputing.R
+import com.example.proyekakhircloudcomputing.data.model.UserModel
+import com.google.firebase.firestore.auth.User
 
 @Preview
 @Composable
 fun HomeScreen(
-    userName: String = "Arkan",
-    userProfileUrl: String = "",
+    userData: UserModel = UserModel(),
+    onUserProfileClicked: () -> Unit = {},
+    onNotificationIconClicked: () -> Unit = {},
     onHomeButtonClicked: () -> Unit = {},
     onCapsuleButtonClicked: () -> Unit = {},
     onDiscoverButtonClicked: () -> Unit = {},
@@ -59,12 +62,16 @@ fun HomeScreen(
             // ===================================
             // Pemanggil Function Header
             // ===================================
-            TopBar(userProfileUrl = userProfileUrl)
+            TopBar(
+                userProfileUrl = userData.profileUrl,
+                onUserProfileClicked = onUserProfileClicked,
+                onNotificationIconClicked = onNotificationIconClicked
+            )
 
             Spacer(modifier = Modifier.height(35.dp))
 
             Text(
-                text = "Halo, $userName",
+                text = "Halo, ${userData.userName}",
                 fontSize = 25.sp,
                 color = Color.White,
                 textAlign = TextAlign.Center,

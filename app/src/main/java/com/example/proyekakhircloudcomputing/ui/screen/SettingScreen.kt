@@ -1,4 +1,4 @@
-package com.example.proyekakhircloudcomputing.ui.screen.archive
+package com.example.proyekakhircloudcomputing.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,10 +23,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhircloudcomputing.R
+import com.example.proyekakhircloudcomputing.data.model.UserModel
 
 @Preview
 @Composable
-fun SettingsScreen(navigateToHome: () -> Unit = {}) {
+fun SettingScreen(
+    navigateToHome: () -> Unit = {},
+    userData: UserModel = UserModel(),
+    onUserProfileClicked: () -> Unit = {},
+    onNotificationIconClicked: () -> Unit = {},
+    onHomeButtonClicked: () -> Unit = {},
+    onCapsuleButtonClicked: () -> Unit = {},
+    onDiscoverButtonClicked: () -> Unit = {},
+    onNotificationButtonClicked: () -> Unit = {},
+    onSettingButtonClicked: () -> Unit = {}
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -85,12 +96,15 @@ fun SettingsScreen(navigateToHome: () -> Unit = {}) {
         }
 
         // BottomBarOld di bagian bawah
-        BottomBarOld(
+        BottomBar(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth(),
-            onHomeClick = navigateToHome, // Menggunakan navigasi ke MainActivity
-            onSettingsClick = { /* Stay on the current page */ }
+            onHomeButtonClicked = onHomeButtonClicked,
+            onCapsuleButtonClicked = onCapsuleButtonClicked,
+            onDiscoverButtonClicked = onDiscoverButtonClicked,
+            onNotificationButtonClicked = onNotificationButtonClicked,
+            onSettingButtonClicked = onSettingButtonClicked
         )
     }
 }

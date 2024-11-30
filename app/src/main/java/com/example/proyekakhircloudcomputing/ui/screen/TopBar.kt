@@ -2,6 +2,7 @@ package com.example.proyekakhircloudcomputing.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,11 +25,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.proyekakhircloudcomputing.R
+import com.example.proyekakhircloudcomputing.data.source.Route
 
 @Preview
 @Composable
 fun TopBar(
-    userProfileUrl: String = ""
+    userProfileUrl: String = "",
+    onUserProfileClicked: () -> Unit = {},
+    onNotificationIconClicked: () -> Unit = {}
 ) {
     Row(
         modifier = Modifier
@@ -64,7 +68,7 @@ fun TopBar(
                         contentDescription = "Profile picture",
                         placeholder = painterResource(R.drawable.profile_picture_temporary),
                         error = painterResource(R.drawable.profile_picture_temporary),
-                        modifier = Modifier.size(40.dp).clip(CircleShape) // Ukuran gambar kecil
+                        modifier = Modifier.size(40.dp).clip(CircleShape).clickable { onUserProfileClicked() }
                     )
                     // Gambar kedua (Memoria logo)
                     Image(
@@ -77,7 +81,7 @@ fun TopBar(
                     Image(
                         painter = painterResource(id = R.drawable.notifications), // Gambar kanan
                         contentDescription = "Notification icon",
-                        modifier = Modifier.size(30.dp) // Ukuran gambar kecil
+                        modifier = Modifier.size(30.dp).clickable { onNotificationIconClicked() }
                     )
                 }
             }

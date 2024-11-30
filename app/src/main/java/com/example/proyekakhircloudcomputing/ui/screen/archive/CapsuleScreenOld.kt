@@ -1,9 +1,5 @@
 package com.example.proyekakhircloudcomputing.ui.screen.archive
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -39,21 +35,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.proyekakhircloudcomputing.R
 
-
-class CapsuleActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            HomePage(
-                images = sampleImages
-            )
-
-        }
-    }
-}
+@Preview(showBackground = true)
 @Composable
-fun HomePage(images: List<ImageItem>) {
+fun CapsuleScreenOldPreview() {
+    CapsuleScreenOld(sampleImages)
+}
+
+@Composable
+fun CapsuleScreenOld(images: List<ImageItem>) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -184,7 +173,6 @@ fun ImageCard(item: ImageItem, modifier: Modifier = Modifier) {
     }
 }
 
-
 val sampleImages = listOf(
     ImageItem(
         imageResId = R.drawable.new_year,
@@ -231,10 +219,13 @@ val sampleImages = listOf(
 
 )
 
+data class ImageItem(
+//    val imageUrl: String, // Jika gambar menggunakan URL dari Cloud
+//    val contributorIconUrl: String, //Jika ikon kontributor menggunakan URL dari Cloud
+    val imageResId: Int, // Menggunakan Int untuk referensi ke R.drawable.nama_gambar
+    val contributorIconResId: Int, // Juga menggunakan Int untuk ikon kontributor
+    val title: String,
+    val location: String,
+    val isLocked: Boolean
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewCapsuleActivity() {
-    HomePage(sampleImages)
-}
-
+)

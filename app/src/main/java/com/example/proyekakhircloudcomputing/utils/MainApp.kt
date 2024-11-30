@@ -2,6 +2,7 @@ package com.example.proyekakhircloudcomputing.utils
 
 import android.content.Context
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -10,9 +11,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.proyekakhircloudcomputing.data.source.Route
+import com.example.proyekakhircloudcomputing.ui.screen.CapsuleScreen
+import com.example.proyekakhircloudcomputing.ui.screen.DiscoverScreen
 import com.example.proyekakhircloudcomputing.ui.screen.HomeScreen
 import com.example.proyekakhircloudcomputing.ui.screen.LoginScreen
+import com.example.proyekakhircloudcomputing.ui.screen.NotificationScreen
 import com.example.proyekakhircloudcomputing.ui.screen.RegisterScreen
+import com.example.proyekakhircloudcomputing.ui.screen.SettingScreen
 import com.example.proyekakhircloudcomputing.ui.screen.WelcomeScreen
 import com.example.proyekakhircloudcomputing.viewmodel.AuthenticationViewModel
 import com.example.proyekakhircloudcomputing.viewmodel.DatabaseViewModel
@@ -145,11 +150,81 @@ fun MainApp(context: Context) {
             )
         }
 
+        val navigateTo: (String) -> Unit = { route ->
+            navController.navigate(route) {
+                popUpTo(route) {
+                    inclusive = true
+                }
+            }
+        }
+
         // Route home screen
-        composable(Route.HOME_SCREEN.name) {
+        composable(route = Route.HOME_SCREEN.name) {
             HomeScreen(
-                userName = userDataState!!.userName,
-                userProfileUrl = userDataState!!.profileUrl
+                userData = userDataState!!,
+                onUserProfileClicked = { navigateTo(Route.SETTING_SCREEN.name) },
+                onNotificationIconClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name) },
+                onHomeButtonClicked = { navigateTo(Route.HOME_SCREEN.name) },
+                onCapsuleButtonClicked = { navigateTo(Route.CAPSULE_SCREEN.name) },
+                onDiscoverButtonClicked = { navigateTo(Route.DISCOVER_SCREEN.name) },
+                onNotificationButtonClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name) },
+                onSettingButtonClicked = { navigateTo(Route.SETTING_SCREEN.name) }
+            )
+        }
+
+        // Route capsule screen
+        composable(route = Route.CAPSULE_SCREEN.name) {
+            CapsuleScreen(
+                userData = userDataState!!,
+                onUserProfileClicked = { navigateTo(Route.SETTING_SCREEN.name) },
+                onNotificationIconClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name) },
+                onHomeButtonClicked = { navigateTo(Route.HOME_SCREEN.name) },
+                onCapsuleButtonClicked = { navigateTo(Route.CAPSULE_SCREEN.name) },
+                onDiscoverButtonClicked = { navigateTo(Route.DISCOVER_SCREEN.name) },
+                onNotificationButtonClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name) },
+                onSettingButtonClicked = { navigateTo(Route.SETTING_SCREEN.name) }
+            )
+        }
+
+        // Route discover screen
+        composable(route = Route.DISCOVER_SCREEN.name) {
+            DiscoverScreen(
+                userData = userDataState!!,
+                onUserProfileClicked = { navigateTo(Route.SETTING_SCREEN.name) },
+                onNotificationIconClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name) },
+                onHomeButtonClicked = { navigateTo(Route.HOME_SCREEN.name) },
+                onCapsuleButtonClicked = { navigateTo(Route.CAPSULE_SCREEN.name) },
+                onDiscoverButtonClicked = { navigateTo(Route.DISCOVER_SCREEN.name) },
+                onNotificationButtonClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name) },
+                onSettingButtonClicked = { navigateTo(Route.SETTING_SCREEN.name) }
+            )
+        }
+
+        // Route notification screen
+        composable(route = Route.NOTIFICATION_SCREEN.name) {
+            NotificationScreen(
+                userData = userDataState!!,
+                onUserProfileClicked = { navigateTo(Route.SETTING_SCREEN.name) },
+                onNotificationIconClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name) },
+                onHomeButtonClicked = { navigateTo(Route.HOME_SCREEN.name) },
+                onCapsuleButtonClicked = { navigateTo(Route.CAPSULE_SCREEN.name) },
+                onDiscoverButtonClicked = { navigateTo(Route.DISCOVER_SCREEN.name) },
+                onNotificationButtonClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name) },
+                onSettingButtonClicked = { navigateTo(Route.SETTING_SCREEN.name) }
+            )
+        }
+
+        // Route setting screen
+        composable(route = Route.SETTING_SCREEN.name) {
+            SettingScreen(
+                userData = userDataState!!,
+                onUserProfileClicked = { navigateTo(Route.SETTING_SCREEN.name) },
+                onNotificationIconClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name) },
+                onHomeButtonClicked = { navigateTo(Route.HOME_SCREEN.name) },
+                onCapsuleButtonClicked = { navigateTo(Route.CAPSULE_SCREEN.name) },
+                onDiscoverButtonClicked = { navigateTo(Route.DISCOVER_SCREEN.name) },
+                onNotificationButtonClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name) },
+                onSettingButtonClicked = { navigateTo(Route.SETTING_SCREEN.name) }
             )
         }
     }
