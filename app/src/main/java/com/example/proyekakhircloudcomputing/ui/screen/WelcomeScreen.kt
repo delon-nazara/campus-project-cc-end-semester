@@ -73,7 +73,7 @@ fun WelcomeScreen(
                 enabled = !loadingState,
                 colors = ButtonDefaults.buttonColors(colorResource(R.color.blue_main)),
                 onClick = onLoginButtonClicked,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 56.dp),
                 shape = RoundedCornerShape(25.dp)
             ) {
                 Text(text = "Masuk", fontSize = 16.sp)
@@ -84,7 +84,7 @@ fun WelcomeScreen(
                 onClick = onRegisterButtonClicked,
                 border = BorderStroke(2.dp, colorResource(R.color.blue_main)),
                 colors = ButtonDefaults.buttonColors(Color.Transparent),
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 56.dp),
                 shape = RoundedCornerShape(25.dp),
             ) {
                 Text(text = "Daftar", fontSize = 16.sp, color = colorResource(R.color.blue_main))

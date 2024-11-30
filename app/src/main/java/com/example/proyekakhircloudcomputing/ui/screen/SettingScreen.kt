@@ -2,6 +2,7 @@ package com.example.proyekakhircloudcomputing.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,18 +11,24 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.proyekakhircloudcomputing.R
 import com.example.proyekakhircloudcomputing.data.model.UserModel
 
@@ -29,14 +36,15 @@ import com.example.proyekakhircloudcomputing.data.model.UserModel
 @Composable
 fun SettingScreen(
     navigateToHome: () -> Unit = {},
-    userData: UserModel = UserModel(),
+    userData: UserModel? = UserModel(),
     onUserProfileClicked: () -> Unit = {},
     onNotificationIconClicked: () -> Unit = {},
     onHomeButtonClicked: () -> Unit = {},
     onCapsuleButtonClicked: () -> Unit = {},
     onDiscoverButtonClicked: () -> Unit = {},
     onNotificationButtonClicked: () -> Unit = {},
-    onSettingButtonClicked: () -> Unit = {}
+    onSettingButtonClicked: () -> Unit = {},
+    onLogoutButtonClicked: () -> Unit = {}
 ) {
     Box(
         modifier = Modifier
@@ -46,7 +54,7 @@ fun SettingScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 32.dp, bottom = 80.dp), // Ruang untuk BottomBarOld
+                .padding(top = 56.dp, bottom = 80.dp), // Ruang untuk BottomBarOld
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Header "Pengaturan"
@@ -75,13 +83,12 @@ fun SettingScreen(
                     .background(Color(0xFFF2A73B)), // Warna frame (orange dari colors.xml)
                 contentAlignment = Alignment.Center
             ) {
-                // Gambar profil
-                Image(
-                    painter = painterResource(id = R.drawable.arkan), // Ganti dengan resource gambar Anda
-                    contentDescription = "Profile Picture",
-                    modifier = Modifier
-                        .size(120.dp) // Ukuran gambar
-                        .clip(RoundedCornerShape(16.dp))
+                AsyncImage(
+                    model = userData?.profileUrl,
+                    contentDescription = "Profile picture",
+                    placeholder = painterResource(R.drawable.profile_picture_temporary),
+                    error = painterResource(R.drawable.profile_picture_temporary),
+                    modifier = Modifier.size(120.dp).clip(RoundedCornerShape(16.dp))
                 )
             }
 
@@ -89,17 +96,30 @@ fun SettingScreen(
 
             // Username
             Text(
-                text = "@arkan",
+                text = "${userData?.fullName}",
                 fontSize = 18.sp,
-                color = Color(0xFFF2A73B)
+                color = Color.Black
             )
+
+            Button(
+                onClick = { onLogoutButtonClicked() },
+                modifier = Modifier.padding(top = 24.dp).width(100.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorResource(R.color.blue_main)
+                )
+            ) {
+                Text(
+                    text = "Logout"
+                )
+            }
         }
 
         // BottomBarOld di bagian bawah
         BottomBar(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .padding(16.dp),
             onHomeButtonClicked = onHomeButtonClicked,
             onCapsuleButtonClicked = onCapsuleButtonClicked,
             onDiscoverButtonClicked = onDiscoverButtonClicked,

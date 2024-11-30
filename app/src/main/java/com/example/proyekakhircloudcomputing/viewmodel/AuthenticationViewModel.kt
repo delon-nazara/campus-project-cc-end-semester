@@ -148,6 +148,7 @@ class AuthenticationViewModel : ViewModel() {
     }
 
     private fun clearErrorState() {
+        _errorAllState.value = null
         _errorNameState.value = null
         _errorEmailState.value = null
         _errorPasswordState.value = null
