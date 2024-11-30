@@ -7,10 +7,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,7 +32,7 @@ import com.example.proyekakhircloudcomputing.data.source.Route
 @Preview
 @Composable
 fun TopBar(
-    userProfileUrl: String = "",
+    userProfileUrl: String? = null,
     onUserProfileClicked: () -> Unit = {},
     onNotificationIconClicked: () -> Unit = {}
 ) {
@@ -68,7 +70,7 @@ fun TopBar(
                         contentDescription = "Profile picture",
                         placeholder = painterResource(R.drawable.profile_picture_temporary),
                         error = painterResource(R.drawable.profile_picture_temporary),
-                        modifier = Modifier.size(40.dp).clip(CircleShape).clickable { onUserProfileClicked() }
+                        modifier = Modifier.padding(start = 12.dp).size(40.dp).clip(CircleShape).clickable { onUserProfileClicked() }
                     )
                     // Gambar kedua (Memoria logo)
                     Image(
@@ -83,6 +85,8 @@ fun TopBar(
                         contentDescription = "Notification icon",
                         modifier = Modifier.size(30.dp).clickable { onNotificationIconClicked() }
                     )
+
+                    Spacer(modifier = Modifier.width(24.dp))
                 }
             }
         }

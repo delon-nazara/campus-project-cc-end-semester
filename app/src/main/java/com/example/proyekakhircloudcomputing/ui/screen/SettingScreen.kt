@@ -54,7 +54,7 @@ fun SettingScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 32.dp, bottom = 80.dp), // Ruang untuk BottomBarOld
+                .padding(top = 56.dp, bottom = 80.dp), // Ruang untuk BottomBarOld
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Header "Pengaturan"
@@ -98,12 +98,12 @@ fun SettingScreen(
             Text(
                 text = "${userData?.fullName}",
                 fontSize = 18.sp,
-                color = Color(0xFFF2A73B)
+                color = Color.Black
             )
 
             Button(
                 onClick = { onLogoutButtonClicked() },
-                modifier = Modifier.padding(top = 24.dp).width(150.dp),
+                modifier = Modifier.padding(top = 24.dp).width(100.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = colorResource(R.color.blue_main)
                 )

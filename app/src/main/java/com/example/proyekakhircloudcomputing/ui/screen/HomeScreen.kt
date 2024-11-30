@@ -43,7 +43,7 @@ import com.example.proyekakhircloudcomputing.data.model.UserModel
 @Preview
 @Composable
 fun HomeScreen(
-    userData: UserModel = UserModel(),
+    userData: UserModel? = UserModel(),
     capsulesData: List<CapsuleModel>? = null,
     onUserProfileClicked: () -> Unit = {},
     onNotificationIconClicked: () -> Unit = {},
@@ -63,14 +63,14 @@ fun HomeScreen(
                 .fillMaxSize()
         ) {
             TopBar(
-                userProfileUrl = userData.profileUrl,
+                userProfileUrl = userData?.profileUrl,
                 onUserProfileClicked = onUserProfileClicked,
                 onNotificationIconClicked = onNotificationIconClicked
             )
             Spacer(modifier = Modifier.height(35.dp))
 
             Text(
-                text = "Halo, ${userData.userName}",
+                text = "Halo, ${userData?.userName}",
                 fontSize = 25.sp,
                 color = Color.White,
                 textAlign = TextAlign.Center,
@@ -86,7 +86,7 @@ fun HomeScreen(
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
-            Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(40.dp))
 
             CapsulesSection(
                 capsulesData = capsulesData,
@@ -127,24 +127,16 @@ fun CapsulesSection(
         val publicCapsules = remember { mutableStateListOf<CapsuleModel>() }
         val privateCapsules = remember { mutableStateListOf<CapsuleModel>() }
 
-        LaunchedEffect(capsulesData) {
-            if (capsulesData != null) {
-                groupedCapsules.clear()
-                groupedCapsules.putAll(capsulesData.groupBy { it.type })
-
-                publicCapsules.clear()
-                publicCapsules.addAll(groupedCapsules["public"] ?: emptyList())
-
-                privateCapsules.clear()
-                privateCapsules.addAll(groupedCapsules["private"] ?: emptyList())
-            } else {
-                groupedCapsules.clear()
-                publicCapsules.clear()
-                privateCapsules.clear()
-            }
-        }
-
         if (capsulesData != null) {
+            groupedCapsules.clear()
+            groupedCapsules.putAll(capsulesData.groupBy { it.type })
+
+            publicCapsules.clear()
+            publicCapsules.addAll(groupedCapsules["public"] ?: emptyList())
+
+            privateCapsules.clear()
+            privateCapsules.addAll(groupedCapsules["private"] ?: emptyList())
+
             Spacer(modifier = Modifier.height(32.dp))
             Box(
                 modifier = Modifier
@@ -238,7 +230,12 @@ fun CapsuleItem2(
                         2 -> R.drawable.capsule_cover_template_2
                         3 -> R.drawable.capsule_cover_template_3
                         4 -> R.drawable.capsule_cover_template_4
-                        else -> R.drawable.capsule_cover_template_5
+                        5 -> R.drawable.capsule_cover_template_5
+                        6 -> R.drawable.capsule_cover_template_6
+                        7 -> R.drawable.capsule_cover_template_7
+                        8 -> R.drawable.capsule_cover_template_8
+                        9 -> R.drawable.capsule_cover_template_9
+                        else -> R.drawable.capsule_cover_template_10
                     }
                 ),
                 contentDescription = "Image Capsule",

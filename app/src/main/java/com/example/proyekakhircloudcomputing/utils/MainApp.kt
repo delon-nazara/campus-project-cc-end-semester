@@ -166,7 +166,7 @@ fun MainApp(context: Context) {
         // Route home screen
         composable(route = Route.HOME_SCREEN.name) {
             HomeScreen(
-                userData = userDataState!!,
+                userData = userDataState,
                 capsulesData = capsulesState,
                 onUserProfileClicked = { navigateTo(Route.SETTING_SCREEN.name) },
                 onNotificationIconClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name) },
@@ -181,7 +181,8 @@ fun MainApp(context: Context) {
         // Route capsule screen
         composable(route = Route.CAPSULE_SCREEN.name) {
             CapsuleScreen(
-                userData = userDataState!!,
+                userData = userDataState,
+                capsulesData = capsulesState,
                 onUserProfileClicked = { navigateTo(Route.SETTING_SCREEN.name) },
                 onNotificationIconClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name) },
                 onHomeButtonClicked = { navigateTo(Route.HOME_SCREEN.name) },
@@ -195,7 +196,8 @@ fun MainApp(context: Context) {
         // Route discover screen
         composable(route = Route.DISCOVER_SCREEN.name) {
             DiscoverScreen(
-                userData = userDataState!!,
+                userData = userDataState,
+                capsulesData = capsulesState,
                 onUserProfileClicked = { navigateTo(Route.SETTING_SCREEN.name) },
                 onNotificationIconClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name) },
                 onHomeButtonClicked = { navigateTo(Route.HOME_SCREEN.name) },
@@ -209,7 +211,7 @@ fun MainApp(context: Context) {
         // Route notification screen
         composable(route = Route.NOTIFICATION_SCREEN.name) {
             NotificationScreen(
-                userData = userDataState!!,
+                userData = userDataState,
                 onUserProfileClicked = { navigateTo(Route.SETTING_SCREEN.name) },
                 onNotificationIconClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name) },
                 onHomeButtonClicked = { navigateTo(Route.HOME_SCREEN.name) },

@@ -43,7 +43,7 @@ import com.example.proyekakhircloudcomputing.ui.screen.archive.TopBarOld
 @Preview
 @Composable
 fun NotificationScreen(
-    userData: UserModel = UserModel(),
+    userData: UserModel? = UserModel(),
     onUserProfileClicked: () -> Unit = {},
     onNotificationIconClicked: () -> Unit = {},
     onHomeButtonClicked: () -> Unit = {},
@@ -73,7 +73,7 @@ fun NotificationScreen(
     ){
         //Fungsi Top App Bar
         TopBar(
-            userProfileUrl = userData.profileUrl,
+            userProfileUrl = userData?.profileUrl,
             onUserProfileClicked = onUserProfileClicked,
             onNotificationIconClicked = onNotificationIconClicked
         )
@@ -93,8 +93,8 @@ fun NotificationList() {
     // Daftar notifikasi (gunakan MutableStateList agar dinamis)
     val notifications = remember {
         mutableStateListOf(
-            Pair(R.drawable.arkan, "Kapsul kamu akan terkunci dalam 1 hari lagi"),
-            Pair(R.drawable.arkan, "@auah menambahkan beberapa media di kapsul kamu")
+            Pair(R.drawable.profile_picture_temporary, "Kapsul kamu akan terkunci dalam 1 hari lagi"),
+            Pair(R.drawable.profile_picture_temporary, "@auah menambahkan beberapa media di kapsul kamu")
         )
     }
 
