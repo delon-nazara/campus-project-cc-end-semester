@@ -1,9 +1,5 @@
 package com.example.proyekakhircloudcomputing.ui.screen.archive
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -41,24 +37,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhircloudcomputing.R
 
-class NotificationActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-
-        }
-    }
-}
-
+@Preview
 @Composable
-fun NotificationScreen() {
+fun NotificationScreenOld() {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFF2A73B))
     ){
-        Navbar(
+        BottomBarOld(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(16.dp)
@@ -76,7 +63,7 @@ fun NotificationScreen() {
     Column(
     ){
         //Fungsi Top App Bar
-        HeaderSection()
+        TopBarOld()
         Column(
             modifier = Modifier
                 .padding(vertical = 16.dp, horizontal = 32.dp)
@@ -163,13 +150,4 @@ fun NotificationCard(
             }
         }
     }
-}
-
-
-@Preview(
-    showBackground = true,
-)
-@Composable
-fun PreviewNotificationScree(modifier: Modifier = Modifier) {
-    NotificationScreen()
 }

@@ -81,6 +81,13 @@ dependencies {
     // Firebase library
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
+
+    // Cloudinary library
+    implementation(libs.cloudinary.android)
+
+    // Dotenv kotlin library
+    implementation(libs.dotenv.kotlin)
 
     // Coil library
     implementation(libs.coil.compose)

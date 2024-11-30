@@ -1,7 +1,8 @@
-package com.example.proyekakhircloudcomputing.ui.screen.archive
+package com.example.proyekakhircloudcomputing.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,12 +21,19 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.example.proyekakhircloudcomputing.R
+import com.example.proyekakhircloudcomputing.data.source.Route
 
-//semua yang di dalam background kuning
+@Preview
 @Composable
-fun HeaderSection() {
+fun TopBar(
+    userProfileUrl: String = "",
+    onUserProfileClicked: () -> Unit = {},
+    onNotificationIconClicked: () -> Unit = {}
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -54,10 +63,12 @@ fun HeaderSection() {
                     horizontalArrangement = Arrangement.spacedBy(64.dp), // Jarak antar elemen
                 ) {
                     // Gambar pertama
-                    Image(
-                        painter = painterResource(id = R.drawable.pp), // Gambar kiri
+                    AsyncImage(
+                        model = userProfileUrl,
                         contentDescription = "Profile picture",
-                        modifier = Modifier.size(40.dp) // Ukuran gambar kecil
+                        placeholder = painterResource(R.drawable.profile_picture_temporary),
+                        error = painterResource(R.drawable.profile_picture_temporary),
+                        modifier = Modifier.size(40.dp).clip(CircleShape).clickable { onUserProfileClicked() }
                     )
                     // Gambar kedua (Memoria logo)
                     Image(
@@ -70,7 +81,7 @@ fun HeaderSection() {
                     Image(
                         painter = painterResource(id = R.drawable.notifications), // Gambar kanan
                         contentDescription = "Notification icon",
-                        modifier = Modifier.size(30.dp) // Ukuran gambar kecil
+                        modifier = Modifier.size(30.dp).clickable { onNotificationIconClicked() }
                     )
                 }
             }

@@ -1,8 +1,5 @@
-package com.example.proyekakhircloudcomputing.ui.screen.archive
+package com.example.proyekakhircloudcomputing.ui.screen
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -38,19 +35,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhircloudcomputing.R
+import com.example.proyekakhircloudcomputing.data.model.UserModel
+import com.google.firebase.firestore.auth.User
 
-
-class MainOldActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            MainScreen()
-        }
-    }
-}
-
+@Preview
 @Composable
-fun MainScreen() {
+fun HomeScreen(
+    userData: UserModel = UserModel(),
+    onUserProfileClicked: () -> Unit = {},
+    onNotificationIconClicked: () -> Unit = {},
+    onHomeButtonClicked: () -> Unit = {},
+    onCapsuleButtonClicked: () -> Unit = {},
+    onDiscoverButtonClicked: () -> Unit = {},
+    onNotificationButtonClicked: () -> Unit = {},
+    onSettingButtonClicked: () -> Unit = {}
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -63,12 +62,16 @@ fun MainScreen() {
             // ===================================
             // Pemanggil Function Header
             // ===================================
-            HeaderSection()
+            TopBar(
+                userProfileUrl = userData.profileUrl,
+                onUserProfileClicked = onUserProfileClicked,
+                onNotificationIconClicked = onNotificationIconClicked
+            )
 
             Spacer(modifier = Modifier.height(35.dp))
 
             Text(
-                text = "Halo, Arkan!",
+                text = "Halo, ${userData.userName}",
                 fontSize = 25.sp,
                 color = Color.White,
                 textAlign = TextAlign.Center,
@@ -98,18 +101,15 @@ fun MainScreen() {
         // ===================================
         // Bottom Navigasi Bar
         // ===================================
-        Navbar(
+        BottomBar(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth(),
-            onHomeClick = {
-                // Logika saat tombol Home ditekan
-                println("Home button clicked")
-            },
-            onSettingsClick = {
-                // Logika saat tombol Settings ditekan
-                println("Settings button clicked")
-            }
+            onHomeButtonClicked = onHomeButtonClicked,
+            onCapsuleButtonClicked = onCapsuleButtonClicked,
+            onDiscoverButtonClicked = onDiscoverButtonClicked,
+            onNotificationButtonClicked = onNotificationButtonClicked,
+            onSettingButtonClicked = onSettingButtonClicked
         )
     }
 }
@@ -270,10 +270,4 @@ fun CapsuleItem(title: String) {
             color = Color.Black
         )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    MainScreen()
 }

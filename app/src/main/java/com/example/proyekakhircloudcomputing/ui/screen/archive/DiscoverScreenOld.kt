@@ -1,10 +1,6 @@
 package com.example.proyekakhircloudcomputing.ui.screen.archive
 
-import android.os.Bundle
 import android.util.Log
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -60,20 +56,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhircloudcomputing.R
 
-class DiscoverActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-
-        }
-    }
-}
 //===================
 // DISCOVER SCREEN START
 //===================
+@Preview
 @Composable
-fun DiscoverScreen() {
+fun DiscoverScreenOld() {
     var isExpanded by remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
@@ -102,7 +90,7 @@ fun DiscoverScreen() {
                     ) {
                         Column {
                             // Fungsi Top App Bar
-                            HeaderSection()
+                            TopBarOld()
 
                             Spacer(modifier = Modifier.height(16.dp)) // Spasi antar komponen
 
@@ -140,8 +128,8 @@ fun DiscoverScreen() {
             }
 
 
-        // Navbar di bawah
-        Navbar(
+        // BottomBarOld di bawah
+        BottomBarOld(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(16.dp)
@@ -461,14 +449,3 @@ fun TopCapsuleCard(title: String, imageRes: Int, onClick: () -> Unit = {}) {
 //=======================
 //TOP CAPSULE SECTION END
 //=======================
-
-
-
-@Preview(
-    showBackground = true,
-    showSystemUi = true
-)
-@Composable
-fun PreviewDiscoverScreen(modifier: Modifier = Modifier) {
-    DiscoverScreen()
-}
