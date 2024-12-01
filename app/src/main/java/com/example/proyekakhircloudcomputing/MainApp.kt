@@ -1,9 +1,7 @@
-package com.example.proyekakhircloudcomputing.utils
+package com.example.proyekakhircloudcomputing
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -20,6 +18,7 @@ import com.example.proyekakhircloudcomputing.ui.screen.NotificationScreen
 import com.example.proyekakhircloudcomputing.ui.screen.RegisterScreen
 import com.example.proyekakhircloudcomputing.ui.screen.SettingScreen
 import com.example.proyekakhircloudcomputing.ui.screen.WelcomeScreen
+import com.example.proyekakhircloudcomputing.util.showToast
 import com.example.proyekakhircloudcomputing.viewmodel.AuthenticationViewModel
 import com.example.proyekakhircloudcomputing.viewmodel.DatabaseViewModel
 
@@ -39,6 +38,19 @@ fun MainApp(context: Context) {
     val capsulesState by databaseViewModel.capsulesState.collectAsState()
 
     val navController: NavHostController = rememberNavController()
+    val navigateTo: (String, Boolean) -> Unit = { route, clearAll ->
+        navController.navigate(route) {
+            if (clearAll) {
+                popUpTo(0) {
+                    inclusive = true
+                }
+            } else {
+                popUpTo(route) {
+                    inclusive = true
+                }
+            }
+        }
+    }
 
     val startDestination = Route.WELCOME_SCREEN.name
     if (userAuthState != null) {
@@ -46,11 +58,7 @@ fun MainApp(context: Context) {
             userId = userAuthState!!.uid,
             onSuccess = {
                 databaseViewModel.getCapsulesFromDatabase()
-                navController.navigate(Route.HOME_SCREEN.name) {
-                    popUpTo(0) {
-                        inclusive = true
-                    }
-                }
+                navigateTo(Route.HOME_SCREEN.name, true)
             },
             onFailure = {
                 showToast(context, "Failed to get data from database")
@@ -65,19 +73,11 @@ fun MainApp(context: Context) {
         navController = navController,
         startDestination = startDestination,
     ) {
-        val navigateTo: (String) -> Unit = { route ->
-            navController.navigate(route) {
-                popUpTo(route) {
-                    inclusive = true
-                }
-            }
-        }
-
         // Route welcome screen
         composable(Route.WELCOME_SCREEN.name) {
             WelcomeScreen(
-                onLoginButtonClicked = { navigateTo(Route.LOGIN_SCREEN.name) },
-                onRegisterButtonClicked = { navigateTo(Route.REGISTER_SCREEN.name) },
+                onLoginButtonClicked = { navigateTo(Route.LOGIN_SCREEN.name, false) },
+                onRegisterButtonClicked = { navigateTo(Route.REGISTER_SCREEN.name, false) },
                 loadingState = loadingState
             )
         }
@@ -94,11 +94,7 @@ fun MainApp(context: Context) {
                                 userId = userId,
                                 onSuccess = {
                                     databaseViewModel.getCapsulesFromDatabase()
-                                    navController.navigate(Route.HOME_SCREEN.name) {
-                                        popUpTo(0) {
-                                            inclusive = true
-                                        }
-                                    }
+                                    navigateTo(Route.HOME_SCREEN.name, true)
                                 },
                                 onFailure = {
                                     showToast(context, "Failed to login, try again")
@@ -113,7 +109,7 @@ fun MainApp(context: Context) {
                         }
                     )
                 },
-                onRegisterButtonClicked = { navigateTo(Route.REGISTER_SCREEN.name) },
+                onRegisterButtonClicked = { navigateTo(Route.REGISTER_SCREEN.name, false) },
                 errorEmailState = errorEmailState,
                 errorPasswordState = errorPasswordState,
                 errorAllState = errorAllState,
@@ -136,11 +132,7 @@ fun MainApp(context: Context) {
                                 email = email,
                                 onSuccess = {
                                     databaseViewModel.getCapsulesFromDatabase()
-                                    navController.navigate(Route.HOME_SCREEN.name) {
-                                        popUpTo(0) {
-                                            inclusive = true
-                                        }
-                                    }
+                                    navigateTo(Route.HOME_SCREEN.name, true)
                                 },
                                 onFailure = {
                                     showToast(context, "Failed to register, try again")
@@ -155,7 +147,7 @@ fun MainApp(context: Context) {
                         }
                     )
                 },
-                onLoginButtonClicked = { navigateTo(Route.LOGIN_SCREEN.name) },
+                onLoginButtonClicked = { navigateTo(Route.LOGIN_SCREEN.name, false) },
                 errorNameState = errorNameState,
                 errorEmailState = errorEmailState,
                 errorPasswordState = errorPasswordState,
@@ -168,13 +160,13 @@ fun MainApp(context: Context) {
             HomeScreen(
                 userData = userDataState,
                 capsulesData = capsulesState,
-                onUserProfileClicked = { navigateTo(Route.SETTING_SCREEN.name) },
-                onNotificationIconClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name) },
-                onHomeButtonClicked = { navigateTo(Route.HOME_SCREEN.name) },
-                onCapsuleButtonClicked = { navigateTo(Route.CAPSULE_SCREEN.name) },
-                onDiscoverButtonClicked = { navigateTo(Route.DISCOVER_SCREEN.name) },
-                onNotificationButtonClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name) },
-                onSettingButtonClicked = { navigateTo(Route.SETTING_SCREEN.name) }
+                onUserProfileClicked = { navigateTo(Route.SETTING_SCREEN.name, false) },
+                onNotificationIconClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name, false) },
+                onHomeButtonClicked = { navigateTo(Route.HOME_SCREEN.name, false) },
+                onCapsuleButtonClicked = { navigateTo(Route.CAPSULE_SCREEN.name, false) },
+                onDiscoverButtonClicked = { navigateTo(Route.DISCOVER_SCREEN.name, false) },
+                onNotificationButtonClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name, false) },
+                onSettingButtonClicked = { navigateTo(Route.SETTING_SCREEN.name, false) }
             )
         }
 
@@ -183,13 +175,13 @@ fun MainApp(context: Context) {
             CapsuleScreen(
                 userData = userDataState,
                 capsulesData = capsulesState,
-                onUserProfileClicked = { navigateTo(Route.SETTING_SCREEN.name) },
-                onNotificationIconClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name) },
-                onHomeButtonClicked = { navigateTo(Route.HOME_SCREEN.name) },
-                onCapsuleButtonClicked = { navigateTo(Route.CAPSULE_SCREEN.name) },
-                onDiscoverButtonClicked = { navigateTo(Route.DISCOVER_SCREEN.name) },
-                onNotificationButtonClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name) },
-                onSettingButtonClicked = { navigateTo(Route.SETTING_SCREEN.name) }
+                onUserProfileClicked = { navigateTo(Route.SETTING_SCREEN.name, false) },
+                onNotificationIconClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name, false) },
+                onHomeButtonClicked = { navigateTo(Route.HOME_SCREEN.name, false) },
+                onCapsuleButtonClicked = { navigateTo(Route.CAPSULE_SCREEN.name, false) },
+                onDiscoverButtonClicked = { navigateTo(Route.DISCOVER_SCREEN.name, false) },
+                onNotificationButtonClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name, false) },
+                onSettingButtonClicked = { navigateTo(Route.SETTING_SCREEN.name, false) }
             )
         }
 
@@ -198,13 +190,13 @@ fun MainApp(context: Context) {
             DiscoverScreen(
                 userData = userDataState,
                 capsulesData = capsulesState,
-                onUserProfileClicked = { navigateTo(Route.SETTING_SCREEN.name) },
-                onNotificationIconClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name) },
-                onHomeButtonClicked = { navigateTo(Route.HOME_SCREEN.name) },
-                onCapsuleButtonClicked = { navigateTo(Route.CAPSULE_SCREEN.name) },
-                onDiscoverButtonClicked = { navigateTo(Route.DISCOVER_SCREEN.name) },
-                onNotificationButtonClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name) },
-                onSettingButtonClicked = { navigateTo(Route.SETTING_SCREEN.name) }
+                onUserProfileClicked = { navigateTo(Route.SETTING_SCREEN.name, false) },
+                onNotificationIconClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name, false) },
+                onHomeButtonClicked = { navigateTo(Route.HOME_SCREEN.name, false) },
+                onCapsuleButtonClicked = { navigateTo(Route.CAPSULE_SCREEN.name, false) },
+                onDiscoverButtonClicked = { navigateTo(Route.DISCOVER_SCREEN.name, false) },
+                onNotificationButtonClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name, false) },
+                onSettingButtonClicked = { navigateTo(Route.SETTING_SCREEN.name, false) }
             )
         }
 
@@ -212,13 +204,13 @@ fun MainApp(context: Context) {
         composable(route = Route.NOTIFICATION_SCREEN.name) {
             NotificationScreen(
                 userData = userDataState,
-                onUserProfileClicked = { navigateTo(Route.SETTING_SCREEN.name) },
-                onNotificationIconClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name) },
-                onHomeButtonClicked = { navigateTo(Route.HOME_SCREEN.name) },
-                onCapsuleButtonClicked = { navigateTo(Route.CAPSULE_SCREEN.name) },
-                onDiscoverButtonClicked = { navigateTo(Route.DISCOVER_SCREEN.name) },
-                onNotificationButtonClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name) },
-                onSettingButtonClicked = { navigateTo(Route.SETTING_SCREEN.name) }
+                onUserProfileClicked = { navigateTo(Route.SETTING_SCREEN.name, false) },
+                onNotificationIconClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name, false) },
+                onHomeButtonClicked = { navigateTo(Route.HOME_SCREEN.name, false) },
+                onCapsuleButtonClicked = { navigateTo(Route.CAPSULE_SCREEN.name, false) },
+                onDiscoverButtonClicked = { navigateTo(Route.DISCOVER_SCREEN.name, false) },
+                onNotificationButtonClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name, false) },
+                onSettingButtonClicked = { navigateTo(Route.SETTING_SCREEN.name, false) }
             )
         }
 
@@ -226,21 +218,17 @@ fun MainApp(context: Context) {
         composable(route = Route.SETTING_SCREEN.name) {
             SettingScreen(
                 userData = userDataState,
-                onUserProfileClicked = { navigateTo(Route.SETTING_SCREEN.name) },
-                onNotificationIconClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name) },
-                onHomeButtonClicked = { navigateTo(Route.HOME_SCREEN.name) },
-                onCapsuleButtonClicked = { navigateTo(Route.CAPSULE_SCREEN.name) },
-                onDiscoverButtonClicked = { navigateTo(Route.DISCOVER_SCREEN.name) },
-                onNotificationButtonClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name) },
-                onSettingButtonClicked = { navigateTo(Route.SETTING_SCREEN.name) },
+                onUserProfileClicked = { navigateTo(Route.SETTING_SCREEN.name, false) },
+                onNotificationIconClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name, false) },
+                onHomeButtonClicked = { navigateTo(Route.HOME_SCREEN.name, false) },
+                onCapsuleButtonClicked = { navigateTo(Route.CAPSULE_SCREEN.name, false) },
+                onDiscoverButtonClicked = { navigateTo(Route.DISCOVER_SCREEN.name, false) },
+                onNotificationButtonClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name, false) },
+                onSettingButtonClicked = { navigateTo(Route.SETTING_SCREEN.name, false) },
                 onLogoutButtonClicked = {
                     authenticationViewModel.logout()
                     databaseViewModel.clearAllData()
-                    navController.navigate(Route.WELCOME_SCREEN.name) {
-                        popUpTo(0) {
-                            inclusive = true
-                        }
-                    }
+                    navigateTo(Route.HOME_SCREEN.name, true)
                 }
             )
         }

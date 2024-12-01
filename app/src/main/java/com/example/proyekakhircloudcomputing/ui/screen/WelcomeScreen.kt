@@ -89,6 +89,7 @@ fun WelcomeScreen(
             ) {
                 Text(text = "Daftar", fontSize = 16.sp, color = colorResource(R.color.blue_main))
             }
+            Spacer(modifier = Modifier.height(64.dp))
         }
         if (loadingState) {
             CircularProgressIndicator(
