@@ -1,4 +1,4 @@
-package com.example.proyekakhircloudcomputing.utils
+package com.example.proyekakhircloudcomputing.util
 
 import android.content.Context
 import android.widget.Toast

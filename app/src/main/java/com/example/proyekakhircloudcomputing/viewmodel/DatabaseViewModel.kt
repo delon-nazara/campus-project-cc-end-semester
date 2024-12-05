@@ -1,14 +1,13 @@
 package com.example.proyekakhircloudcomputing.viewmodel
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.cloudinary.android.MediaManager
 import com.example.proyekakhircloudcomputing.data.model.CapsuleModel
 import com.example.proyekakhircloudcomputing.data.model.UserModel
-import com.example.proyekakhircloudcomputing.utils.formatName
-import com.example.proyekakhircloudcomputing.utils.getFirstChar
-import com.example.proyekakhircloudcomputing.utils.getFirstWord
+import com.example.proyekakhircloudcomputing.util.formatName
+import com.example.proyekakhircloudcomputing.util.getFirstChar
+import com.example.proyekakhircloudcomputing.util.getFirstWord
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
