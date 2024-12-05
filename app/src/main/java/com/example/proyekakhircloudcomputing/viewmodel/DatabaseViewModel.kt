@@ -62,14 +62,15 @@ class DatabaseViewModel : ViewModel() {
         showLoading: (Boolean) -> Unit
     ) {
         val cleanName = formatName(name)
-        val cloudinaryProfileUrl = "https://res.cloudinary.com/${cloudinaryName}/image/upload/alphabet_profile_picture_${getFirstChar(cleanName)}"
-        val currentTime = System.currentTimeMillis() / 1000
+        val firstChar = getFirstChar(cleanName)
+        val profileUrl = "https://res.cloudinary.com/${cloudinaryName}/image/upload/alphabet_profile_picture_${firstChar}"
+        val currentTime = System.currentTimeMillis().toString()
 
         val newUser = UserModel(
             fullName = cleanName,
             userName = getFirstWord(cleanName),
             email = email,
-            profileUrl = cloudinaryProfileUrl,
+            profileUrl = profileUrl,
             createdAt = currentTime
         )
 
@@ -106,7 +107,7 @@ class DatabaseViewModel : ViewModel() {
                     userName = data["userName"].toString(),
                     email = data["email"].toString(),
                     profileUrl = data["profileUrl"].toString(),
-                    createdAt = data["createdAt"].toString().toLong()
+                    createdAt = data["createdAt"].toString()
                 )
                 _userDataState.value = userData
                 onSuccess()

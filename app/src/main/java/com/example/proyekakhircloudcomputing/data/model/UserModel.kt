@@ -5,5 +5,5 @@ data class UserModel(
     val userName: String = "",
     val email: String = "",
     val profileUrl: String = "",
-    val createdAt: Long = 0L
+    val createdAt: String = ""
 )

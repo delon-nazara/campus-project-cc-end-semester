@@ -228,7 +228,7 @@ fun MainApp(context: Context) {
                 onLogoutButtonClicked = {
                     authenticationViewModel.logout()
                     databaseViewModel.clearAllData()
-                    navigateTo(Route.HOME_SCREEN.name, true)
+                    navigateTo(Route.WELCOME_SCREEN.name, true)
                 }
             )
         }
