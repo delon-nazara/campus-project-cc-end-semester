@@ -159,14 +159,7 @@ fun MainApp(context: Context) {
         composable(route = Route.HOME_SCREEN.name) {
             HomeScreen(
                 userData = userDataState,
-                capsulesData = capsulesState,
-                onUserProfileClicked = { navigateTo(Route.SETTING_SCREEN.name, false) },
-                onNotificationIconClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name, false) },
-                onHomeButtonClicked = { navigateTo(Route.HOME_SCREEN.name, false) },
-                onCapsuleButtonClicked = { navigateTo(Route.CAPSULE_SCREEN.name, false) },
-                onDiscoverButtonClicked = { navigateTo(Route.DISCOVER_SCREEN.name, false) },
-                onNotificationButtonClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name, false) },
-                onSettingButtonClicked = { navigateTo(Route.SETTING_SCREEN.name, false) }
+                capsulesData = capsulesState
             )
         }
 
@@ -174,14 +167,7 @@ fun MainApp(context: Context) {
         composable(route = Route.CAPSULE_SCREEN.name) {
             CapsuleScreen(
                 userData = userDataState,
-                capsulesData = capsulesState,
-                onUserProfileClicked = { navigateTo(Route.SETTING_SCREEN.name, false) },
-                onNotificationIconClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name, false) },
-                onHomeButtonClicked = { navigateTo(Route.HOME_SCREEN.name, false) },
-                onCapsuleButtonClicked = { navigateTo(Route.CAPSULE_SCREEN.name, false) },
-                onDiscoverButtonClicked = { navigateTo(Route.DISCOVER_SCREEN.name, false) },
-                onNotificationButtonClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name, false) },
-                onSettingButtonClicked = { navigateTo(Route.SETTING_SCREEN.name, false) }
+                capsulesData = capsulesState
             )
         }
 
@@ -189,28 +175,14 @@ fun MainApp(context: Context) {
         composable(route = Route.DISCOVER_SCREEN.name) {
             DiscoverScreen(
                 userData = userDataState,
-                capsulesData = capsulesState,
-                onUserProfileClicked = { navigateTo(Route.SETTING_SCREEN.name, false) },
-                onNotificationIconClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name, false) },
-                onHomeButtonClicked = { navigateTo(Route.HOME_SCREEN.name, false) },
-                onCapsuleButtonClicked = { navigateTo(Route.CAPSULE_SCREEN.name, false) },
-                onDiscoverButtonClicked = { navigateTo(Route.DISCOVER_SCREEN.name, false) },
-                onNotificationButtonClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name, false) },
-                onSettingButtonClicked = { navigateTo(Route.SETTING_SCREEN.name, false) }
+                capsulesData = capsulesState
             )
         }
 
         // Route notification screen
         composable(route = Route.NOTIFICATION_SCREEN.name) {
             NotificationScreen(
-                userData = userDataState,
-                onUserProfileClicked = { navigateTo(Route.SETTING_SCREEN.name, false) },
-                onNotificationIconClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name, false) },
-                onHomeButtonClicked = { navigateTo(Route.HOME_SCREEN.name, false) },
-                onCapsuleButtonClicked = { navigateTo(Route.CAPSULE_SCREEN.name, false) },
-                onDiscoverButtonClicked = { navigateTo(Route.DISCOVER_SCREEN.name, false) },
-                onNotificationButtonClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name, false) },
-                onSettingButtonClicked = { navigateTo(Route.SETTING_SCREEN.name, false) }
+                userData = userDataState
             )
         }
 
@@ -218,13 +190,6 @@ fun MainApp(context: Context) {
         composable(route = Route.SETTING_SCREEN.name) {
             SettingScreen(
                 userData = userDataState,
-                onUserProfileClicked = { navigateTo(Route.SETTING_SCREEN.name, false) },
-                onNotificationIconClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name, false) },
-                onHomeButtonClicked = { navigateTo(Route.HOME_SCREEN.name, false) },
-                onCapsuleButtonClicked = { navigateTo(Route.CAPSULE_SCREEN.name, false) },
-                onDiscoverButtonClicked = { navigateTo(Route.DISCOVER_SCREEN.name, false) },
-                onNotificationButtonClicked = { navigateTo(Route.NOTIFICATION_SCREEN.name, false) },
-                onSettingButtonClicked = { navigateTo(Route.SETTING_SCREEN.name, false) },
                 onLogoutButtonClicked = {
                     authenticationViewModel.logout()
                     databaseViewModel.clearAllData()
