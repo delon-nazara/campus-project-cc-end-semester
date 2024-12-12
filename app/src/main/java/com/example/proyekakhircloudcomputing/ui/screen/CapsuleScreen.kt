@@ -41,13 +41,7 @@ import com.example.proyekakhircloudcomputing.ui.screen.archive.ImageItem
 fun CapsuleScreen(
     userData: UserModel? = UserModel(),
     capsulesData: List<CapsuleModel>? = null,
-    onUserProfileClicked: () -> Unit = {},
-    onNotificationIconClicked: () -> Unit = {},
-    onHomeButtonClicked: () -> Unit = {},
-    onCapsuleButtonClicked: () -> Unit = {},
-    onDiscoverButtonClicked: () -> Unit = {},
-    onNotificationButtonClicked: () -> Unit = {},
-    onSettingButtonClicked: () -> Unit = {}
+    navigateTo: (String) -> Unit = {},
 ) {
     Column(
         modifier = Modifier
@@ -55,9 +49,8 @@ fun CapsuleScreen(
             .background(Color(0xFFF7F3E6))
     ) {
         TopBar(
-            userProfileUrl = userData?.profileUrl,
-            onUserProfileClicked = onUserProfileClicked,
-            onNotificationIconClicked = onNotificationIconClicked
+            userData = userData,
+            navigateTo = navigateTo
         )
 
         Column(
@@ -104,11 +97,7 @@ fun CapsuleScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            onHomeButtonClicked = onHomeButtonClicked,
-            onCapsuleButtonClicked = onCapsuleButtonClicked,
-            onDiscoverButtonClicked = onDiscoverButtonClicked,
-            onNotificationButtonClicked = onNotificationButtonClicked,
-            onSettingButtonClicked = onSettingButtonClicked
+            navigateTo = navigateTo
         )
     }
 }

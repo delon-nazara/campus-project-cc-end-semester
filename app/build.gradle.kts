@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
 
-    // Google services for firebase
+    // Firebase
     id("com.google.gms.google-services")
 }
 

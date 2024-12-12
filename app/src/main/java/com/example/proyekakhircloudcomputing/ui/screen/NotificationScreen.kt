@@ -37,20 +37,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhircloudcomputing.R
 import com.example.proyekakhircloudcomputing.data.model.UserModel
-import com.example.proyekakhircloudcomputing.ui.screen.archive.BottomBarOld
-import com.example.proyekakhircloudcomputing.ui.screen.archive.TopBarOld
 
 @Preview
 @Composable
 fun NotificationScreen(
     userData: UserModel? = UserModel(),
-    onUserProfileClicked: () -> Unit = {},
-    onNotificationIconClicked: () -> Unit = {},
-    onHomeButtonClicked: () -> Unit = {},
-    onCapsuleButtonClicked: () -> Unit = {},
-    onDiscoverButtonClicked: () -> Unit = {},
-    onNotificationButtonClicked: () -> Unit = {},
-    onSettingButtonClicked: () -> Unit = {}
+    navigateTo: (String) -> Unit = {},
 ) {
     Box(
         modifier = Modifier
@@ -62,20 +54,14 @@ fun NotificationScreen(
                 .align(Alignment.BottomCenter)
                 .padding(16.dp)
                 .fillMaxWidth(),
-            onHomeButtonClicked = onHomeButtonClicked,
-            onCapsuleButtonClicked = onCapsuleButtonClicked,
-            onDiscoverButtonClicked = onDiscoverButtonClicked,
-            onNotificationButtonClicked = onNotificationButtonClicked,
-            onSettingButtonClicked = onSettingButtonClicked
+            navigateTo = navigateTo
         )
     }
-    Column(
-    ){
+    Column{
         //Fungsi Top App Bar
         TopBar(
-            userProfileUrl = userData?.profileUrl,
-            onUserProfileClicked = onUserProfileClicked,
-            onNotificationIconClicked = onNotificationIconClicked
+            userData = userData,
+            navigateTo = navigateTo
         )
         Column(
             modifier = Modifier

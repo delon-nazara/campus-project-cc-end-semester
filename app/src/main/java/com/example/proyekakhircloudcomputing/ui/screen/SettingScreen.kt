@@ -2,7 +2,6 @@ package com.example.proyekakhircloudcomputing.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -28,22 +26,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
 import com.example.proyekakhircloudcomputing.R
 import com.example.proyekakhircloudcomputing.data.model.UserModel
 
 @Preview
 @Composable
 fun SettingScreen(
-    navigateToHome: () -> Unit = {},
     userData: UserModel? = UserModel(),
-    onUserProfileClicked: () -> Unit = {},
-    onNotificationIconClicked: () -> Unit = {},
-    onHomeButtonClicked: () -> Unit = {},
-    onCapsuleButtonClicked: () -> Unit = {},
-    onDiscoverButtonClicked: () -> Unit = {},
-    onNotificationButtonClicked: () -> Unit = {},
-    onSettingButtonClicked: () -> Unit = {},
+    navigateTo: (String) -> Unit = {},
     onLogoutButtonClicked: () -> Unit = {}
 ) {
     Box(
@@ -83,11 +73,18 @@ fun SettingScreen(
                     .background(Color(0xFFF2A73B)), // Warna frame (orange dari colors.xml)
                 contentAlignment = Alignment.Center
             ) {
-                AsyncImage(
-                    model = userData?.profileUrl,
+                Image(
+                    painter = painterResource(
+                        when (userData?.firstLetter) {
+                            "a" -> R.drawable.alphabet_profile_picture_d
+                            "b" -> R.drawable.alphabet_profile_picture_d
+                            "c" -> R.drawable.alphabet_profile_picture_d
+                            "d" -> R.drawable.alphabet_profile_picture_d
+                            else -> R.drawable.alphabet_profile_picture_d
+                            // todo
+                        }
+                    ),
                     contentDescription = "Profile picture",
-                    placeholder = painterResource(R.drawable.profile_picture_temporary),
-                    error = painterResource(R.drawable.profile_picture_temporary),
                     modifier = Modifier.size(120.dp).clip(RoundedCornerShape(16.dp))
                 )
             }
@@ -96,7 +93,7 @@ fun SettingScreen(
 
             // Username
             Text(
-                text = "${userData?.fullName}",
+                text = userData?.fullName ?: "",
                 fontSize = 18.sp,
                 color = Color.Black
             )
@@ -120,11 +117,7 @@ fun SettingScreen(
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
                 .padding(16.dp),
-            onHomeButtonClicked = onHomeButtonClicked,
-            onCapsuleButtonClicked = onCapsuleButtonClicked,
-            onDiscoverButtonClicked = onDiscoverButtonClicked,
-            onNotificationButtonClicked = onNotificationButtonClicked,
-            onSettingButtonClicked = onSettingButtonClicked
+            navigateTo = navigateTo
         )
     }
 }

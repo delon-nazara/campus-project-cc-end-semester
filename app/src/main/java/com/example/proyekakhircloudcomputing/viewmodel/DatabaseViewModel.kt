@@ -6,7 +6,7 @@ import com.cloudinary.android.MediaManager
 import com.example.proyekakhircloudcomputing.data.model.CapsuleModel
 import com.example.proyekakhircloudcomputing.data.model.UserModel
 import com.example.proyekakhircloudcomputing.util.formatName
-import com.example.proyekakhircloudcomputing.util.getFirstChar
+import com.example.proyekakhircloudcomputing.util.getFirstLetter
 import com.example.proyekakhircloudcomputing.util.getFirstWord
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
@@ -62,14 +62,15 @@ class DatabaseViewModel : ViewModel() {
         showLoading: (Boolean) -> Unit
     ) {
         val cleanName = formatName(name)
-        val cloudinaryProfileUrl = "https://res.cloudinary.com/${cloudinaryName}/image/upload/alphabet_profile_picture_${getFirstChar(cleanName)}"
-        val currentTime = System.currentTimeMillis() / 1000
+        val firstWord = getFirstWord(cleanName)
+        val firstLetter = getFirstLetter(cleanName).toString()
+        val currentTime = System.currentTimeMillis().toString()
 
         val newUser = UserModel(
             fullName = cleanName,
-            userName = getFirstWord(cleanName),
+            firstWord = firstWord,
+            firstLetter = firstLetter,
             email = email,
-            profileUrl = cloudinaryProfileUrl,
             createdAt = currentTime
         )
 
@@ -103,10 +104,10 @@ class DatabaseViewModel : ViewModel() {
                 val data = document.data!!
                 val userData = UserModel(
                     fullName = data["fullName"].toString(),
-                    userName = data["userName"].toString(),
+                    firstWord = data["firstWord"].toString(),
+                    firstLetter = data["firstLetter"].toString(),
                     email = data["email"].toString(),
-                    profileUrl = data["profileUrl"].toString(),
-                    createdAt = data["createdAt"].toString().toLong()
+                    createdAt = data["createdAt"].toString()
                 )
                 _userDataState.value = userData
                 onSuccess()
