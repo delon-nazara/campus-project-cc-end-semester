@@ -20,9 +20,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -60,21 +58,13 @@ import com.example.proyekakhircloudcomputing.data.model.UserModel
 import com.example.proyekakhircloudcomputing.ui.screen.archive.CapsuleCard
 import com.example.proyekakhircloudcomputing.ui.screen.archive.CapsuleGrid
 import com.example.proyekakhircloudcomputing.ui.screen.archive.DropdownButton
-import com.example.proyekakhircloudcomputing.ui.screen.archive.TopCapsuleCard
-import com.example.proyekakhircloudcomputing.ui.screen.archive.TopCapsuleSection
 
 @Preview
 @Composable
 fun DiscoverScreen(
     userData: UserModel? = UserModel(),
     capsulesData: List<CapsuleModel>? = null,
-    onUserProfileClicked: () -> Unit = {},
-    onNotificationIconClicked: () -> Unit = {},
-    onHomeButtonClicked: () -> Unit = {},
-    onCapsuleButtonClicked: () -> Unit = {},
-    onDiscoverButtonClicked: () -> Unit = {},
-    onNotificationButtonClicked: () -> Unit = {},
-    onSettingButtonClicked: () -> Unit = {}
+    navigateTo: (String) -> Unit = {},
 ) {
     Box(
         modifier = Modifier
@@ -105,9 +95,8 @@ fun DiscoverScreen(
                     .padding(bottom = 16.dp)
             ) {
                 TopBar(
-                    userProfileUrl = userData?.profileUrl,
-                    onUserProfileClicked = onUserProfileClicked,
-                    onNotificationIconClicked = onNotificationIconClicked
+                    userData = userData,
+                    navigateTo = navigateTo
                 )
 
                 TopCapsuleSection(publicCapsules)
@@ -121,11 +110,7 @@ fun DiscoverScreen(
                 .align(Alignment.BottomCenter)
                 .padding(16.dp)
                 .fillMaxWidth(),
-            onHomeButtonClicked = onHomeButtonClicked,
-            onCapsuleButtonClicked = onCapsuleButtonClicked,
-            onDiscoverButtonClicked = onDiscoverButtonClicked,
-            onNotificationButtonClicked = onNotificationButtonClicked,
-            onSettingButtonClicked = onSettingButtonClicked
+            navigateTo = navigateTo
         )
     }
 }

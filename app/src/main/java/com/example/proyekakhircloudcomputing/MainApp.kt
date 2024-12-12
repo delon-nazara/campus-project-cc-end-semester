@@ -1,7 +1,9 @@
 package com.example.proyekakhircloudcomputing
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -53,20 +55,22 @@ fun MainApp(context: Context) {
     }
 
     val startDestination = Route.WELCOME_SCREEN.name
-    if (userAuthState != null) {
-        databaseViewModel.getUserFromDatabase(
-            userId = userAuthState!!.uid,
-            onSuccess = {
-                databaseViewModel.getCapsulesFromDatabase()
-                navigateTo(Route.HOME_SCREEN.name, true)
-            },
-            onFailure = {
-                showToast(context, "Failed to get data from database")
-            },
-            showLoading = { state ->
-                authenticationViewModel.showLoading(state)
-            }
-        )
+    LaunchedEffect(Unit) {
+        if (userAuthState != null) {
+            databaseViewModel.getUserFromDatabase(
+                userId = userAuthState!!.uid,
+                onSuccess = {
+                    databaseViewModel.getCapsulesFromDatabase()
+                    navigateTo(Route.HOME_SCREEN.name, true)
+                },
+                onFailure = {
+                    showToast(context, "Failed to get data from database")
+                },
+                showLoading = { state ->
+                    authenticationViewModel.showLoading(state)
+                }
+            )
+        }
     }
 
     NavHost(
@@ -156,44 +160,59 @@ fun MainApp(context: Context) {
         }
 
         // Route home screen
-        composable(route = Route.HOME_SCREEN.name) {
+        composable(Route.HOME_SCREEN.name) {
             HomeScreen(
                 userData = userDataState,
-                capsulesData = capsulesState
+                capsulesData = capsulesState,
+                navigateTo = { route ->
+                    navigateTo(route, false)
+                }
             )
         }
 
         // Route capsule screen
-        composable(route = Route.CAPSULE_SCREEN.name) {
+        composable(Route.CAPSULE_SCREEN.name) {
             CapsuleScreen(
                 userData = userDataState,
-                capsulesData = capsulesState
+                capsulesData = capsulesState,
+                navigateTo = { route ->
+                    navigateTo(route, false)
+                }
             )
         }
 
         // Route discover screen
-        composable(route = Route.DISCOVER_SCREEN.name) {
+        composable(Route.DISCOVER_SCREEN.name) {
             DiscoverScreen(
                 userData = userDataState,
-                capsulesData = capsulesState
+                capsulesData = capsulesState,
+                navigateTo = { route ->
+                    navigateTo(route, false)
+                }
             )
         }
 
         // Route notification screen
-        composable(route = Route.NOTIFICATION_SCREEN.name) {
+        composable(Route.NOTIFICATION_SCREEN.name) {
             NotificationScreen(
-                userData = userDataState
+                userData = userDataState,
+                navigateTo = { route ->
+                    navigateTo(route, false)
+                }
             )
         }
 
         // Route setting screen
-        composable(route = Route.SETTING_SCREEN.name) {
+        composable(Route.SETTING_SCREEN.name) {
             SettingScreen(
                 userData = userDataState,
                 onLogoutButtonClicked = {
                     authenticationViewModel.logout()
                     databaseViewModel.clearAllData()
                     navigateTo(Route.WELCOME_SCREEN.name, true)
+                },
+                navigateTo = { route ->
+                    navigateTo(route, false)
                 }
             )
         }

@@ -22,6 +22,6 @@ fun getFirstWord(name: String): String {
     return name.split(" ").first()
 }
 
-fun getFirstChar(name: String): Char {
+fun getFirstLetter(name: String): Char {
     return name[0].lowercaseChar()
 }

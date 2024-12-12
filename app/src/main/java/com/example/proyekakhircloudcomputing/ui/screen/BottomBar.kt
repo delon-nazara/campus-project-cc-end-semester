@@ -25,16 +25,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhircloudcomputing.R
+import com.example.proyekakhircloudcomputing.data.source.Route
 
 @Preview
 @Composable
 fun BottomBar(
     modifier: Modifier = Modifier,
-    onHomeButtonClicked: () -> Unit = {},
-    onCapsuleButtonClicked: () -> Unit = {},
-    onDiscoverButtonClicked: () -> Unit = {},
-    onNotificationButtonClicked: () -> Unit = {},
-    onSettingButtonClicked: () -> Unit = {}
+    navigateTo: (String) -> Unit = {},
 ) {
     Box(
         modifier = modifier
@@ -53,35 +50,35 @@ fun BottomBar(
             BottomBarMenuOld(
                 label = "Home",
                 iconId = R.drawable.iconhome,
-                onClick = onHomeButtonClicked
+                onClick = { navigateTo(Route.HOME_SCREEN.name) }
             )
 
             // Tombol Capsule
             BottomBarMenuOld(
                 label = "Capsule",
                 iconId = R.drawable.iconcapsule,
-                onClick = onCapsuleButtonClicked
+                onClick = { navigateTo(Route.CAPSULE_SCREEN.name) }
             )
 
             // Tombol Discover
             BottomBarMenuOld(
                 label = "Discover",
                 iconId = R.drawable.iconsearch,
-                onClick = onDiscoverButtonClicked
+                onClick = { navigateTo(Route.DISCOVER_SCREEN.name) }
             )
 
             // Tombol Notification
             BottomBarMenuOld(
                 label = "Notification",
                 iconId = R.drawable.iconnotip,
-                onClick = onNotificationButtonClicked
+                onClick = { navigateTo(Route.NOTIFICATION_SCREEN.name) }
             )
 
             // Tombol Settings
             BottomBarMenuOld(
                 label = "Setting",
                 iconId = R.drawable.icongear,
-                onClick = onSettingButtonClicked
+                onClick = { navigateTo(Route.SETTING_SCREEN.name) }
             )
         }
     }

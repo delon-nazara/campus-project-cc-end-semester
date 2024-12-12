@@ -1,6 +1,5 @@
 package com.example.proyekakhircloudcomputing.ui.screen
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,7 +19,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.remember
@@ -45,13 +43,7 @@ import com.example.proyekakhircloudcomputing.data.model.UserModel
 fun HomeScreen(
     userData: UserModel? = UserModel(),
     capsulesData: List<CapsuleModel>? = null,
-    onUserProfileClicked: () -> Unit = {},
-    onNotificationIconClicked: () -> Unit = {},
-    onHomeButtonClicked: () -> Unit = {},
-    onCapsuleButtonClicked: () -> Unit = {},
-    onDiscoverButtonClicked: () -> Unit = {},
-    onNotificationButtonClicked: () -> Unit = {},
-    onSettingButtonClicked: () -> Unit = {},
+    navigateTo: (String) -> Unit = {},
 ) {
     Box(
         modifier = Modifier
@@ -63,14 +55,13 @@ fun HomeScreen(
                 .fillMaxSize()
         ) {
             TopBar(
-                userProfileUrl = userData?.profileUrl,
-                onUserProfileClicked = onUserProfileClicked,
-                onNotificationIconClicked = onNotificationIconClicked
+                userData = userData,
+                navigateTo = navigateTo
             )
             Spacer(modifier = Modifier.height(35.dp))
 
             Text(
-                text = "Halo, ${userData?.userName}",
+                text = "Halo, ${userData?.firstWord}",
                 fontSize = 25.sp,
                 color = Color.White,
                 textAlign = TextAlign.Center,
@@ -101,11 +92,7 @@ fun HomeScreen(
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
                 .padding(16.dp),
-            onHomeButtonClicked = onHomeButtonClicked,
-            onCapsuleButtonClicked = onCapsuleButtonClicked,
-            onDiscoverButtonClicked = onDiscoverButtonClicked,
-            onNotificationButtonClicked = onNotificationButtonClicked,
-            onSettingButtonClicked = onSettingButtonClicked
+            navigateTo = navigateTo
         )
     }
 }

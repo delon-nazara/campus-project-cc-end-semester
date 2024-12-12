@@ -27,14 +27,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.proyekakhircloudcomputing.R
+import com.example.proyekakhircloudcomputing.data.model.UserModel
 import com.example.proyekakhircloudcomputing.data.source.Route
 
 @Preview
 @Composable
 fun TopBar(
-    userProfileUrl: String? = null,
-    onUserProfileClicked: () -> Unit = {},
-    onNotificationIconClicked: () -> Unit = {}
+    userData: UserModel? = UserModel(),
+    navigateTo: (String) -> Unit = {},
 ) {
     Row(
         modifier = Modifier
@@ -65,12 +65,21 @@ fun TopBar(
                     horizontalArrangement = Arrangement.spacedBy(64.dp), // Jarak antar elemen
                 ) {
                     // Gambar pertama
-                    AsyncImage(
-                        model = userProfileUrl,
+                    Image(
+                        painter = painterResource(
+                            when (userData?.firstLetter) {
+                                "a" -> R.drawable.alphabet_profile_picture_d
+                                "b" -> R.drawable.alphabet_profile_picture_d
+                                "c" -> R.drawable.alphabet_profile_picture_d
+                                "d" -> R.drawable.alphabet_profile_picture_d
+                                else -> R.drawable.alphabet_profile_picture_d
+                                // todo
+                            }
+                        ),
                         contentDescription = "Profile picture",
-                        placeholder = painterResource(R.drawable.profile_picture_temporary),
-                        error = painterResource(R.drawable.profile_picture_temporary),
-                        modifier = Modifier.padding(start = 12.dp).size(40.dp).clip(CircleShape).clickable { onUserProfileClicked() }
+                        modifier = Modifier.padding(start = 12.dp).size(40.dp).clip(CircleShape).clickable {
+                            navigateTo(Route.SETTING_SCREEN.name)
+                        }
                     )
                     // Gambar kedua (Memoria logo)
                     Image(
@@ -83,7 +92,9 @@ fun TopBar(
                     Image(
                         painter = painterResource(id = R.drawable.notifications), // Gambar kanan
                         contentDescription = "Notification icon",
-                        modifier = Modifier.size(30.dp).clickable { onNotificationIconClicked() }
+                        modifier = Modifier.size(30.dp).clickable {
+                            navigateTo(Route.NOTIFICATION_SCREEN.name)
+                        }
                     )
 
                     Spacer(modifier = Modifier.width(24.dp))
