@@ -2,9 +2,11 @@ package com.example.proyekakhircloudcomputing.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,6 +16,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
@@ -34,7 +37,7 @@ import androidx.compose.ui.unit.sp
 import com.example.proyekakhircloudcomputing.R
 import com.example.proyekakhircloudcomputing.data.model.CapsuleModel
 import com.example.proyekakhircloudcomputing.data.model.UserModel
-import com.example.proyekakhircloudcomputing.ui.screen.archive.ImageItem
+import com.example.proyekakhircloudcomputing.data.source.Route
 
 @Preview(showBackground = true)
 @Composable
@@ -93,6 +96,30 @@ fun CapsuleScreen(
                 }
             }
         }
+
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+                .background(Color(0xFFf2a73b), RoundedCornerShape(16.dp))
+                .clickable {
+                    navigateTo(Route.CREATE_CAPSULE_SCREEN.name)
+                }
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.add_icon),
+                contentDescription = null
+            )
+            Text(
+                text = "Tambahkan Kapsul",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(16.dp)
+            )
+        }
+
         BottomBar(
             modifier = Modifier
                 .fillMaxWidth()
@@ -145,60 +172,3 @@ fun ImageCard(
         )
     }
 }
-
-val sampleImages = listOf(
-    ImageItem(
-        imageResId = R.drawable.new_year,
-        contributorIconResId = R.drawable.arkan,
-        title = "2024 New Year",
-        location = "Makassar",
-        isLocked = false
-    ),
-    ImageItem(
-        imageResId = R.drawable.new_year,
-        contributorIconResId = R.drawable.arkan,
-        title = "2024 New Year",
-        location = "Makassar",
-        isLocked = true
-    ),
-    ImageItem(
-        imageResId = R.drawable.makassar,
-        contributorIconResId = R.drawable.arkan,
-        title = "Makassar",
-        location = "Makassar",
-        isLocked = true
-    ),
-    ImageItem(
-        imageResId = R.drawable.makassar,
-        contributorIconResId = R.drawable.arkan,
-        title = "Makassar",
-        location = "Makassar",
-        isLocked = false
-    ),
-    ImageItem(
-        imageResId = R.drawable.capsule,
-        contributorIconResId = R.drawable.arkan,
-        title = "2024 New Year",
-        location = "Makassar",
-        isLocked = false
-    ),
-    ImageItem(
-        imageResId = R.drawable.capsule,
-        contributorIconResId = R.drawable.arkan,
-        title = "2024 New Year",
-        location = "Makassar",
-        isLocked = false
-    ),
-
-)
-
-data class ImageItem(
-//    val imageUrl: String, // Jika gambar menggunakan URL dari Cloud
-//    val contributorIconUrl: String, //Jika ikon kontributor menggunakan URL dari Cloud
-    val imageResId: Int, // Menggunakan Int untuk referensi ke R.drawable.nama_gambar
-    val contributorIconResId: Int, // Juga menggunakan Int untuk ikon kontributor
-    val title: String,
-    val location: String,
-    val isLocked: Boolean
-
-)

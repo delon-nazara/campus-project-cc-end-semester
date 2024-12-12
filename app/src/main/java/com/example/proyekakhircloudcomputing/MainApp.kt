@@ -13,6 +13,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.proyekakhircloudcomputing.data.source.Route
 import com.example.proyekakhircloudcomputing.ui.screen.CapsuleScreen
+import com.example.proyekakhircloudcomputing.ui.screen.CreateCapsuleScreen
+import com.example.proyekakhircloudcomputing.ui.screen.DetailCapsuleScreen
 import com.example.proyekakhircloudcomputing.ui.screen.DiscoverScreen
 import com.example.proyekakhircloudcomputing.ui.screen.HomeScreen
 import com.example.proyekakhircloudcomputing.ui.screen.LoginScreen
@@ -215,6 +217,15 @@ fun MainApp(context: Context) {
                     navigateTo(route, false)
                 }
             )
+        }
+
+        // Route create capsule screen
+        composable(Route.CREATE_CAPSULE_SCREEN.name) {
+            CreateCapsuleScreen()
+        }
+        // Route detail capsule screen
+        composable(Route.DETAIL_CAPSULE_SCREEN.name) {
+            DetailCapsuleScreen()
         }
     }
 }
