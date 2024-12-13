@@ -42,6 +42,10 @@ fun MainApp(context: Context) {
     val capsulesState by databaseViewModel.capsulesState.collectAsState()
     val addCapsuleSuccess by databaseViewModel.addCapsuleSuccess.collectAsState()
 
+    val groupedCapsules = capsulesState?.groupBy { it.type }
+    val publicCapsules = groupedCapsules?.get("Public")
+    val privateCapsules = groupedCapsules?.get("Private")
+
     val navController: NavHostController = rememberNavController()
     val navigateTo: (String, Boolean) -> Unit = { route, clearAll ->
         navController.navigate(route) {
@@ -166,7 +170,8 @@ fun MainApp(context: Context) {
         composable(Route.HOME_SCREEN.name) {
             HomeScreen(
                 userData = userDataState,
-                capsulesData = capsulesState,
+                privateCapsules = privateCapsules,
+                publicCapsules = publicCapsules,
                 navigateTo = { route ->
                     navigateTo(route, false)
                 }
@@ -223,8 +228,8 @@ fun MainApp(context: Context) {
         // Route create capsule screen
         composable(Route.CREATE_CAPSULE_SCREEN.name) {
             CreateCapsuleScreen(
-                navigateTo = { route ->
-                    navigateTo(route, false)
+                popBackStack = {
+                    navController.popBackStack()
                 },
                 loadingState = loadingState,
                 addCapsuleSuccess = addCapsuleSuccess,

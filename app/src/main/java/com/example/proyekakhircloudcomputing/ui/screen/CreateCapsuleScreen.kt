@@ -62,7 +62,7 @@ import java.util.Locale
 @Preview
 @Composable
 fun CreateCapsuleScreen(
-    navigateTo: (String) -> Unit = {},
+    popBackStack: () -> Unit = {},
     loadingState: Boolean = false,
     addCapsuleSuccess: Boolean = false,
     navigateToDetailScreen: () -> Unit = {},
@@ -100,7 +100,7 @@ fun CreateCapsuleScreen(
                 // Tombol Kembali
                 IconButton(
                     onClick = {
-                        navigateTo(Route.CAPSULE_SCREEN.name)
+                        popBackStack()
                     },
                     modifier = Modifier
                         .align(Alignment.CenterStart)

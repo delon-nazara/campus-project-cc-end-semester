@@ -2,6 +2,7 @@ package com.example.proyekakhircloudcomputing.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,9 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
@@ -37,12 +41,15 @@ import androidx.compose.ui.unit.sp
 import com.example.proyekakhircloudcomputing.R
 import com.example.proyekakhircloudcomputing.data.model.CapsuleModel
 import com.example.proyekakhircloudcomputing.data.model.UserModel
+import com.example.proyekakhircloudcomputing.data.source.Route
+import com.example.proyekakhircloudcomputing.ui.screen.archive.DynamicLazyRowWithButton
 
 @Preview
 @Composable
 fun HomeScreen(
     userData: UserModel? = UserModel(),
-    capsulesData: List<CapsuleModel>? = null,
+    publicCapsules: List<CapsuleModel>? = null,
+    privateCapsules: List<CapsuleModel>? = null,
     navigateTo: (String) -> Unit = {},
 ) {
     Box(
@@ -80,10 +87,12 @@ fun HomeScreen(
             Spacer(modifier = Modifier.height(40.dp))
 
             CapsulesSection(
-                capsulesData = capsulesData,
+                privateCapsules = privateCapsules,
+                publicCapsules = publicCapsules,
                 modifier = Modifier
                     .weight(1f)
-                    .fillMaxSize()
+                    .fillMaxSize(),
+                navigateTo = navigateTo
             )
         }
 
@@ -99,8 +108,10 @@ fun HomeScreen(
 
 @Composable
 fun CapsulesSection(
-    capsulesData: List<CapsuleModel>?,
-    modifier: Modifier = Modifier
+    publicCapsules: List<CapsuleModel>?,
+    privateCapsules: List<CapsuleModel>?,
+    modifier: Modifier = Modifier,
+    navigateTo: (String) -> Unit = {},
 ) {
     Column(
         modifier = modifier
@@ -110,64 +121,120 @@ fun CapsulesSection(
                 shape = RoundedCornerShape(topStart = 50.dp,topEnd = 50.dp),
             )
     ) {
-        val groupedCapsules = remember { mutableStateMapOf<String, List<CapsuleModel>>() }
-        val publicCapsules = remember { mutableStateListOf<CapsuleModel>() }
-        val privateCapsules = remember { mutableStateListOf<CapsuleModel>() }
-
-        if (capsulesData != null) {
-            groupedCapsules.clear()
-            groupedCapsules.putAll(capsulesData.groupBy { it.type })
-
-            publicCapsules.clear()
-            publicCapsules.addAll(groupedCapsules["Public"] ?: emptyList())
-
-            privateCapsules.clear()
-            privateCapsules.addAll(groupedCapsules["Private"] ?: emptyList())
-
-            Spacer(modifier = Modifier.height(32.dp))
-            Box(
-                modifier = Modifier
-                    .padding(start = 16.dp)
-                    .wrapContentSize()
-                    .shadow(
-                        elevation = 8.dp,
-                        shape = RoundedCornerShape(50.dp),
-                        clip = false
-                    )
-                    .clip(RoundedCornerShape(50.dp))
-                    .background(colorResource(R.color.orange))
-                    .padding(horizontal = 24.dp, vertical = 16.dp)
-            ) {
-                Text(
-                    text = "Kapsul Public",
-                    fontSize = 20.sp,
-                    color = colorResource(R.color.yellow_background),
-                    fontWeight = FontWeight.SemiBold
+        Spacer(modifier = Modifier.height(32.dp))
+        Box(
+            modifier = Modifier
+                .padding(start = 16.dp)
+                .wrapContentSize()
+                .shadow(
+                    elevation = 8.dp,
+                    shape = RoundedCornerShape(50.dp),
+                    clip = false,
                 )
-            }
-            DynamicLazyRowWithButton(publicCapsules)
+                .clip(RoundedCornerShape(50.dp))
+                .background(colorResource(R.color.orange))
+                .padding(horizontal = 24.dp, vertical = 16.dp)
+        ) {
+            Text(
+                text = "Kapsul Pribadi",
+                fontSize = 18.sp,
+                color = colorResource(R.color.yellow_background),
+                fontWeight = FontWeight.SemiBold
+            )
+        }
 
-            Box(
-                modifier = Modifier
-                    .padding(start = 16.dp)
-                    .wrapContentSize()
-                    .shadow(
-                        elevation = 8.dp,
-                        shape = RoundedCornerShape(50.dp),
-                        clip = false
-                    )
-                    .clip(RoundedCornerShape(50.dp))
-                    .background(colorResource(R.color.orange))
-                    .padding(horizontal = 24.dp, vertical = 16.dp)
-            ) {
-                Text(
-                    text = "Kapsul Pribadi",
-                    fontSize = 20.sp,
-                    color = colorResource(R.color.yellow_background),
-                    fontWeight = FontWeight.SemiBold
-                )
-            }
+        Spacer(modifier = Modifier.height(8.dp))
+        if (privateCapsules != null) {
             DynamicLazyRowWithButton(privateCapsules)
+        } else {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .padding(vertical = 16.dp, horizontal = 30.dp)
+                    .size(120.dp)
+                    .background(
+                        colorResource(R.color.orange),
+                        RoundedCornerShape(16.dp)
+                    )
+                    .clickable {
+                        navigateTo(Route.CREATE_CAPSULE_SCREEN.name)
+                    }
+            ) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .size(105.dp)
+                        .background(
+                            colorResource(R.color.yellow_background),
+                            RoundedCornerShape(10.dp)
+                        )
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_add),
+                        contentDescription = "Tambah",
+                        tint = colorResource(R.color.orange), // Ikon berwarna orange
+                        modifier = Modifier.size(64.dp) // Ukuran ikon
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+        Box(
+            modifier = Modifier
+                .padding(start = 16.dp)
+                .wrapContentSize()
+                .shadow(
+                    elevation = 8.dp,
+                    shape = RoundedCornerShape(50.dp),
+                    clip = false
+                )
+                .clip(RoundedCornerShape(50.dp))
+                .background(colorResource(R.color.orange))
+                .padding(horizontal = 24.dp, vertical = 16.dp)
+        ) {
+            Text(
+                text = "Kapsul Public",
+                fontSize = 18.sp,
+                color = colorResource(R.color.yellow_background),
+                fontWeight = FontWeight.SemiBold
+            )
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+        if (publicCapsules != null) {
+            DynamicLazyRowWithButton(publicCapsules)
+        } else {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .padding(vertical = 16.dp, horizontal = 30.dp)
+                    .size(120.dp)
+                    .background(
+                        colorResource(R.color.orange),
+                        RoundedCornerShape(16.dp)
+                    )
+                    .clickable {
+                        navigateTo(Route.CREATE_CAPSULE_SCREEN.name)
+                    }
+            ) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .size(105.dp)
+                        .background(
+                            colorResource(R.color.yellow_background),
+                            RoundedCornerShape(10.dp)
+                        )
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_add),
+                        contentDescription = "Tambah",
+                        tint = colorResource(R.color.orange), // Ikon berwarna orange
+                        modifier = Modifier.size(64.dp) // Ukuran ikon
+                    )
+                }
+            }
         }
     }
 }
@@ -233,7 +300,8 @@ fun CapsuleItem2(
             modifier = Modifier.padding(8.dp),
             text = capsuleData.title,
             fontSize = 16.sp,
-            color = Color.Black
+            color = Color.Black,
+            textAlign = TextAlign.Center
         )
     }
 }

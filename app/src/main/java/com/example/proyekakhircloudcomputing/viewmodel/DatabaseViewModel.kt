@@ -160,23 +160,23 @@ class DatabaseViewModel : ViewModel() {
     }
 
     fun getCapsulesFromDatabase() {
-        capsulesReference.get()
-            .addOnSuccessListener { documents ->
-                val listCapsulesData = documents.map { document ->
-                    val data = document.data
-                    CapsuleModel(
-                        indexCover = data["indexCover"].toString().toInt(),
-                        title = data["title"].toString(),
-                        description = data["description"].toString(),
-                        type = data["type"].toString(),
-                        createdAt = data["createdAt"].toString().toLong(),
-                        lockedAt = data["lockedAt"].toString().toLong(),
-                        unlockedAt = data["unlockedAt"].toString().toLong()
-                    )
+        capsulesReference
+            .addSnapshotListener { snapshots, e ->
+                if (e == null) {
+                    _capsulesState.value = snapshots?.documents?.mapNotNull { document ->
+                        val data = document.data!!
+                        CapsuleModel(
+                            indexCover = data["indexCover"].toString().toInt(),
+                            title = data["title"].toString(),
+                            description = data["description"].toString(),
+                            type = data["type"].toString(),
+                            createdAt = data["createdAt"].toString().toLong(),
+                            lockedAt = data["lockedAt"].toString().toLong(),
+                            unlockedAt = data["unlockedAt"].toString().toLong()
+                        )
+                    }
                 }
-                _capsulesState.value = listCapsulesData
             }
-            .addOnFailureListener {}
     }
 
     fun resetAddCapsuleSuccess() {
