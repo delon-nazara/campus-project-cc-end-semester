@@ -53,9 +53,10 @@ import com.example.proyekakhircloudcomputing.R
 @Composable
 fun CreateCapsuleScreen() {
     var showDialog by remember { mutableStateOf(false) }
-    var judulKapsul by remember { mutableStateOf("") }
-    var deskripsiKapsul by remember { mutableStateOf("") }
-    var isChecked by remember { mutableStateOf(false) }
+    var capsuleTitle by remember { mutableStateOf("") }
+    var capsuleDescription by remember { mutableStateOf("") }
+    var capsuleType by remember { mutableStateOf("Private") }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -64,50 +65,60 @@ fun CreateCapsuleScreen() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(32.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Tombol Kembali
-            IconButton(
-                onClick = { /* Navigasi kembali */ },
-                modifier = Modifier
-                    .align(Alignment.Start)
-                    .background(colorResource(R.color.orange), CircleShape)
-                    .clickable{}
+            Box(
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_back),
-                    contentDescription = "Kembali",
-                    tint = colorResource(R.color.white) // Warna orange
+                // Tombol Kembali
+                IconButton(
+                    onClick = { /* Navigasi kembali */ },
+                    modifier = Modifier
+                        .align(Alignment.CenterStart)
+                        .background(colorResource(R.color.orange), CircleShape)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_back),
+                        contentDescription = "Kembali",
+                        tint = colorResource(R.color.white) // Warna orange
+                    )
+                }
+
+                // Header "Buat Kapsul"
+                Text(
+                    text = "Buat Kapsul",
+                    color = colorResource(R.color.white),
+                    fontSize = 18.sp,
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .background(
+                            colorResource(R.color.orange), // Warna orange
+                            RoundedCornerShape(16.dp)
+                        )
+                        .padding(horizontal = 30.dp, vertical = 12.dp)
                 )
             }
 
-            // Header "Buat Kapsul"
-            Text(
-                text = "Buat Kapsul",
-                color = colorResource(R.color.white),
-                fontSize = 24.sp,
-                modifier = Modifier
-                    .background(
-                        colorResource(R.color.orange), // Warna orange
-                        RoundedCornerShape(16.dp)
-                    )
-                    .padding(horizontal = 24.dp, vertical = 8.dp)
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(36.dp))
 
             // Ikon Tambah
             Box(
                 modifier = Modifier
                     .size(100.dp)
-                    .background(colorResource(R.color.orange), RoundedCornerShape(16.dp)), // Kotak luar berwarna orange dengan rounded corner
+                    .background(
+                        colorResource(R.color.orange),
+                        RoundedCornerShape(16.dp)
+                    ), // Kotak luar berwarna orange dengan rounded corner
                 contentAlignment = Alignment.Center
             ) {
                 Box(
                     modifier = Modifier
                         .size(85.dp)
-                        .background(colorResource(R.color.yellow_background), RoundedCornerShape(10.dp)), // Kotak dalam berwarna putih dengan rounded corner
+                        .background(
+                            colorResource(R.color.yellow_background),
+                            RoundedCornerShape(10.dp)
+                        ), // Kotak dalam berwarna putih dengan rounded corner
                     contentAlignment = Alignment.Center
                 ) {
                     IconButton(
@@ -124,14 +135,14 @@ fun CreateCapsuleScreen() {
                 }
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             // TextField untuk Judul
             TextField(
-                value = judulKapsul, // Nilai teks
-                onValueChange = { judulKapsul = it },
+                value = capsuleTitle, // Nilai teks
+                onValueChange = { capsuleTitle = it },
                 placeholder = {
-                    if (judulKapsul.isEmpty()) {
+                    if (capsuleTitle.isEmpty()) {
                         Text(
                             text = "Judul Kapsul",
                             color = colorResource(R.color.gray_text),
@@ -162,14 +173,14 @@ fun CreateCapsuleScreen() {
                     focusedContainerColor = colorResource(R.color.blue_main),
                 )
             )
-            Spacer(modifier = Modifier.height(5.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
             // TextField untuk Deskripsi Kapsul
             TextField(
-                value = deskripsiKapsul, // Nilai teks
-                onValueChange = { deskripsiKapsul = it },
+                value = capsuleDescription, // Nilai teks
+                onValueChange = { capsuleDescription = it },
                 placeholder = {
-                    if (deskripsiKapsul.isEmpty()) {
+                    if (capsuleDescription.isEmpty()) {
                         Text(
                             text = "Deskripsi Kapsul",
                             color = colorResource(R.color.gray_text),
@@ -201,7 +212,7 @@ fun CreateCapsuleScreen() {
                 )
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(36.dp))
 
             // Pilihan Pribadi dan Publik
             Row(
@@ -209,10 +220,13 @@ fun CreateCapsuleScreen() {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Button(
-                    onClick = { },
+                    onClick = { capsuleType = "Private" },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Transparent,
-                        contentColor = Color(0xFFFAB900)
+                        containerColor = when (capsuleType) {
+                            "Private" -> colorResource(R.color.orange)
+                            else -> Color.Transparent
+                        },
+                        contentColor = Color.White
                     ),
                     border = BorderStroke(2.dp, Color(0xFFFAB900)),
                     shape = RoundedCornerShape(16.dp),
@@ -220,172 +234,91 @@ fun CreateCapsuleScreen() {
                 ) {
                     Text(
                         text = "Pribadi",
+                        fontWeight = FontWeight.Bold,
                         color = colorResource(R.color.gray_text)
                     )
                 }
                 Spacer(modifier = Modifier.width(8.dp))
                 Button(
-                    onClick = { },
+                    onClick = { capsuleType = "Public" },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Transparent,
-                        contentColor = Color(0xFFFAB900)
+                        containerColor = when (capsuleType) {
+                            "Public" -> colorResource(R.color.orange)
+                            else -> Color.Transparent
+                        },
+                        contentColor = Color.White
                     ),
                     border = BorderStroke(2.dp, Color(0xFFFAB900)),
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text(text ="Publik",
+                    Text(
+                        text = "Publik",
+                        fontWeight = FontWeight.Bold,
                         color = colorResource(R.color.gray_text)
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
-            // Teks "Dikunci" dan "Dibuka"
-            Row(
-                horizontalArrangement = Arrangement.Center,
+            Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Text(
-                        text = "DIKUNCI",
-                        color = colorResource(R.color.gray_text),
-                        fontSize = 16.sp
-                    )
-                    Button(
-                        onClick = { /* Aksi tombol Dikunci */ },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = colorResource(R.color.orange),
-                            contentColor = colorResource(R.color.white)
-                        ),
-                        shape = RoundedCornerShape(16.dp)
-                    ) {
-                        Text(
-                            text = "Tombol Dikunci",
-                            color = colorResource(R.color.gray_text)
-                            )
-                    }
-                }
-                Spacer(modifier = Modifier.width(8.dp))
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Text(
-                        text = "DIBUKA",
-                        color = colorResource(R.color.gray_text),
-                        fontSize = 16.sp
-                    )
-                    Button(
-                        onClick = { /* Aksi tombol Dibuka */ },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = colorResource(R.color.orange),
-                            contentColor = colorResource(R.color.white)
-                        ),
-                        shape = RoundedCornerShape(16.dp)
-                    ) {
-                        Text(
-                            text = "Tombol Dibuka",
-                            color = colorResource(R.color.gray_text)
-                        )
-                    }
-                }
-            }
-
-            Spacer(modifier = Modifier.height(4.dp))
-
-            // Checkbox dan Teks
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Checkbox(
-                    checked = isChecked,
-                    onCheckedChange = {isChecked = it},
-                    colors = CheckboxDefaults.colors(
-                        checkedColor = colorResource(R.color.gray_text),  // Warna saat Checkbox dicentang
-                        uncheckedColor = colorResource(R.color.gray_text),
-                        checkmarkColor = colorResource(R.color.orange)
-                    )
-                )
                 Text(
-                    text = "Kunci Kapsul Setelah Dibuat",
+                    text = "Kapsul dikunci pada:",
+                    color = colorResource(R.color.gray_text),
                     fontSize = 16.sp,
-                    color = colorResource(R.color.gray_text)
+                    modifier = Modifier.padding(bottom = 6.dp)
                 )
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Field Search dan Daftar Kolaborasi dalam satu Box
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.Transparent) // Background transparan untuk keseluruhan Box
-                    .padding(8.dp)
-                    .border(2.dp, Color(0xFFFAB900), RoundedCornerShape(8.dp))
-            ) {
-                Column {
-                    // Field Search Pengguna
-                    TextField(
-                        value = TextFieldValue(""),
-                        onValueChange = { },
-                        placeholder = {
-                            Text(
-                                text = "Cari Pengguna",
-                                color = colorResource(R.color.gray_text)
-                            )
-                        },
-                        leadingIcon = {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_search),
-                                contentDescription = "Search",
-                                tint = colorResource(R.color.orange)
-                            )
-                        },
-                        textStyle = TextStyle(
-                            color = colorResource(R.color.white),
-                            textAlign = TextAlign.Start
-                        ),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(Color.Transparent) // Background transparan untuk Search
-                            .drawBehind {
-                                drawLine(
-                                    color = Color(0xFFFFA500), // Warna garis oranye
-                                    start = Offset(0f, size.height), // Mulai dari ujung kiri bawah
-                                    end = Offset(size.width, size.height), // Sampai ujung kanan bawah
-                                    strokeWidth = 8.dp.toPx() // Ketebalan garis
-                                )
-                            },
-                        colors = TextFieldDefaults.colors(
-                            unfocusedTextColor = colorResource(R.color.green_kahf),
-                            unfocusedContainerColor = colorResource(R.color.blue_main),
-                            focusedContainerColor = colorResource(R.color.blue_main),
-                        )
+                Button(
+                    onClick = { /* Aksi tombol Dikunci */ },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Transparent,
+                        contentColor = colorResource(R.color.white)
+                    ),
+                    border = BorderStroke(2.dp, Color(0xFFFAB900)),
+                    shape = RoundedCornerShape(16.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = "Pilih tanggal",
+                        color = colorResource(R.color.gray_text),
+                        modifier = Modifier.padding(8.dp)
                     )
-
-
-                    // Daftar Kolaborasi
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(60.dp)
-                            .background(Color.Transparent, RoundedCornerShape(8.dp)), // Background transparan untuk Daftar Kolaborasi
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "DAFTAR KOLABORASI",
-                            color = colorResource(R.color.gray_text)
-                        )
-                    }
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "Kapsul dibuka pada:",
+                    color = colorResource(R.color.gray_text),
+                    fontSize = 16.sp,
+                    modifier = Modifier.padding(bottom = 6.dp)
+                )
+                Button(
+                    onClick = { /* Aksi tombol Dibuka */ },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Transparent,
+                        contentColor = colorResource(R.color.white)
+                    ),
+                    border = BorderStroke(2.dp, Color(0xFFFAB900)),
+                    shape = RoundedCornerShape(16.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = "Pilih tanggal",
+                        color = colorResource(R.color.gray_text),
+                        modifier = Modifier.padding(8.dp)
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(30.dp))
 
             // Tombol Buat
             Button(
@@ -398,11 +331,11 @@ fun CreateCapsuleScreen() {
                     .fillMaxWidth()
                     .height(50.dp)
             ) {
-                Text(text = "BUAT")
+                Text(text = "Buat Kapsul Baru")
             }
         }
     }
-    // Dialog pop-up
+
     // Dialog pop-up
     if (showDialog) {
         Dialog(onDismissRequest = { showDialog = false }) {
@@ -413,7 +346,7 @@ fun CreateCapsuleScreen() {
                         color = colorResource(R.color.orange),
                         shape = RoundedCornerShape(20.dp)
                     )
-                    .padding(16.dp)
+                    .padding(30.dp)
             ) {
                 Column(
                     modifier = Modifier.fillMaxWidth(),
@@ -422,53 +355,29 @@ fun CreateCapsuleScreen() {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center
-                    ){
+                    ) {
                         Text(
                             text = "Kapsul Berhasil Dibuat!",
                             color = colorResource(R.color.gray_text),
-                            fontSize = 32.sp,
+                            fontSize = 24.sp,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(30.dp))
 
                     Image(
                         painter = painterResource(R.drawable.iconcapsule_confirmation),
                         contentDescription = null
                     )
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(30.dp))
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center
-                    ){
-                        Button(
-                            onClick = { /* gatau */},
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = colorResource(R.color.white),
-                                contentColor = colorResource(R.color.orange)
-                            ),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(50.dp)
-                        ) {
-                            Text(
-                                text = "Tambahkan Media",
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.SemiBold
-                            )
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center
-                    ){
+                    ) {
                         Button(
                             onClick = { showDialog = false },
                             colors = ButtonDefaults.buttonColors(
@@ -486,7 +395,6 @@ fun CreateCapsuleScreen() {
                             )
                         }
                     }
-                    Spacer(modifier = Modifier.height(16.dp))
                 }
             }
         }
