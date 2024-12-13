@@ -50,6 +50,7 @@ fun HomeScreen(
     userData: UserModel? = UserModel(),
     publicCapsules: List<CapsuleModel>? = null,
     privateCapsules: List<CapsuleModel>? = null,
+    navigateToDetailCapsule: (Long) -> Unit = {},
     navigateTo: (String) -> Unit = {},
 ) {
     Box(
@@ -89,6 +90,7 @@ fun HomeScreen(
             CapsulesSection(
                 privateCapsules = privateCapsules,
                 publicCapsules = publicCapsules,
+                navigateToDetailCapsule = navigateToDetailCapsule,
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxSize(),
@@ -110,6 +112,7 @@ fun HomeScreen(
 fun CapsulesSection(
     publicCapsules: List<CapsuleModel>?,
     privateCapsules: List<CapsuleModel>?,
+    navigateToDetailCapsule: (Long) -> Unit,
     modifier: Modifier = Modifier,
     navigateTo: (String) -> Unit = {},
 ) {
@@ -145,7 +148,10 @@ fun CapsulesSection(
 
         Spacer(modifier = Modifier.height(8.dp))
         if (privateCapsules != null) {
-            DynamicLazyRowWithButton(privateCapsules)
+            DynamicLazyRowWithButton(
+                capsulesData = privateCapsules,
+                navigateToDetailCapsule = navigateToDetailCapsule
+            )
         } else {
             Box(
                 contentAlignment = Alignment.Center,
@@ -203,7 +209,10 @@ fun CapsulesSection(
 
         Spacer(modifier = Modifier.height(8.dp))
         if (publicCapsules != null) {
-            DynamicLazyRowWithButton(publicCapsules)
+            DynamicLazyRowWithButton(
+                capsulesData = publicCapsules,
+                navigateToDetailCapsule = navigateToDetailCapsule
+            )
         } else {
             Box(
                 contentAlignment = Alignment.Center,
@@ -241,6 +250,7 @@ fun CapsulesSection(
 
 @Composable
 fun DynamicLazyRowWithButton(
+    navigateToDetailCapsule: (Long) -> Unit,
     capsulesData: List<CapsuleModel>
 ) {
     Row(
@@ -255,19 +265,25 @@ fun DynamicLazyRowWithButton(
             modifier = Modifier.weight(1f)
         ) {
             items(capsulesData) { capsule ->
-                CapsuleItem2(capsule)
+                CapsuleItem(
+                    capsuleData = capsule,
+                    navigateToDetailCapsule = navigateToDetailCapsule
+                )
             }
         }
     }
 }
 
 @Composable
-fun CapsuleItem2(
+fun CapsuleItem(
+    navigateToDetailCapsule: (Long) -> Unit,
     capsuleData: CapsuleModel
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.width(150.dp)
+        modifier = Modifier.width(150.dp).clickable {
+            navigateToDetailCapsule(capsuleData.createdAt)
+        }
     ) {
         Box(
             modifier = Modifier

@@ -25,3 +25,21 @@ fun getFirstWord(name: String): String {
 fun getFirstLetter(name: String): Char {
     return name[0].lowercaseChar()
 }
+
+fun convertMillisecondsToLargestUnit(milliseconds: Long): String {
+    val msInSecond: Long = 1000
+    val msInMinute: Long = msInSecond * 60
+    val msInHour: Long = msInMinute * 60
+    val msInDay: Long = msInHour * 24
+    val msInMonth: Long = msInDay * 30
+    val msInYear: Long = msInDay * 365
+
+    return when {
+        milliseconds >= msInYear -> "${milliseconds / msInYear} tahun"
+        milliseconds >= msInMonth -> "${milliseconds / msInMonth} bulan"
+        milliseconds >= msInDay -> "${milliseconds / msInDay} hari"
+        milliseconds >= msInHour -> "${milliseconds / msInHour} jam"
+        milliseconds >= msInMinute -> "${milliseconds / msInMinute} menit"
+        else -> "${milliseconds / msInSecond} detik"
+    }
+}

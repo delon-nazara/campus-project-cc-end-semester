@@ -1,6 +1,7 @@
 package com.example.proyekakhircloudcomputing.viewmodel
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.cloudinary.android.MediaManager
 import com.example.proyekakhircloudcomputing.data.model.CapsuleModel
@@ -57,6 +58,9 @@ class DatabaseViewModel : ViewModel() {
 
     private var _addCapsuleSuccess = MutableStateFlow(false)
     val addCapsuleSuccess: StateFlow<Boolean> = _addCapsuleSuccess.asStateFlow()
+
+    private var _detailCapsule = MutableStateFlow<CapsuleModel?>(null)
+    val detailCapsule: StateFlow<CapsuleModel?> = _detailCapsule.asStateFlow()
 
     fun addUserToDatabase(
         userAuth: FirebaseUser,
@@ -142,7 +146,9 @@ class DatabaseViewModel : ViewModel() {
             type = type,
             createdAt = System.currentTimeMillis(),
             lockedAt = format.parse(lockedAt)?.time ?: 0L,
-            unlockedAt = format.parse(unlockedAt)?.time ?: 0L
+            unlockedAt = format.parse(unlockedAt)?.time ?: 0L,
+            contributor = listOf(_userDataState.value!!.fullName),
+            imageId = emptyList()
         )
 
         showLoading(true)
@@ -150,6 +156,7 @@ class DatabaseViewModel : ViewModel() {
             .add(newCapsule)
             .addOnSuccessListener {
                 showLoading(false)
+                _detailCapsule.value = newCapsule
                 _addCapsuleSuccess.value = true
             }
             .addOnFailureListener {
@@ -163,19 +170,31 @@ class DatabaseViewModel : ViewModel() {
         capsulesReference
             .addSnapshotListener { snapshots, e ->
                 if (e == null) {
-                    _capsulesState.value = snapshots?.documents?.mapNotNull { document ->
-                        val data = document.data!!
-                        CapsuleModel(
-                            indexCover = data["indexCover"].toString().toInt(),
-                            title = data["title"].toString(),
-                            description = data["description"].toString(),
-                            type = data["type"].toString(),
-                            createdAt = data["createdAt"].toString().toLong(),
-                            lockedAt = data["lockedAt"].toString().toLong(),
-                            unlockedAt = data["unlockedAt"].toString().toLong()
-                        )
+                    val capsules: MutableList<CapsuleModel> = mutableListOf()
+                    snapshots?.documents?.forEach { document ->
+                        document.toObject(CapsuleModel::class.java)?.let { capsules.add(it) }
                     }
+                    _capsulesState.value = capsules
                 }
+            }
+    }
+
+    fun findCapsuleInDatabase(
+        createdAt: Long,
+        onSuccess: () -> Unit,
+        onFailure: () -> Unit,
+    ) {
+        capsulesReference
+            .whereEqualTo("createdAt", createdAt)
+            .get()
+            .addOnSuccessListener { documents ->
+                documents.documents.forEach { document ->
+                    _detailCapsule.value = document.toObject(CapsuleModel::class.java)
+                }
+                onSuccess()
+            }
+            .addOnFailureListener {
+                onFailure()
             }
     }
 

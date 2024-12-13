@@ -7,5 +7,7 @@ data class CapsuleModel(
     val type: String = "",
     val createdAt: Long = 0L,
     val lockedAt: Long = 0L,
-    val unlockedAt: Long = 0L
+    val unlockedAt: Long = 0L,
+    val contributor: List<String> = emptyList(),
+    val imageId: List<String> = emptyList()
 )

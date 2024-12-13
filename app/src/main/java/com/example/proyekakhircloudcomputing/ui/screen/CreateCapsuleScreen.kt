@@ -95,36 +95,31 @@ fun CreateCapsuleScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(colorResource(R.color.orange), RoundedCornerShape(16.dp))
             ) {
-                // Tombol Kembali
                 IconButton(
-                    onClick = {
-                        popBackStack()
-                    },
+                    onClick = { popBackStack() },
                     modifier = Modifier
                         .align(Alignment.CenterStart)
-                        .background(colorResource(R.color.orange), CircleShape)
+                        .padding(start = 8.dp)
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_back),
-                        contentDescription = "Kembali",
+                        contentDescription = "Tombol kembali",
                         tint = colorResource(R.color.white)
                     )
                 }
 
-                // Header "Buat Kapsul"
                 Text(
                     text = "Buat Kapsul",
-                    color = colorResource(R.color.white),
                     fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
                     modifier = Modifier
                         .align(Alignment.Center)
-                        .background(
-                            colorResource(R.color.orange), // Warna orange
-                            RoundedCornerShape(16.dp)
-                        )
-                        .padding(horizontal = 30.dp, vertical = 12.dp)
+                        .padding(vertical = 8.dp)
                 )
             }
 

@@ -2,6 +2,7 @@ package com.example.proyekakhircloudcomputing.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -43,6 +44,7 @@ import com.example.proyekakhircloudcomputing.data.model.UserModel
 fun DiscoverScreen(
     userData: UserModel? = UserModel(),
     capsulesData: List<CapsuleModel>? = null,
+    navigateToDetailCapsule: (Long) -> Unit = {},
     navigateTo: (String) -> Unit = {},
 ) {
     Box(
@@ -76,10 +78,16 @@ fun DiscoverScreen(
                     navigateTo = navigateTo
                 )
 
-                TopCapsuleSection(publicCapsules)
+                TopCapsuleSection(
+                    capsulesData = publicCapsules,
+                    navigateToDetailCapsule = navigateToDetailCapsule
+                )
             }
 
-            CapsulePublic(publicCapsules)
+            AllCapsuleSection(
+                capsulesData = publicCapsules,
+                navigateToDetailCapsule = navigateToDetailCapsule
+            )
         }
 
         BottomBar(
@@ -93,8 +101,9 @@ fun DiscoverScreen(
 }
 
 @Composable
-fun CapsulePublic(
-    capsuleData: List<CapsuleModel>
+fun AllCapsuleSection(
+    navigateToDetailCapsule: (Long) -> Unit,
+    capsulesData: List<CapsuleModel>
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -115,8 +124,11 @@ fun CapsulePublic(
             columns = GridCells.Fixed(2),
             modifier = Modifier.width(350.dp).height(325.dp)
         ) {
-            items(capsuleData) { capsule ->
-                TopCapsuleCard(capsule)
+            items(capsulesData) { capsule ->
+                CapsuleCard(
+                    capsuleData = capsule,
+                    navigateToDetailCapsule = navigateToDetailCapsule
+                )
             }
         }
     }
@@ -124,6 +136,7 @@ fun CapsulePublic(
 
 @Composable
 fun TopCapsuleSection(
+    navigateToDetailCapsule: (Long) -> Unit,
     capsulesData: List<CapsuleModel>
 ) {
     Column(
@@ -144,7 +157,10 @@ fun TopCapsuleSection(
 
         LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             items(capsulesData) { capsule ->
-                TopCapsuleCard(capsule)
+                CapsuleCard(
+                    capsuleData = capsule,
+                    navigateToDetailCapsule = navigateToDetailCapsule
+                )
             }
         }
         Spacer(modifier = Modifier.height(12.dp))
@@ -152,13 +168,19 @@ fun TopCapsuleSection(
 }
 
 @Composable
-fun TopCapsuleCard(capsuleData: CapsuleModel) {
+fun CapsuleCard(
+    navigateToDetailCapsule: (Long) -> Unit,
+    capsuleData: CapsuleModel
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.width(150.dp)
     ) {
         Box(
             modifier = Modifier
+                .clickable {
+                    navigateToDetailCapsule(capsuleData.createdAt)
+                }
                 .size(120.dp)
                 .clip(RoundedCornerShape(16.dp))
                 .background(colorResource(R.color.green_kahf))

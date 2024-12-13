@@ -44,6 +44,7 @@ import com.example.proyekakhircloudcomputing.data.source.Route
 fun CapsuleScreen(
     userData: UserModel? = UserModel(),
     capsulesData: List<CapsuleModel>? = null,
+    navigateToDetailCapsule: (Long) -> Unit = {},
     navigateTo: (String) -> Unit = {},
 ) {
     Column(
@@ -91,7 +92,10 @@ fun CapsuleScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     items(privateCapsules) { capsule ->
-                        ImageCard(capsule)
+                        ImageCard(
+                            capsuleData = capsule,
+                            navigateToDetailCapsule = navigateToDetailCapsule
+                        )
                     }
                 }
             }
@@ -133,11 +137,14 @@ fun CapsuleScreen(
 
 @Composable
 fun ImageCard(
+    navigateToDetailCapsule: (Long) -> Unit,
     capsuleData: CapsuleModel
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.width(150.dp)
+        modifier = Modifier.width(150.dp).clickable {
+            navigateToDetailCapsule(capsuleData.createdAt)
+        }
     ) {
         Box(
             modifier = Modifier

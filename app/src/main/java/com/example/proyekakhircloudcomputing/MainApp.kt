@@ -41,6 +41,7 @@ fun MainApp(context: Context) {
     val userDataState by databaseViewModel.userDataState.collectAsState()
     val capsulesState by databaseViewModel.capsulesState.collectAsState()
     val addCapsuleSuccess by databaseViewModel.addCapsuleSuccess.collectAsState()
+    val detailCapsule by databaseViewModel.detailCapsule.collectAsState()
 
     val groupedCapsules = capsulesState?.groupBy { it.type }
     val publicCapsules = groupedCapsules?.get("Public")
@@ -172,6 +173,17 @@ fun MainApp(context: Context) {
                 userData = userDataState,
                 privateCapsules = privateCapsules,
                 publicCapsules = publicCapsules,
+                navigateToDetailCapsule = { createdAt ->
+                    databaseViewModel.findCapsuleInDatabase(
+                        createdAt = createdAt,
+                        onSuccess = {
+                            navigateTo(Route.DETAIL_CAPSULE_SCREEN.name, false)
+                        },
+                        onFailure = {
+                            showToast(context, "Failed to fetch data, try again")
+                        }
+                    )
+                },
                 navigateTo = { route ->
                     navigateTo(route, false)
                 }
@@ -183,6 +195,17 @@ fun MainApp(context: Context) {
             CapsuleScreen(
                 userData = userDataState,
                 capsulesData = capsulesState,
+                navigateToDetailCapsule = { createdAt ->
+                    databaseViewModel.findCapsuleInDatabase(
+                        createdAt = createdAt,
+                        onSuccess = {
+                            navigateTo(Route.DETAIL_CAPSULE_SCREEN.name, false)
+                        },
+                        onFailure = {
+                            showToast(context, "Failed to fetch data, try again")
+                        }
+                    )
+                },
                 navigateTo = { route ->
                     navigateTo(route, false)
                 }
@@ -194,6 +217,17 @@ fun MainApp(context: Context) {
             DiscoverScreen(
                 userData = userDataState,
                 capsulesData = capsulesState,
+                navigateToDetailCapsule = { createdAt ->
+                    databaseViewModel.findCapsuleInDatabase(
+                        createdAt = createdAt,
+                        onSuccess = {
+                            navigateTo(Route.DETAIL_CAPSULE_SCREEN.name, false)
+                        },
+                        onFailure = {
+                            showToast(context, "Failed to fetch data, try again")
+                        }
+                    )
+                },
                 navigateTo = { route ->
                     navigateTo(route, false)
                 }
@@ -234,7 +268,9 @@ fun MainApp(context: Context) {
                 loadingState = loadingState,
                 addCapsuleSuccess = addCapsuleSuccess,
                 navigateToDetailScreen = {
-                    navigateTo(Route.DETAIL_CAPSULE_SCREEN.name, false)
+                    navController.navigate(Route.DETAIL_CAPSULE_SCREEN.name) {
+                        popUpTo(Route.HOME_SCREEN.name)
+                    }
                     databaseViewModel.resetAddCapsuleSuccess()
                 },
                 dataEmpty = {
@@ -261,7 +297,12 @@ fun MainApp(context: Context) {
 
         // Route detail capsule screen
         composable(Route.DETAIL_CAPSULE_SCREEN.name) {
-            DetailCapsuleScreen()
+            DetailCapsuleScreen(
+                popBackStack = {
+                    navController.popBackStack()
+                },
+                capsuleData = detailCapsule!!
+            )
         }
     }
 }
