@@ -1,9 +1,11 @@
 package com.example.proyekakhircloudcomputing.ui.screen
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,14 +15,21 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -39,16 +48,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import coil.compose.AsyncImagePainter.State.Empty.painter
 import com.example.proyekakhircloudcomputing.R
 
 //=========================
@@ -71,12 +83,16 @@ fun DetailCapsuleScreen() {
     var isConfirmed by remember { mutableStateOf(false) }
 
     // Daftar gambar
-    val images = remember { mutableStateListOf(
-        R.drawable.capsule,
-        R.drawable.arkan,
-        R.drawable.arkan,
-        R.drawable.capsule
-    ) }
+    val images = remember {
+        mutableStateListOf(
+            R.drawable.capsule_cover_template_1,
+            R.drawable.capsule_cover_template_2,
+            R.drawable.capsule_cover_template_4,
+            R.drawable.capsule_cover_template_3,
+            R.drawable.capsule_cover_template_5,
+            R.drawable.capsule_cover_template_0
+        )
+    }
 
     // State untuk menyimpan apakah pop-up daftar kontributor ditampilkan
     var showContributorDialog by remember { mutableStateOf(false) }
@@ -93,188 +109,218 @@ fun DetailCapsuleScreen() {
             .fillMaxSize()
             .background(color = colorResource(R.color.blue_main))
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.background_garis_putih),
-            contentDescription = null,
-            modifier = Modifier
-                .size(150.dp)
-                .align(Alignment.TopEnd)
-        )
-
         Column(
-            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(24.dp)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                //=================================================================
-                // tombol kembali ke halaman sebelumnya
-                //=================================================================
-                IconButton(
-                    onClick = {
-                        // Tambahkan aksi di sini
-                    },
-                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 15.dp)
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.yellow_back),
-                        contentDescription = "Tombol kembali",
-                        modifier = Modifier.size(40.dp),
-                        tint = Color.Unspecified
-                    )
-                }
-            }
-            Row(
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 70.dp)
-                    .background(
-                        color = colorResource(R.color.orange),
-                        shape = RoundedCornerShape(25)
-                    ),
-                horizontalArrangement = Arrangement.Center
-            ){
-                Text(
-                    text = "Apa ya??",
+                    .background(colorResource(R.color.orange), RoundedCornerShape(16.dp))
+            ) {
+                IconButton(
+                    onClick = {},
                     modifier = Modifier
-                        .padding(10.dp),
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.White
+                        .align(Alignment.CenterStart)
+                        .padding(start = 8.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_back),
+                        contentDescription = "Tombol kembali",
+                        tint = colorResource(R.color.white)
+                    )
+                }
+
+                Text(
+                    text = "Detail Kapsul",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(vertical = 8.dp)
                 )
             }
-            
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Text(
+                text = "Status: Terbuka",
+                fontSize = 16.sp,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(bottom = 2.dp)
+            )
+            Text(
+                text = "(Dikunci dalam 3 hari lagi)",
+                fontSize = 16.sp,
+                fontStyle = FontStyle.Italic,
+                color = Color.White
+            )
+            HorizontalDivider(
+                thickness = 3.dp,
+                color = colorResource(id = R.color.orange),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp)
+                    .padding(top = 10.dp)
+            )
+            Spacer(modifier = Modifier.height(24.dp))
+
             Row(
-                modifier = Modifier.fillMaxWidth()
-            ){
-                Row(
-                    modifier = Modifier
-                        .padding(vertical = 15.dp, horizontal = 10.dp)
-                        .weight(1f)
-                        .background(
-                            color = colorResource(R.color.light_orange),
-                            shape = RoundedCornerShape(25)
-                        ),
-                    horizontalArrangement = Arrangement.Center
-                ){
-                    Text(
-                        text = "Pribadi",
-                        modifier = Modifier
-                            .padding(5.dp),
-                        fontSize = 16.sp,
-                        color = Color.White
-                    )
-                }
-                Row(
-                    modifier = Modifier
-                        .padding(vertical = 15.dp)
-                        .padding(end = 10.dp)
-                        .weight(1f)
-                        .background(
-                            color = colorResource(R.color.light_orange),
-                            shape = RoundedCornerShape(25)
-                        ),
-                    horizontalArrangement = Arrangement.Center
-                ){
-                    Text(
-                        text = "3 bulan lagi",
-                        modifier = Modifier
-                            .padding(5.dp),
-                        fontSize = 16.sp,
-                        color = Color.White
-                    )
-                }
-            }
-            //=================================================================
-            // Gambar Capsule utama
-            //=================================================================
-            Row(
-                modifier = Modifier.fillMaxWidth()
-            ){
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(125.dp)
+            ) {
                 Box(
-                    contentAlignment = Alignment.Center,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 90.dp, vertical = 5.dp)
+                        .width(125.dp)
+                        .fillMaxHeight()
                         .background(
-                            colorResource(id = R.color.orange),
-                            shape = RoundedCornerShape(25.dp)
+                            colorResource(R.color.orange),
+                            RoundedCornerShape(16.dp)
                         )
-                        .border(
-                            4.dp,
-                            colorResource(id = R.color.orange),
-                            shape = RoundedCornerShape(25.dp)
-                        )
-                        .clip(RoundedCornerShape(25.dp))
+                        .padding(5.dp),
+                    contentAlignment = Alignment.Center
                 ) {
                     Box(
                         modifier = Modifier
-                            .padding(10.dp)
+                            .fillMaxSize()
+                            .background(
+                                colorResource(R.color.yellow_background),
+                                RoundedCornerShape(12.dp)
+                            )
+                            .padding(8.dp), // Kotak dalam berwarna putih dengan rounded corner
+                        contentAlignment = Alignment.Center,
                     ) {
                         Image(
-                            painter = painterResource(id = R.drawable.capsule),
+                            painter = painterResource(id = R.drawable.capsule_cover_template_4),
                             contentDescription = "Gambar Capsule",
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(130.dp),
-                            contentScale = ContentScale.FillBounds
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.width(12.dp))
+
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight()
+                        .background(
+                            colorResource(R.color.orange),
+                            RoundedCornerShape(16.dp)
+                        )
+                        .padding(5.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                colorResource(R.color.yellow_background),
+                                RoundedCornerShape(12.dp)
+                            )
+                            .padding(12.dp)
+                            .verticalScroll(rememberScrollState())
+                    ) {
+                        Text(
+                            text = "Sibayak Hiking",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.Black,
+                            modifier = Modifier.padding(bottom = 10.dp)
+                        )
+
+                        Text(
+                            text = "Dokumentasi pendakian gunung sibayak bersama teman seperjuangan ini adalah teks tambahan supaya deskripsi menjadi sedikit lebih panjang",
+                            color = Color.Black,
+                            textAlign = TextAlign.Center
                         )
                     }
                 }
             }
-            //=======================
-            // Owner Capsule
-            //=======================
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .size(50.dp)
-                        .clip(CircleShape)
-                        .background(colorResource(id = R.color.orange))
-                        .border(4.dp, colorResource(id = R.color.orange), CircleShape)
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.arkan),
-                        contentDescription = "Profil akun",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .size(110.dp)
-                            .clip(CircleShape)
-                    )
-                }
-                Text(
-                    text = "@Arkan",
-                    fontSize = 18.sp,
-                    modifier = Modifier.padding(horizontal = 10.dp),
-                    color = Color.White,
-                    fontWeight = FontWeight.SemiBold
-                )
-            }
-            //=============================================
-            // Button untuk menampilkan list contributor
-            //=============================================
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ){
-                TextButton(
-                    onClick = { showContributorDialog = true }
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(colorResource(R.color.orange))
+                    .weight(1f)
+                    .padding(8.dp)
+            ) {
+                Button(
+                    enabled = true,
+                    onClick = { },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = colorResource(R.color.yellow_background),
+                        disabledContainerColor = colorResource(R.color.light_orange)
+                    ),
+                    shape = RectangleShape,
+                    modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = "${contributors.size} Kontributor  >",
-                        color = Color.White
+                        text = "+  Tambahkan Gambar",
+                        fontSize = 16.sp,
+                        color = Color.Black,
+                        modifier = Modifier.padding(vertical = 4.dp)
                     )
                 }
+                Spacer(modifier = Modifier.height(8.dp))
+
+                LazyVerticalStaggeredGrid(
+                    columns = StaggeredGridCells.Fixed(2), // 2 kolom per baris
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalItemSpacing = 8.dp
+                ) {
+                    items(images) { image ->
+                        ImageItem(
+                            imageRes = image,
+                            onClick = { selectedImage = image }
+                        )
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Button(
+                onClick = { showContributorDialog = true },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorResource(R.color.yellow_background),
+                ),
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "Lihat Daftar Kontributor",
+                    fontSize = 14.sp,
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(vertical = 4.dp)
+                )
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Button(
+                onClick = {},
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier
+                    .fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(colorResource(id = R.color.orange))
+            ) {
+                Text(
+                    text = "Bergabung sebagai Kontributor",
+                    color = Color.White,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(vertical = 4.dp)
+                )
             }
 
-            //==============================
-            // Pop up list kontributor
-            //==============================
             if (showContributorDialog) {
                 Dialog(onDismissRequest = { showContributorDialog = false }) {
                     Box(
@@ -354,50 +400,8 @@ fun DetailCapsuleScreen() {
                         }
                     }
                 }
-                }
-            //=====================
-            // Deskripsi kapsul
-            //=====================
-            Row(
-                modifier = Modifier.fillMaxWidth()
-            ){
-                Text(
-                    text = stringResource(R.string.TextDummyDetailCapsule),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(horizontal = 30.dp),
-                    color = Color.White
-                )
             }
-            HorizontalDivider(
-                thickness = 3.dp,
-                color = colorResource(id = R.color.orange),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 30.dp, vertical = 10.dp)
-            )
-            //=================================================================
-            // LazyVeticalGrid untuk menampung capsule yang telah ada di list
-            //=================================================================
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2), // 2 kolom per baris
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 15.dp)
-                    .padding(top = 10.dp)
-                    .height(200.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                items(images) { image ->
-                    ImageItem(
-                        imageRes = image,
-                        onClick = { selectedImage = image }
-                    )
-                }
-            }
-            //==============================================================
-            // Untuk pop up fullscreen image ketika capsule di tekan
-            //==============================================================
+
             if (selectedImage != null) {
                 Dialog(onDismissRequest = { selectedImage = null }) {
                     Box(
@@ -418,41 +422,7 @@ fun DetailCapsuleScreen() {
                     }
                 }
             }
-            //============================================
-            // Button kontributor atau tambahkan media
-            //============================================
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.Center,
-            ) {
-                Button(
-                    onClick = {
-                        if (!isConfirmed) {
-                            showDialog = true // Tampilkan dialog konfirmasi
-                        } else {
-                            //=================================================================================
-                            // Untuk menambahkan capsule tapi karena gk tau cara buat menu tambah capsule
-                            // jadinya aku cuma add gambar biasa aja untuk dummy
-                            //=================================================================================
-                            images.add(R.drawable.capsule)
-                        }
-                    },
-                    shape = RoundedCornerShape(15.dp),
-                    modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(colorResource(id = R.color.orange))
-                ) {
-                    Text(
-                        text = if (isConfirmed) "Tambahkan media" else "Bergabung sebagai Kontributor",
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-            }
-            //======================================
-            // Dialog konfirmasi pop up
-            //=======================================
+
             if (showDialog) {
                 AlertDialog(
                     onDismissRequest = { showDialog = false },
@@ -483,27 +453,20 @@ fun DetailCapsuleScreen() {
         }
     }
 }
-//======================================
-// Capsule item
-//=======================================
+
 @Composable
 fun ImageItem(imageRes: Int, onClick: () -> Unit) {
     Box(
         modifier = Modifier
-            .clip(RoundedCornerShape(16.dp))
-            .background(colorResource(R.color.orange))
+            .background(colorResource(R.color.yellow_background))
             .clickable { onClick() }
-            .padding(8.dp),
+            .padding(16.dp),
         contentAlignment = Alignment.Center
     ) {
         Image(
             painter = painterResource(id = imageRes),
             contentDescription = "Gallery Image",
-            modifier = Modifier
-                .fillMaxSize()
-                .size(100.dp)
-                .padding(4.dp),
-            contentScale = ContentScale.Crop
+            modifier = Modifier.fillMaxSize(),
         )
     }
 }

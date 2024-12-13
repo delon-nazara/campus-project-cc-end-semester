@@ -109,7 +109,7 @@ fun CreateCapsuleScreen(
                     Icon(
                         painter = painterResource(id = R.drawable.ic_back),
                         contentDescription = "Kembali",
-                        tint = colorResource(R.color.white) // Warna orange
+                        tint = colorResource(R.color.white)
                     )
                 }
 
