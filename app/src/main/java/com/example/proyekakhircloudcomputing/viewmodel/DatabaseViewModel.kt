@@ -16,6 +16,8 @@ import io.github.cdimascio.dotenv.dotenv
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class DatabaseViewModel : ViewModel() {
 
@@ -52,6 +54,9 @@ class DatabaseViewModel : ViewModel() {
 
     private var _capsulesState = MutableStateFlow<List<CapsuleModel>?>(null)
     val capsulesState: StateFlow<List<CapsuleModel>?> = _capsulesState.asStateFlow()
+
+    private var _addCapsuleSuccess = MutableStateFlow(false)
+    val addCapsuleSuccess: StateFlow<Boolean> = _addCapsuleSuccess.asStateFlow()
 
     fun addUserToDatabase(
         userAuth: FirebaseUser,
@@ -118,23 +123,64 @@ class DatabaseViewModel : ViewModel() {
             }
     }
 
+    fun addCapsuleToDatabase(
+        indexCover: Int,
+        title: String,
+        description: String,
+        type: String,
+        lockedAt: String,
+        unlockedAt: String,
+        onFailure: () -> Unit,
+        showLoading: (Boolean) -> Unit
+    ) {
+        val format = SimpleDateFormat("EEEE, dd MMMM yyyy, HH:mm", Locale("id", "ID"))
+
+        val newCapsule = CapsuleModel(
+            indexCover = indexCover,
+            title = title,
+            description = description,
+            type = type,
+            createdAt = System.currentTimeMillis(),
+            lockedAt = format.parse(lockedAt)?.time ?: 0L,
+            unlockedAt = format.parse(unlockedAt)?.time ?: 0L
+        )
+
+        showLoading(true)
+        capsulesReference
+            .add(newCapsule)
+            .addOnSuccessListener {
+                showLoading(false)
+                _addCapsuleSuccess.value = true
+            }
+            .addOnFailureListener {
+                showLoading(false)
+                onFailure()
+                _addCapsuleSuccess.value = false
+            }
+    }
+
     fun getCapsulesFromDatabase() {
         capsulesReference.get()
             .addOnSuccessListener { documents ->
                 val listCapsulesData = documents.map { document ->
                     val data = document.data
                     CapsuleModel(
-                        type = data["type"].toString(),
-                        name = data["name"].toString(),
                         indexCover = data["indexCover"].toString().toInt(),
-                        status = data["status"].toString(),
-                        lockedAt = data["lockedAt"].toString(),
-                        unlockedAt = data["unlockedAt"].toString()
+                        title = data["title"].toString(),
+                        description = data["description"].toString(),
+                        type = data["type"].toString(),
+                        createdAt = data["createdAt"].toString().toLong(),
+                        lockedAt = data["lockedAt"].toString().toLong(),
+                        unlockedAt = data["unlockedAt"].toString().toLong()
                     )
                 }
                 _capsulesState.value = listCapsulesData
             }
             .addOnFailureListener {}
+    }
+
+    fun resetAddCapsuleSuccess() {
+        _addCapsuleSuccess.value = false
     }
 
     fun clearAllData() {

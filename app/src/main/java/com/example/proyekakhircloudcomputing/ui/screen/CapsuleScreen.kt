@@ -73,7 +73,7 @@ fun CapsuleScreen(
                 groupedCapsules.putAll(capsulesData.groupBy { it.type })
 
                 privateCapsules.clear()
-                privateCapsules.addAll(groupedCapsules["private"] ?: emptyList())
+                privateCapsules.addAll(groupedCapsules["Private"] ?: emptyList())
 
                 Text(
                     text = "Lihat Kapsul Pribadi Kamu Disini!",
@@ -110,11 +110,13 @@ fun CapsuleScreen(
         ) {
             Icon(
                 painter = painterResource(R.drawable.add_icon),
+                tint = Color.White,
                 contentDescription = null
             )
             Text(
                 text = "Tambahkan Kapsul",
                 fontSize = 16.sp,
+                color = Color.White,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(16.dp)
             )
@@ -148,6 +150,7 @@ fun ImageCard(
             Image(
                 painter = painterResource(
                     when (capsuleData.indexCover) {
+                        0 -> R.drawable.capsule_cover_template_0
                         1 -> R.drawable.capsule_cover_template_1
                         2 -> R.drawable.capsule_cover_template_2
                         3 -> R.drawable.capsule_cover_template_3
@@ -156,8 +159,7 @@ fun ImageCard(
                         6 -> R.drawable.capsule_cover_template_6
                         7 -> R.drawable.capsule_cover_template_7
                         8 -> R.drawable.capsule_cover_template_8
-                        9 -> R.drawable.capsule_cover_template_9
-                        else -> R.drawable.capsule_cover_template_10
+                        else -> R.drawable.capsule_cover_template_9
                     }
                 ),
                 contentDescription = "Image Capsule",
@@ -166,9 +168,9 @@ fun ImageCard(
         }
         Text(
             modifier = Modifier.padding(8.dp),
-            text = capsuleData.name,
+            text = capsuleData.title,
             fontSize = 16.sp,
-            color = Color.Black
+            color = Color.White
         )
     }
 }

@@ -58,7 +58,7 @@ fun DiscoverScreen(
             groupedCapsules.putAll(capsulesData.groupBy { it.type })
 
             publicCapsules.clear()
-            publicCapsules.addAll(groupedCapsules["public"] ?: emptyList())
+            publicCapsules.addAll(groupedCapsules["Public"] ?: emptyList())
         }
 
         Column {
@@ -168,6 +168,7 @@ fun TopCapsuleCard(capsuleData: CapsuleModel) {
             Image(
                 painter = painterResource(
                     when (capsuleData.indexCover) {
+                        0 -> R.drawable.capsule_cover_template_0
                         1 -> R.drawable.capsule_cover_template_1
                         2 -> R.drawable.capsule_cover_template_2
                         3 -> R.drawable.capsule_cover_template_3
@@ -176,8 +177,7 @@ fun TopCapsuleCard(capsuleData: CapsuleModel) {
                         6 -> R.drawable.capsule_cover_template_6
                         7 -> R.drawable.capsule_cover_template_7
                         8 -> R.drawable.capsule_cover_template_8
-                        9 -> R.drawable.capsule_cover_template_9
-                        else -> R.drawable.capsule_cover_template_10
+                        else -> R.drawable.capsule_cover_template_9
                     }
                 ),
                 contentDescription = "Image Capsule",
@@ -186,7 +186,7 @@ fun TopCapsuleCard(capsuleData: CapsuleModel) {
         }
         Text(
             modifier = Modifier.padding(8.dp),
-            text = capsuleData.name,
+            text = capsuleData.title,
             fontSize = 16.sp,
             color = Color.Black
         )

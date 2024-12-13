@@ -40,6 +40,7 @@ fun MainApp(context: Context) {
     databaseViewModel.cloudinaryInitialization(context)
     val userDataState by databaseViewModel.userDataState.collectAsState()
     val capsulesState by databaseViewModel.capsulesState.collectAsState()
+    val addCapsuleSuccess by databaseViewModel.addCapsuleSuccess.collectAsState()
 
     val navController: NavHostController = rememberNavController()
     val navigateTo: (String, Boolean) -> Unit = { route, clearAll ->
@@ -221,8 +222,38 @@ fun MainApp(context: Context) {
 
         // Route create capsule screen
         composable(Route.CREATE_CAPSULE_SCREEN.name) {
-            CreateCapsuleScreen()
+            CreateCapsuleScreen(
+                navigateTo = { route ->
+                    navigateTo(route, false)
+                },
+                loadingState = loadingState,
+                addCapsuleSuccess = addCapsuleSuccess,
+                navigateToDetailScreen = {
+                    navigateTo(Route.DETAIL_CAPSULE_SCREEN.name, false)
+                    databaseViewModel.resetAddCapsuleSuccess()
+                },
+                dataEmpty = {
+                    showToast(context, "All data must be filled")
+                },
+                addNewCapsule = { indexCover, title, description, type, lockedAt, unlockedAt ->
+                    databaseViewModel.addCapsuleToDatabase(
+                        indexCover = indexCover,
+                        title = title,
+                        description = description,
+                        type = type,
+                        lockedAt = lockedAt,
+                        unlockedAt = unlockedAt,
+                        onFailure = {
+                            showToast(context, "Failed to add new capsule, try again")
+                        },
+                        showLoading = { state ->
+                            authenticationViewModel.showLoading(state)
+                        }
+                    )
+                }
+            )
         }
+
         // Route detail capsule screen
         composable(Route.DETAIL_CAPSULE_SCREEN.name) {
             DetailCapsuleScreen()

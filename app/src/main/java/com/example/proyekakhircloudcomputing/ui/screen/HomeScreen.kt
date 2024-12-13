@@ -119,10 +119,10 @@ fun CapsulesSection(
             groupedCapsules.putAll(capsulesData.groupBy { it.type })
 
             publicCapsules.clear()
-            publicCapsules.addAll(groupedCapsules["public"] ?: emptyList())
+            publicCapsules.addAll(groupedCapsules["Public"] ?: emptyList())
 
             privateCapsules.clear()
-            privateCapsules.addAll(groupedCapsules["private"] ?: emptyList())
+            privateCapsules.addAll(groupedCapsules["Private"] ?: emptyList())
 
             Spacer(modifier = Modifier.height(32.dp))
             Box(
@@ -213,6 +213,7 @@ fun CapsuleItem2(
             Image(
                 painter = painterResource(
                     when (capsuleData.indexCover) {
+                        0 -> R.drawable.capsule_cover_template_0
                         1 -> R.drawable.capsule_cover_template_1
                         2 -> R.drawable.capsule_cover_template_2
                         3 -> R.drawable.capsule_cover_template_3
@@ -221,8 +222,7 @@ fun CapsuleItem2(
                         6 -> R.drawable.capsule_cover_template_6
                         7 -> R.drawable.capsule_cover_template_7
                         8 -> R.drawable.capsule_cover_template_8
-                        9 -> R.drawable.capsule_cover_template_9
-                        else -> R.drawable.capsule_cover_template_10
+                        else -> R.drawable.capsule_cover_template_9
                     }
                 ),
                 contentDescription = "Image Capsule",
@@ -231,7 +231,7 @@ fun CapsuleItem2(
         }
         Text(
             modifier = Modifier.padding(8.dp),
-            text = capsuleData.name,
+            text = capsuleData.title,
             fontSize = 16.sp,
             color = Color.Black
         )
