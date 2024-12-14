@@ -21,8 +21,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -34,7 +32,6 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -54,7 +51,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.proyekakhircloudcomputing.R
-import com.example.proyekakhircloudcomputing.data.source.Route
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -67,7 +63,7 @@ fun CreateCapsuleScreen(
     addCapsuleSuccess: Boolean = false,
     navigateToDetailScreen: () -> Unit = {},
     dataEmpty: () -> Unit = {},
-    addNewCapsule: (Int, String, String, String, String, String,) -> Unit = { _, _, _, _, _, _ -> }
+    addNewCapsule: (Int, String, String, String, String, String) -> Unit = { _, _, _, _, _, _ -> }
 ) {
     var showCoverOptionModal by remember { mutableStateOf(false) }
 
@@ -91,7 +87,7 @@ fun CreateCapsuleScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(32.dp)
-                .padding(top = 16.dp),
+                .padding(top = 32.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box(
@@ -359,7 +355,7 @@ fun CreateCapsuleScreen(
                 )
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
             Text(
                 text = "Kapsul dibuka pada:",
@@ -412,7 +408,7 @@ fun CreateCapsuleScreen(
                 )
             }
 
-            Spacer(modifier = Modifier.height(30.dp))
+            Spacer(modifier = Modifier.height(36.dp))
 
             // Tombol Buat
             Button(

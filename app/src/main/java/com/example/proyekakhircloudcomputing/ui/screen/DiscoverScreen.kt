@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -21,9 +20,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -52,85 +48,42 @@ fun DiscoverScreen(
             .fillMaxSize()
             .background(colorResource(R.color.yellow_background))
     ) {
-        val groupedCapsules = remember { mutableStateMapOf<String, List<CapsuleModel>>() }
-        val publicCapsules = remember { mutableStateListOf<CapsuleModel>() }
-
         if (capsulesData != null) {
-            groupedCapsules.clear()
-            groupedCapsules.putAll(capsulesData.groupBy { it.type })
-
-            publicCapsules.clear()
-            publicCapsules.addAll(groupedCapsules["Public"] ?: emptyList())
-        }
-
-        Column {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        color = Color(0xFFf2a73b),
-                        shape = RoundedCornerShape(bottomStart = 50.dp, bottomEnd = 50.dp)
+            Column {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(
+                            color = colorResource(R.color.blue_main),
+                            shape = RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp)
+                        )
+                        .padding(bottom = 16.dp)
+                ) {
+                    TopBar(
+                        userData = userData,
+                        navigateTo = navigateTo
                     )
-                    .padding(bottom = 16.dp)
-            ) {
-                TopBar(
-                    userData = userData,
-                    navigateTo = navigateTo
-                )
 
-                TopCapsuleSection(
-                    capsulesData = publicCapsules,
+                    TopCapsuleSection(
+                        capsulesData = capsulesData,
+                        navigateToDetailCapsule = navigateToDetailCapsule
+                    )
+                }
+
+                AllCapsuleSection(
+                    capsulesData = capsulesData,
                     navigateToDetailCapsule = navigateToDetailCapsule
                 )
             }
-
-            AllCapsuleSection(
-                capsulesData = publicCapsules,
-                navigateToDetailCapsule = navigateToDetailCapsule
-            )
         }
 
         BottomBar(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(16.dp)
+                .padding(vertical = 24.dp, horizontal = 16.dp)
                 .fillMaxWidth(),
             navigateTo = navigateTo
         )
-    }
-}
-
-@Composable
-fun AllCapsuleSection(
-    navigateToDetailCapsule: (Long) -> Unit,
-    capsulesData: List<CapsuleModel>
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Spacer(modifier = Modifier.height(28.dp))
-        Text(
-            text = "Lihat Kapsul Publik Lainnya",
-            color = colorResource(R.color.black),
-            fontSize = 20.sp,
-            fontStyle = FontStyle.Italic,
-            fontWeight = FontWeight.Bold,
-//            modifier = Modifier.align(Alignment.Start).padding(start = 64.dp)
-        )
-        Spacer(modifier = Modifier.height(24.dp))
-        LazyVerticalGrid(
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            columns = GridCells.Fixed(2),
-            modifier = Modifier.width(350.dp).height(325.dp)
-        ) {
-            items(capsulesData) { capsule ->
-                CapsuleCard(
-                    capsuleData = capsule,
-                    navigateToDetailCapsule = navigateToDetailCapsule
-                )
-            }
-        }
     }
 }
 
@@ -145,17 +98,19 @@ fun TopCapsuleSection(
             .padding(horizontal = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(28.dp))
+        Spacer(modifier = Modifier.height(6.dp))
         Text(
-            text = "TOP PUBLIK KAPSUL",
+            text = "Kapsul Publik Pilihan",
             color = colorResource(R.color.white),
-            fontSize = 22.sp,
-            fontStyle = FontStyle.Italic,
+            fontSize = 20.sp,
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(24.dp))
 
-        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        LazyRow(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(24.dp)
+        ) {
             items(capsulesData) { capsule ->
                 CapsuleCard(
                     capsuleData = capsule,
@@ -163,27 +118,66 @@ fun TopCapsuleSection(
                 )
             }
         }
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(6.dp))
+    }
+}
+
+@Composable
+fun AllCapsuleSection(
+    navigateToDetailCapsule: (Long) -> Unit,
+    capsulesData: List<CapsuleModel>
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Spacer(modifier = Modifier.height(30.dp))
+        Text(
+            text = "Lihat Kapsul Publik Lainnya",
+            color = colorResource(R.color.black),
+            fontSize = 20.sp,
+            fontStyle = FontStyle.Italic,
+            fontWeight = FontWeight.Bold,
+        )
+        Spacer(modifier = Modifier.height(24.dp))
+
+        LazyVerticalGrid(
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            columns = GridCells.Fixed(2),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .padding(horizontal = 36.dp)
+                .padding(bottom = 100.dp)
+        ) {
+            items(capsulesData) { capsule ->
+                CapsuleCard(
+                    color = Color.Black,
+                    capsuleData = capsule,
+                    navigateToDetailCapsule = navigateToDetailCapsule
+                )
+            }
+        }
     }
 }
 
 @Composable
 fun CapsuleCard(
+    color: Color = Color.White,
     navigateToDetailCapsule: (Long) -> Unit,
     capsuleData: CapsuleModel
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.width(150.dp)
     ) {
         Box(
             modifier = Modifier
                 .clickable {
                     navigateToDetailCapsule(capsuleData.createdAt)
                 }
-                .size(120.dp)
+                .size(115.dp)
                 .clip(RoundedCornerShape(16.dp))
-                .background(colorResource(R.color.green_kahf))
+                .background(colorResource(R.color.orange))
                 .padding(8.dp),
             contentAlignment = Alignment.Center
         ) {
@@ -209,8 +203,8 @@ fun CapsuleCard(
         Text(
             modifier = Modifier.padding(8.dp),
             text = capsuleData.title,
-            fontSize = 16.sp,
-            color = Color.Black
+            fontSize = 14.sp,
+            color = color
         )
     }
 }

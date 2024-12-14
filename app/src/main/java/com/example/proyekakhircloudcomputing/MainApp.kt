@@ -1,7 +1,6 @@
 package com.example.proyekakhircloudcomputing
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -194,7 +193,7 @@ fun MainApp(context: Context) {
         composable(Route.CAPSULE_SCREEN.name) {
             CapsuleScreen(
                 userData = userDataState,
-                capsulesData = capsulesState,
+                capsulesData = privateCapsules,
                 navigateToDetailCapsule = { createdAt ->
                     databaseViewModel.findCapsuleInDatabase(
                         createdAt = createdAt,
@@ -216,7 +215,7 @@ fun MainApp(context: Context) {
         composable(Route.DISCOVER_SCREEN.name) {
             DiscoverScreen(
                 userData = userDataState,
-                capsulesData = capsulesState,
+                capsulesData = publicCapsules,
                 navigateToDetailCapsule = { createdAt ->
                     databaseViewModel.findCapsuleInDatabase(
                         createdAt = createdAt,

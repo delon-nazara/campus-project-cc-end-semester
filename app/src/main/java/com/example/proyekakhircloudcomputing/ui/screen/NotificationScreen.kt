@@ -52,7 +52,7 @@ fun NotificationScreen(
         BottomBar(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(16.dp)
+                .padding(vertical = 24.dp, horizontal = 16.dp)
                 .fillMaxWidth(),
             navigateTo = navigateTo
         )
@@ -60,12 +60,13 @@ fun NotificationScreen(
     Column{
         //Fungsi Top App Bar
         TopBar(
+            color = colorResource(R.color.blue_main),
             userData = userData,
             navigateTo = navigateTo
         )
         Column(
             modifier = Modifier
-                .padding(vertical = 16.dp, horizontal = 32.dp)
+                .padding(horizontal = 20.dp)
                 .fillMaxSize()
         ){
          //Fungsi Lazy Column notifikasi
@@ -87,7 +88,7 @@ fun NotificationList() {
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(notifications) { notification ->
             NotificationCard(
@@ -116,8 +117,8 @@ fun NotificationCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 10.dp)
-                .padding(vertical = 5.dp),
+                .padding(horizontal = 16.dp)
+                .padding(vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             // Gambar notifikasi
@@ -125,22 +126,24 @@ fun NotificationCard(
                 painter = painterResource(id = iconRes),
                 contentDescription = "Notification icon",
                 modifier = Modifier
-                    .size(40.dp)
+                    .size(30.dp)
                     .clip(CircleShape)
             )
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(8.dp))
 
             // Teks notifikasi
             Text(
                 text = message,
-                modifier = Modifier.weight(1f), // Mengisi ruang yang tersedia
+                modifier = Modifier.weight(1f),
                 fontSize = 14.sp,
-                color = Color.Black
+                color = Color.Black,
             )
+            Spacer(modifier = Modifier.width(8.dp))
 
             // Tombol Hapus
             IconButton(
-                onClick = { onDismiss()}
+                onClick = { onDismiss()},
+                modifier = Modifier.size(24.dp)
             ) {
                 Icon(
                     imageVector = Icons.Filled.Close,

@@ -62,7 +62,7 @@ fun TopBarOld() {
                     )
                     // Gambar kedua (Memoria logo)
                     Image(
-                        painter = painterResource(id = R.drawable.memoria), // Gambar tengah
+                        painter = painterResource(id = R.drawable.memoria_logo), // Gambar tengah
                         contentDescription = "Memoria logo",
                         modifier = Modifier.size(100.dp) // Ukuran gambar utama
                     )

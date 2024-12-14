@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -19,9 +18,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,7 +26,6 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -53,6 +48,7 @@ fun CapsuleScreen(
             .background(Color(0xFFF7F3E6))
     ) {
         TopBar(
+            color = colorResource(R.color.blue_main),
             userData = userData,
             navigateTo = navigateTo
         )
@@ -63,35 +59,24 @@ fun CapsuleScreen(
                 .fillMaxWidth()
                 .weight(1f)
                 .padding(horizontal = 24.dp)
-                .padding(top = 32.dp, bottom = 16.dp)
+                .padding(bottom = 24.dp)
                 .background(Color(0xFFf2a73b), RoundedCornerShape(16.dp))
         ) {
-            val groupedCapsules = remember { mutableStateMapOf<String, List<CapsuleModel>>() }
-            val privateCapsules = remember { mutableStateListOf<CapsuleModel>() }
-
             if (capsulesData != null) {
-                groupedCapsules.clear()
-                groupedCapsules.putAll(capsulesData.groupBy { it.type })
-
-                privateCapsules.clear()
-                privateCapsules.addAll(groupedCapsules["Private"] ?: emptyList())
-
                 Text(
                     text = "Lihat Kapsul Pribadi Kamu Disini!",
-                    fontSize = 20.sp,
+                    fontSize = 18.sp,
                     fontStyle = FontStyle.Italic,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
-                    textAlign = TextAlign.Start,
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 28.dp).padding(start = 32.dp)
+                    modifier = Modifier.padding(24.dp)
                 )
 
                 LazyVerticalGrid(
-                    verticalArrangement = Arrangement.spacedBy(24.dp),
                     columns = GridCells.Fixed(2),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp)
                 ) {
-                    items(privateCapsules) { capsule ->
+                    items(capsulesData) { capsule ->
                         ImageCard(
                             capsuleData = capsule,
                             navigateToDetailCapsule = navigateToDetailCapsule
@@ -129,7 +114,7 @@ fun CapsuleScreen(
         BottomBar(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(vertical = 24.dp, horizontal = 16.dp),
             navigateTo = navigateTo
         )
     }
@@ -142,13 +127,13 @@ fun ImageCard(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.width(150.dp).clickable {
+        modifier = Modifier.clickable {
             navigateToDetailCapsule(capsuleData.createdAt)
         }
     ) {
         Box(
             modifier = Modifier
-                .size(120.dp)
+                .size(115.dp)
                 .clip(RoundedCornerShape(16.dp))
                 .background(colorResource(R.color.green_kahf))
                 .padding(8.dp),
@@ -176,7 +161,7 @@ fun ImageCard(
         Text(
             modifier = Modifier.padding(8.dp),
             text = capsuleData.title,
-            fontSize = 16.sp,
+            fontSize = 14.sp,
             color = Color.White
         )
     }

@@ -380,7 +380,7 @@ fun TopCapsuleSection() {
     val capsuleList = listOf(
         CapsuleData("New Year's", R.drawable.new_year),
         CapsuleData("Makassar", R.drawable.makassar),
-        CapsuleData("ILKOM", R.drawable.gambar),
+        CapsuleData("ILKOM", R.drawable.main_image),
         CapsuleData("Arkan", R.drawable.arkan)
     )
 

@@ -76,7 +76,7 @@ fun DetailCapsuleScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(24.dp)
-                .padding(top = 16.dp)
+                .padding(top = 30.dp)
         ) {
             Box(
                 modifier = Modifier

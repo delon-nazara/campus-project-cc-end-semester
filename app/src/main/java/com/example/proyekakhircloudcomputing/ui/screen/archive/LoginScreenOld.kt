@@ -45,7 +45,7 @@ fun LoginScreenOld(
     var password by remember { mutableStateOf("") }
 
     Image(
-        painter = painterResource(id = R.drawable.title),
+        painter = painterResource(id = R.drawable.memoria_logo),
         contentDescription = null,
         modifier = Modifier.size(250.dp)
     )
@@ -57,7 +57,7 @@ fun LoginScreenOld(
 
     ) {
         Image(
-            painter = painterResource(id = R.drawable.title),
+            painter = painterResource(id = R.drawable.memoria_logo),
             contentDescription = null,
             modifier = Modifier
                 .size(250.dp)
