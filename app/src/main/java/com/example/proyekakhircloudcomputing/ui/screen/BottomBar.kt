@@ -36,9 +36,9 @@ fun BottomBar(
     Box(
         modifier = modifier
             .wrapContentWidth()
-            .clip(RoundedCornerShape(50.dp))
+            .clip(RoundedCornerShape(24.dp))
             .background(Color(0xFF4A9BB4))
-            .padding(vertical = 8.dp),
+            .padding(vertical = 10.dp),
         contentAlignment = Alignment.Center
     ) {
         Row(
@@ -93,7 +93,7 @@ fun BottomBarMenuOld(label: String, iconId: Int, onClick: () -> Unit) {
         Icon(
             painter = painterResource(id = iconId),
             contentDescription = label,
-            modifier = Modifier.size(36.dp),
+            modifier = Modifier.size(20.dp),
             tint = Color.White
         )
         Spacer(modifier = Modifier.height(4.dp))

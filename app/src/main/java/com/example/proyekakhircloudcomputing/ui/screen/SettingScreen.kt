@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -23,6 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -44,31 +43,31 @@ fun SettingScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 56.dp, bottom = 80.dp), // Ruang untuk BottomBarOld
+                .padding(top = 64.dp, bottom = 80.dp), // Ruang untuk BottomBarOld
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Header "Pengaturan"
             Box(
                 modifier = Modifier
-                    .wrapContentWidth()
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp)
                     .clip(RoundedCornerShape(50.dp))
                     .background(Color(0xFFF2A73B)) // Warna header
-                    .padding(horizontal = 24.dp, vertical = 8.dp),
+                    .padding(horizontal = 48.dp, vertical = 12.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "PENGATURAN",
+                    text = "Pengaturan",
                     fontSize = 20.sp,
                     color = Color.White
                 )
             }
-
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.weight(1f))
 
             // Frame di sekitar gambar profil
             Box(
                 modifier = Modifier
-                    .size(140.dp) // Ukuran frame sedikit lebih besar dari gambar
+                    .size(115.dp) // Ukuran frame sedikit lebih besar dari gambar
                     .clip(RoundedCornerShape(16.dp)) // Membuat sudut frame membulat
                     .background(Color(0xFFF2A73B)), // Warna frame (orange dari colors.xml)
                 contentAlignment = Alignment.Center
@@ -85,28 +84,32 @@ fun SettingScreen(
                         }
                     ),
                     contentDescription = "Profile picture",
-                    modifier = Modifier.size(120.dp).clip(RoundedCornerShape(16.dp))
+                    modifier = Modifier.size(100.dp).clip(RoundedCornerShape(12.dp))
                 )
             }
-
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             // Username
             Text(
                 text = userData?.fullName ?: "",
                 fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
                 color = Color.Black
             )
+            Spacer(modifier = Modifier.weight(1f))
 
             Button(
                 onClick = { onLogoutButtonClicked() },
-                modifier = Modifier.padding(top = 24.dp).width(100.dp),
+                modifier = Modifier.fillMaxWidth().padding(bottom = 30.dp).padding(horizontal = 20.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = colorResource(R.color.blue_main)
+                    containerColor = colorResource(R.color.orange)
                 )
             ) {
                 Text(
-                    text = "Logout"
+                    text = "Logout",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(horizontal = 24.dp, vertical = 6.dp)
                 )
             }
         }
@@ -116,7 +119,7 @@ fun SettingScreen(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(vertical = 24.dp, horizontal = 16.dp),
             navigateTo = navigateTo
         )
     }

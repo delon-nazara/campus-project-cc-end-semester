@@ -6,47 +6,26 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -55,15 +34,13 @@ import androidx.compose.ui.unit.sp
 import com.example.proyekakhircloudcomputing.R
 import com.example.proyekakhircloudcomputing.data.model.CapsuleModel
 import com.example.proyekakhircloudcomputing.data.model.UserModel
-import com.example.proyekakhircloudcomputing.ui.screen.archive.CapsuleCard
-import com.example.proyekakhircloudcomputing.ui.screen.archive.CapsuleGrid
-import com.example.proyekakhircloudcomputing.ui.screen.archive.DropdownButton
 
 @Preview
 @Composable
 fun DiscoverScreen(
     userData: UserModel? = UserModel(),
     capsulesData: List<CapsuleModel>? = null,
+    navigateToDetailCapsule: (Long) -> Unit = {},
     navigateTo: (String) -> Unit = {},
 ) {
     Box(
@@ -71,44 +48,39 @@ fun DiscoverScreen(
             .fillMaxSize()
             .background(colorResource(R.color.yellow_background))
     ) {
-        val groupedCapsules = remember { mutableStateMapOf<String, List<CapsuleModel>>() }
-        val publicCapsules = remember { mutableStateListOf<CapsuleModel>() }
-
         if (capsulesData != null) {
-            groupedCapsules.clear()
-            groupedCapsules.putAll(capsulesData.groupBy { it.type })
-
-            publicCapsules.clear()
-            publicCapsules.addAll(groupedCapsules["public"] ?: emptyList())
-        }
-
-        Column(
-//            modifier = Modifier.verticalScroll(rememberScrollState())
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        color = Color(0xFFf2a73b),
-                        shape = RoundedCornerShape(bottomStart = 50.dp, bottomEnd = 50.dp)
+            Column {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(
+                            color = colorResource(R.color.blue_main),
+                            shape = RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp)
+                        )
+                        .padding(bottom = 16.dp)
+                ) {
+                    TopBar(
+                        userData = userData,
+                        navigateTo = navigateTo
                     )
-                    .padding(bottom = 16.dp)
-            ) {
-                TopBar(
-                    userData = userData,
-                    navigateTo = navigateTo
+
+                    TopCapsuleSection(
+                        capsulesData = capsulesData,
+                        navigateToDetailCapsule = navigateToDetailCapsule
+                    )
+                }
+
+                AllCapsuleSection(
+                    capsulesData = capsulesData,
+                    navigateToDetailCapsule = navigateToDetailCapsule
                 )
-
-                TopCapsuleSection(publicCapsules)
             }
-
-            CapsulePublic(publicCapsules)
         }
 
         BottomBar(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(16.dp)
+                .padding(vertical = 24.dp, horizontal = 16.dp)
                 .fillMaxWidth(),
             navigateTo = navigateTo
         )
@@ -116,263 +88,8 @@ fun DiscoverScreen(
 }
 
 @Composable
-fun CapsulePublic(
-    capsuleData: List<CapsuleModel>
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Spacer(modifier = Modifier.height(28.dp))
-        Text(
-            text = "Lihat Kapsul Publik Lainnya",
-            color = colorResource(R.color.black),
-            fontSize = 20.sp,
-            fontStyle = FontStyle.Italic,
-            fontWeight = FontWeight.Bold,
-//            modifier = Modifier.align(Alignment.Start).padding(start = 64.dp)
-        )
-        Spacer(modifier = Modifier.height(24.dp))
-        LazyVerticalGrid(
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            columns = GridCells.Fixed(2),
-            modifier = Modifier.width(350.dp).height(325.dp)
-        ) {
-            items(capsuleData) { capsule ->
-                TopCapsuleCard(capsule)
-            }
-        }
-    }
-}
-
-@Composable
-fun CapsuleSection(isExpanded: Boolean) {
-    var namaKapsul by remember { mutableStateOf("") }
-    var selectedDropdown by remember { mutableStateOf("Aktif") } // Status pilihan dropdown
-
-    //DATA DUMMY UNTUK CAPSULE SECTION YANG DI ATAS< INI BISA DIGANTI DENGAN YANG ADA DI DATABASE
-    val aktif = listOf(
-        "2024 New Year" to R.drawable.new_year,
-        "Makassar" to R.drawable.makassar,
-        "Event A" to R.drawable.new_year,
-        "Event B" to R.drawable.makassar,
-        "Event C" to R.drawable.new_year,
-        "Event D" to R.drawable.makassar,
-        "Event E" to R.drawable.new_year,
-        "Event F" to R.drawable.makassar,
-        "Event G" to R.drawable.new_year,
-        "Event H" to R.drawable.makassar,
-    )
-    val terkunci = listOf(
-        "2024 New Year" to R.drawable.new_year,
-        "Makassar" to R.drawable.makassar,
-        "Event A LOCKED" to R.drawable.new_year,
-        "Event B LOCKED" to R.drawable.makassar,
-        "Event C LOCKED" to R.drawable.new_year,
-        "Event D LOCKED" to R.drawable.makassar,
-    )
-
-    // Tampilkan sebagian atau semua item berdasarkan state
-    val displayedItemsActive = if (isExpanded) aktif else aktif.take(2)
-    val displayedItemsNonactive = if (isExpanded) terkunci else terkunci.take(2)
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = stringResource(R.string.publik_kapsul),
-                color = colorResource(R.color.white),
-                fontSize = 24.sp,
-                fontWeight = FontWeight.SemiBold
-            )
-
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        // Search bar + Dropdown
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            //SEARCH BAR UNTUK MENCARI KAPSUL
-            TextField(
-                value = namaKapsul,
-                onValueChange = { namaKapsul = it },
-                placeholder = {
-                    if (namaKapsul.isEmpty()) {
-                        Text("Cari Kapsul") // Teks placeholder hanya muncul jika tidak ada teks
-                    }
-                },
-                modifier = Modifier
-                    .width(230.dp)
-                    .height(50.dp),
-                colors = TextFieldDefaults.colors(
-                    unfocusedTextColor = colorResource(R.color.black),
-                    unfocusedContainerColor = Color.White,
-                    focusedContainerColor = Color.White,
-                    unfocusedLabelColor = Color.Transparent,
-                    focusedLabelColor = Color.Transparent
-                ),
-                shape = RoundedCornerShape(10.dp)
-            )
-
-            // Dropdown dengan callback untuk mengubah `selectedDropdown`
-            DropdownButton(
-                selectedText = selectedDropdown,
-                onItemSelected = { selectedDropdown = it }
-            )
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Daftar kartu berdasarkan pilihan dropdown
-        if (selectedDropdown == "Aktif") {
-            CapsuleGrid(items = displayedItemsActive) // Tetap menggunakan CapsuleGrid
-        } else if (selectedDropdown == "Terkunci") {
-            CapsuleGrid(items = displayedItemsNonactive)
-            // Tampilkan daftar terkunci jika dibutuhkan
-        }
-    }
-}
-
-@Composable
-fun DropdownButton(
-    selectedText: String, // Pilihan saat ini
-    onItemSelected: (String) -> Unit // Callback untuk item yang dipilih
-) {
-    var expanded by remember { mutableStateOf(false) } // Status dropdown
-    val items = listOf("Aktif", "Terkunci") // Isi dropdown
-
-    Box {
-        // Tombol utama dropdown
-        Button(
-            onClick = { expanded = !expanded },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = colorResource(R.color.blue_main), // Warna latar belakang tombol
-                contentColor = colorResource(R.color.white) // Warna teks tombol
-            )
-        ) {
-            Text(selectedText)
-            Icon(
-                imageVector = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown, // Ubah dengan ikon sesuai kebutuhan Anda
-                contentDescription = null,
-                tint = colorResource(R.color.white),
-                modifier = Modifier.size(20.dp)
-            )
-        }
-
-        // Menu dropdown
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false } // Tutup dropdown saat klik di luar
-        ) {
-            items.forEach { item ->
-                DropdownMenuItem(
-                    onClick = {
-                        onItemSelected(item) // Kirim item yang dipilih ke callback
-                        expanded = false // Tutup dropdown
-                    },
-                    text = {
-                        Text(text = item)
-                    }
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun BoxImageButton(onClick: () -> Unit, imageRes: Int) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center
-    ) {
-        Box(
-            modifier = Modifier
-                .width(50.dp) // Ukuran tombol
-                .clickable {
-                    onClick(
-
-                    )
-                } // Fungsi klik
-        ) {
-            Image(
-                painter = painterResource(imageRes),
-                contentDescription = "Button Image",
-                modifier = Modifier.fillMaxWidth(),
-                contentScale = ContentScale.Crop
-            )
-        }
-    }
-}
-
-@Composable
-fun CapsuleGrid(items: List<Pair<String, Int>>) {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2), // Jumlah kolom tetap (misal 2)
-        contentPadding = PaddingValues(0.dp),
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
-    ) {
-        items(items) { item ->
-            CapsuleCard(title = item.first, imageRes = item.second)
-        }
-    }
-}
-
-@Composable
-fun CapsuleCard(title: String, imageRes: Int, onClick: () -> Unit = {}) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .clickable { onClick() }
-    ) {
-        Box(
-            modifier = Modifier
-                .size(160.dp)
-                .clip(RoundedCornerShape(16.dp)) // Bentuk rounded untuk gambar
-            ,
-            contentAlignment = Alignment.Center
-        ) {
-            // Konten kapsul (gambar)
-            Image(
-                painter = painterResource(imageRes),
-                contentDescription = "Image Capsule",
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.FillWidth
-            )
-        }
-        Text(
-            modifier = Modifier.padding(8.dp),
-            text = title,
-            fontSize = 16.sp,
-            color = Color.Black
-        )
-    }
-}
-//======================
-//CAPSULE SECTION END
-//======================
-
-//=======================
-//TOP CAPSULE SECTION START
-//=======================
-data class CapsuleData(
-    val title: String,
-    val imageRes: Int
-)
-
-@Composable
 fun TopCapsuleSection(
+    navigateToDetailCapsule: (Long) -> Unit,
     capsulesData: List<CapsuleModel>
 ) {
     Column(
@@ -381,42 +98,93 @@ fun TopCapsuleSection(
             .padding(horizontal = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(28.dp))
+        Spacer(modifier = Modifier.height(6.dp))
         Text(
-            text = "TOP PUBLIK KAPSUL",
+            text = "Kapsul Publik Pilihan",
             color = colorResource(R.color.white),
-            fontSize = 22.sp,
-            fontStyle = FontStyle.Italic,
+            fontSize = 20.sp,
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(24.dp))
 
-        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        LazyRow(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(24.dp)
+        ) {
             items(capsulesData) { capsule ->
-                TopCapsuleCard(capsule)
+                CapsuleCard(
+                    capsuleData = capsule,
+                    navigateToDetailCapsule = navigateToDetailCapsule
+                )
             }
         }
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(6.dp))
     }
 }
 
 @Composable
-fun TopCapsuleCard(capsuleData: CapsuleModel) {
+fun AllCapsuleSection(
+    navigateToDetailCapsule: (Long) -> Unit,
+    capsulesData: List<CapsuleModel>
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.width(150.dp)
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Spacer(modifier = Modifier.height(30.dp))
+        Text(
+            text = "Lihat Kapsul Publik Lainnya",
+            color = colorResource(R.color.black),
+            fontSize = 20.sp,
+            fontStyle = FontStyle.Italic,
+            fontWeight = FontWeight.Bold,
+        )
+        Spacer(modifier = Modifier.height(24.dp))
+
+        LazyVerticalGrid(
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            columns = GridCells.Fixed(2),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .padding(horizontal = 36.dp)
+                .padding(bottom = 100.dp)
+        ) {
+            items(capsulesData) { capsule ->
+                CapsuleCard(
+                    color = Color.Black,
+                    capsuleData = capsule,
+                    navigateToDetailCapsule = navigateToDetailCapsule
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun CapsuleCard(
+    color: Color = Color.White,
+    navigateToDetailCapsule: (Long) -> Unit,
+    capsuleData: CapsuleModel
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Box(
             modifier = Modifier
-                .size(120.dp)
+                .clickable {
+                    navigateToDetailCapsule(capsuleData.createdAt)
+                }
+                .size(115.dp)
                 .clip(RoundedCornerShape(16.dp))
-                .background(colorResource(R.color.green_kahf))
+                .background(colorResource(R.color.orange))
                 .padding(8.dp),
             contentAlignment = Alignment.Center
         ) {
             Image(
                 painter = painterResource(
                     when (capsuleData.indexCover) {
+                        0 -> R.drawable.capsule_cover_template_0
                         1 -> R.drawable.capsule_cover_template_1
                         2 -> R.drawable.capsule_cover_template_2
                         3 -> R.drawable.capsule_cover_template_3
@@ -425,8 +193,7 @@ fun TopCapsuleCard(capsuleData: CapsuleModel) {
                         6 -> R.drawable.capsule_cover_template_6
                         7 -> R.drawable.capsule_cover_template_7
                         8 -> R.drawable.capsule_cover_template_8
-                        9 -> R.drawable.capsule_cover_template_9
-                        else -> R.drawable.capsule_cover_template_10
+                        else -> R.drawable.capsule_cover_template_9
                     }
                 ),
                 contentDescription = "Image Capsule",
@@ -435,9 +202,9 @@ fun TopCapsuleCard(capsuleData: CapsuleModel) {
         }
         Text(
             modifier = Modifier.padding(8.dp),
-            text = capsuleData.name,
-            fontSize = 16.sp,
-            color = Color.Black
+            text = capsuleData.title,
+            fontSize = 14.sp,
+            color = color
         )
     }
 }

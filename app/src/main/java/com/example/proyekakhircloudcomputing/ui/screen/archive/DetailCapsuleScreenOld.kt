@@ -1,9 +1,5 @@
 package com.example.proyekakhircloudcomputing.ui.screen.archive
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -55,16 +51,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.proyekakhircloudcomputing.R
 
-class DetailCapsuleActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-
-        }
-    }
-}
-
 //=========================
 // Data class contributor
 //=========================
@@ -72,8 +58,9 @@ data class Contributor(
     val name: String, val profileImage: Int
 )
 
+@Preview
 @Composable
-fun DetailCapsuleScreen() {
+fun DetailCapsuleScreenOld() {
     // State untuk menyimpan gambar yang dipilih
     var selectedImage by remember { mutableStateOf<Int?>(null) }
 
@@ -519,10 +506,4 @@ fun ImageItem(imageRes: Int, onClick: () -> Unit) {
             contentScale = ContentScale.Crop
         )
     }
-}
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun DetailPreview() {
-    DetailCapsuleScreen()
 }

@@ -16,6 +16,8 @@ import io.github.cdimascio.dotenv.dotenv
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class DatabaseViewModel : ViewModel() {
 
@@ -52,6 +54,12 @@ class DatabaseViewModel : ViewModel() {
 
     private var _capsulesState = MutableStateFlow<List<CapsuleModel>?>(null)
     val capsulesState: StateFlow<List<CapsuleModel>?> = _capsulesState.asStateFlow()
+
+    private var _addCapsuleSuccess = MutableStateFlow(false)
+    val addCapsuleSuccess: StateFlow<Boolean> = _addCapsuleSuccess.asStateFlow()
+
+    private var _detailCapsule = MutableStateFlow<CapsuleModel?>(null)
+    val detailCapsule: StateFlow<CapsuleModel?> = _detailCapsule.asStateFlow()
 
     fun addUserToDatabase(
         userAuth: FirebaseUser,
@@ -118,23 +126,79 @@ class DatabaseViewModel : ViewModel() {
             }
     }
 
-    fun getCapsulesFromDatabase() {
-        capsulesReference.get()
-            .addOnSuccessListener { documents ->
-                val listCapsulesData = documents.map { document ->
-                    val data = document.data
-                    CapsuleModel(
-                        type = data["type"].toString(),
-                        name = data["name"].toString(),
-                        indexCover = data["indexCover"].toString().toInt(),
-                        status = data["status"].toString(),
-                        lockedAt = data["lockedAt"].toString(),
-                        unlockedAt = data["unlockedAt"].toString()
-                    )
-                }
-                _capsulesState.value = listCapsulesData
+    fun addCapsuleToDatabase(
+        indexCover: Int,
+        title: String,
+        description: String,
+        type: String,
+        lockedAt: String,
+        unlockedAt: String,
+        onFailure: () -> Unit,
+        showLoading: (Boolean) -> Unit
+    ) {
+        val format = SimpleDateFormat("EEEE, dd MMMM yyyy, HH:mm", Locale("id", "ID"))
+
+        val newCapsule = CapsuleModel(
+            indexCover = indexCover,
+            title = title,
+            description = description,
+            type = type,
+            createdAt = System.currentTimeMillis(),
+            lockedAt = format.parse(lockedAt)?.time ?: 0L,
+            unlockedAt = format.parse(unlockedAt)?.time ?: 0L,
+            contributor = listOf(_userDataState.value!!.fullName),
+            imageId = emptyList()
+        )
+
+        showLoading(true)
+        capsulesReference
+            .add(newCapsule)
+            .addOnSuccessListener {
+                showLoading(false)
+                _detailCapsule.value = newCapsule
+                _addCapsuleSuccess.value = true
             }
-            .addOnFailureListener {}
+            .addOnFailureListener {
+                showLoading(false)
+                onFailure()
+                _addCapsuleSuccess.value = false
+            }
+    }
+
+    fun getCapsulesFromDatabase() {
+        capsulesReference
+            .addSnapshotListener { snapshots, e ->
+                if (e == null) {
+                    val capsules: MutableList<CapsuleModel> = mutableListOf()
+                    snapshots?.documents?.forEach { document ->
+                        document.toObject(CapsuleModel::class.java)?.let { capsules.add(it) }
+                    }
+                    _capsulesState.value = capsules
+                }
+            }
+    }
+
+    fun findCapsuleInDatabase(
+        createdAt: Long,
+        onSuccess: () -> Unit,
+        onFailure: () -> Unit,
+    ) {
+        capsulesReference
+            .whereEqualTo("createdAt", createdAt)
+            .get()
+            .addOnSuccessListener { documents ->
+                documents.documents.forEach { document ->
+                    _detailCapsule.value = document.toObject(CapsuleModel::class.java)
+                }
+                onSuccess()
+            }
+            .addOnFailureListener {
+                onFailure()
+            }
+    }
+
+    fun resetAddCapsuleSuccess() {
+        _addCapsuleSuccess.value = false
     }
 
     fun clearAllData() {

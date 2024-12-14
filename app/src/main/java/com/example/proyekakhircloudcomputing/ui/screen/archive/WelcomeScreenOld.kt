@@ -43,12 +43,12 @@ fun WelcomeScreenOld(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            painter = painterResource(id = R.drawable.title),
+            painter = painterResource(id = R.drawable.memoria_logo),
             contentDescription = null,
             modifier = Modifier.size(250.dp).padding(all = 1.dp)
         )
         Image(
-            painter = painterResource(id = R.drawable.gambar),
+            painter = painterResource(id = R.drawable.main_image),
             contentDescription = null,
             modifier = Modifier.size(400.dp).padding(1.dp)
         )

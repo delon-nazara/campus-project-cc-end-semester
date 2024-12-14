@@ -1,8 +1,5 @@
 package com.example.proyekakhircloudcomputing.ui.screen.archive
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -52,17 +49,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.proyekakhircloudcomputing.R
 
-class AddCapsuleActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            AddCapsuleScreen()
-        }
-    }
-}
-
+@Preview
 @Composable
-fun AddCapsuleScreen() {
+fun CreateCapsuleScreenOld() {
     var showDialog by remember { mutableStateOf(false) }
     var judulKapsul by remember { mutableStateOf("") }
     var deskripsiKapsul by remember { mutableStateOf("") }
@@ -503,11 +492,3 @@ fun AddCapsuleScreen() {
         }
     }
 }
-
-@Preview(showBackground = true,showSystemUi = true)
-@Composable
-fun AddCapsulePreview() {
-    AddCapsuleScreen()
-}
-
-

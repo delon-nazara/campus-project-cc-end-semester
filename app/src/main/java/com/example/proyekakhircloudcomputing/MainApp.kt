@@ -1,7 +1,6 @@
 package com.example.proyekakhircloudcomputing
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -13,6 +12,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.proyekakhircloudcomputing.data.source.Route
 import com.example.proyekakhircloudcomputing.ui.screen.CapsuleScreen
+import com.example.proyekakhircloudcomputing.ui.screen.CreateCapsuleScreen
+import com.example.proyekakhircloudcomputing.ui.screen.DetailCapsuleScreen
 import com.example.proyekakhircloudcomputing.ui.screen.DiscoverScreen
 import com.example.proyekakhircloudcomputing.ui.screen.HomeScreen
 import com.example.proyekakhircloudcomputing.ui.screen.LoginScreen
@@ -38,6 +39,12 @@ fun MainApp(context: Context) {
     databaseViewModel.cloudinaryInitialization(context)
     val userDataState by databaseViewModel.userDataState.collectAsState()
     val capsulesState by databaseViewModel.capsulesState.collectAsState()
+    val addCapsuleSuccess by databaseViewModel.addCapsuleSuccess.collectAsState()
+    val detailCapsule by databaseViewModel.detailCapsule.collectAsState()
+
+    val groupedCapsules = capsulesState?.groupBy { it.type }
+    val publicCapsules = groupedCapsules?.get("Public")
+    val privateCapsules = groupedCapsules?.get("Private")
 
     val navController: NavHostController = rememberNavController()
     val navigateTo: (String, Boolean) -> Unit = { route, clearAll ->
@@ -163,7 +170,19 @@ fun MainApp(context: Context) {
         composable(Route.HOME_SCREEN.name) {
             HomeScreen(
                 userData = userDataState,
-                capsulesData = capsulesState,
+                privateCapsules = privateCapsules,
+                publicCapsules = publicCapsules,
+                navigateToDetailCapsule = { createdAt ->
+                    databaseViewModel.findCapsuleInDatabase(
+                        createdAt = createdAt,
+                        onSuccess = {
+                            navigateTo(Route.DETAIL_CAPSULE_SCREEN.name, false)
+                        },
+                        onFailure = {
+                            showToast(context, "Failed to fetch data, try again")
+                        }
+                    )
+                },
                 navigateTo = { route ->
                     navigateTo(route, false)
                 }
@@ -174,7 +193,18 @@ fun MainApp(context: Context) {
         composable(Route.CAPSULE_SCREEN.name) {
             CapsuleScreen(
                 userData = userDataState,
-                capsulesData = capsulesState,
+                capsulesData = privateCapsules,
+                navigateToDetailCapsule = { createdAt ->
+                    databaseViewModel.findCapsuleInDatabase(
+                        createdAt = createdAt,
+                        onSuccess = {
+                            navigateTo(Route.DETAIL_CAPSULE_SCREEN.name, false)
+                        },
+                        onFailure = {
+                            showToast(context, "Failed to fetch data, try again")
+                        }
+                    )
+                },
                 navigateTo = { route ->
                     navigateTo(route, false)
                 }
@@ -185,7 +215,18 @@ fun MainApp(context: Context) {
         composable(Route.DISCOVER_SCREEN.name) {
             DiscoverScreen(
                 userData = userDataState,
-                capsulesData = capsulesState,
+                capsulesData = publicCapsules,
+                navigateToDetailCapsule = { createdAt ->
+                    databaseViewModel.findCapsuleInDatabase(
+                        createdAt = createdAt,
+                        onSuccess = {
+                            navigateTo(Route.DETAIL_CAPSULE_SCREEN.name, false)
+                        },
+                        onFailure = {
+                            showToast(context, "Failed to fetch data, try again")
+                        }
+                    )
+                },
                 navigateTo = { route ->
                     navigateTo(route, false)
                 }
@@ -214,6 +255,52 @@ fun MainApp(context: Context) {
                 navigateTo = { route ->
                     navigateTo(route, false)
                 }
+            )
+        }
+
+        // Route create capsule screen
+        composable(Route.CREATE_CAPSULE_SCREEN.name) {
+            CreateCapsuleScreen(
+                popBackStack = {
+                    navController.popBackStack()
+                },
+                loadingState = loadingState,
+                addCapsuleSuccess = addCapsuleSuccess,
+                navigateToDetailScreen = {
+                    navController.navigate(Route.DETAIL_CAPSULE_SCREEN.name) {
+                        popUpTo(Route.HOME_SCREEN.name)
+                    }
+                    databaseViewModel.resetAddCapsuleSuccess()
+                },
+                dataEmpty = {
+                    showToast(context, "All data must be filled")
+                },
+                addNewCapsule = { indexCover, title, description, type, lockedAt, unlockedAt ->
+                    databaseViewModel.addCapsuleToDatabase(
+                        indexCover = indexCover,
+                        title = title,
+                        description = description,
+                        type = type,
+                        lockedAt = lockedAt,
+                        unlockedAt = unlockedAt,
+                        onFailure = {
+                            showToast(context, "Failed to add new capsule, try again")
+                        },
+                        showLoading = { state ->
+                            authenticationViewModel.showLoading(state)
+                        }
+                    )
+                }
+            )
+        }
+
+        // Route detail capsule screen
+        composable(Route.DETAIL_CAPSULE_SCREEN.name) {
+            DetailCapsuleScreen(
+                popBackStack = {
+                    navController.popBackStack()
+                },
+                capsuleData = detailCapsule!!
             )
         }
     }
