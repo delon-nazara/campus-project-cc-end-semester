@@ -297,7 +297,10 @@ fun CapsuleItem(
                         6 -> R.drawable.capsule_cover_template_6
                         7 -> R.drawable.capsule_cover_template_7
                         8 -> R.drawable.capsule_cover_template_8
-                        else -> R.drawable.capsule_cover_template_9
+                        9 -> R.drawable.capsule_cover_template_9
+                        10 -> R.drawable.capsule_cover_template_10
+                        11 -> R.drawable.capsule_cover_template_11
+                        else -> R.drawable.capsule_cover_template_12
                     }
                 ),
                 contentDescription = "Image Capsule",

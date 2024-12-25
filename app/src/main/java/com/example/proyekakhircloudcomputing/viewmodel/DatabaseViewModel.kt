@@ -167,6 +167,7 @@ class DatabaseViewModel : ViewModel() {
 
     fun getCapsulesFromDatabase() {
         capsulesReference
+            .orderBy("createdAt")
             .addSnapshotListener { snapshots, e ->
                 if (e == null) {
                     val capsules: MutableList<CapsuleModel> = mutableListOf()
